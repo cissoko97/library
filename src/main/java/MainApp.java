@@ -3,8 +3,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.ckCoder.database.Connexion;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MainApp extends Application {
 
@@ -13,11 +15,12 @@ public class MainApp extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws IOException, SQLException {
         primaryStage.setTitle("Bonjour le monde");
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/index.fxml"));
         Parent parent = loader.load();
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
+//        Connexion.getInstance();
     }
 }

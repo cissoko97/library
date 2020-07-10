@@ -1,4 +1,5 @@
-# Start JavaFx App on Linux(ubuntu)
+# Library
+## Start JavaFx App on Linux(ubuntu)
 + Java 8
 + JavaFx
 + MySQl (Store Procédure)
