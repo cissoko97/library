@@ -16,6 +16,7 @@ public class Book extends AbstractEntity {
     private Integer valeurNominal;
     private Integer valeurCritique;
     private Set<AbstractEntity> authors;
+    private Boolean availability;
 
     public String getTitle() {
         return title;
@@ -111,5 +112,13 @@ public class Book extends AbstractEntity {
 
     public void setAuthors(Set<AbstractEntity> authors) {
         this.authors = authors;
+    }
+
+    public Boolean getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Boolean availability) {
+        this.availability = availability;
     }
 }

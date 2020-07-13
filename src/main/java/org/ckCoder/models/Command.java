@@ -6,7 +6,12 @@ public class Command extends AbstractEntity {
 
     private Double TotalPrice;
     private User user;
+    private Boolean accepted;
     private Set<Line> lines;
+
+    public Command() {
+        accepted = false;
+    }
 
     public Double getTotalPrice() {
         return TotalPrice;
@@ -30,5 +35,13 @@ public class Command extends AbstractEntity {
 
     public void setLines(Set<Line> lines) {
         this.lines = lines;
+    }
+
+    public Boolean getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(Boolean accepted) {
+        this.accepted = accepted;
     }
 }

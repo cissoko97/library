@@ -1,34 +1,27 @@
 package org.ckCoder.database;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class Connexion {
+    private static Connection con = null;
 
-    private static Connection connection = null;
-    private static Properties properties;
+    static {
+        String url = "jdbc:mysql://localhost:3306/librery?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC";
+        String username = "root";
+        String password = "";
 
-    private Connexion() {
-
-    }
-
-    public static Connection getInstance() throws IOException, SQLException {
-        if (connection == null) {
-            getDataBaseConfig();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(url,username,password);
+            System.out.println("la connexion est établit");
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
-        return connection;
     }
 
-    private static void getDataBaseConfig() throws IOException, SQLException {
-        properties = new Properties();
-        properties.load(Connexion.class.getResourceAsStream("/properties/database.properties"));
-        String host = properties.getProperty("host");
-        String password = properties.getProperty("password");
-        String user = properties.getProperty("user");
-        String port = properties.getProperty("port");
-        Connection connection = DriverManager.getConnection("");
+    public static Connection getConnection() {
+        return con;
     }
 }
