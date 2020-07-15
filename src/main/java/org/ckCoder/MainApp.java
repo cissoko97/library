@@ -1,3 +1,5 @@
+package org.ckCoder;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +22,5 @@ public class MainApp extends Application {
         Parent parent = loader.load();
         primaryStage.setScene(new Scene(parent));
         primaryStage.show();
-//        Connexion.getInstance();
     }
 }

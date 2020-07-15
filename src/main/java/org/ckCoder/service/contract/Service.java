@@ -1,15 +1,11 @@
 package org.ckCoder.service.contract;
 
-import java.util.Set;
+import org.ckCoder.database.Connexion;
 
-public interface Service<T, I> {
-    public T create(T t);
+import java.sql.Connection;
 
-    public T update(T t);
+public abstract class Service {
 
-    public boolean delete(I i);
+    public Connection connection = Connexion.getConnection();
 
-    public Set<T> findAll(T t);
-
-    public T findById(I i);
 }

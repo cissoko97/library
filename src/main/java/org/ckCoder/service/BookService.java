@@ -1,11 +1,11 @@
 package org.ckCoder.service;
 
 import org.ckCoder.models.Book;
-import org.ckCoder.service.contract.Service;
+import org.ckCoder.service.contract.IService;
 
 import java.util.Set;
 
-public class BookService implements Service<Book, Long> {
+public class BookService implements IService<Book, Long> {
 
     @Override
     public Book create(Book book) {

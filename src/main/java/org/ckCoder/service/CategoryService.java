@@ -1,11 +1,11 @@
 package org.ckCoder.service;
 
 import org.ckCoder.models.Category;
-import org.ckCoder.service.contract.Service;
+import org.ckCoder.service.contract.IService;
 
 import java.util.Set;
 
-public class CategoryService implements Service<Category, Long> {
+public class CategoryService implements IService<Category, Long> {
 
     @Override
     public Category create(Category category) {

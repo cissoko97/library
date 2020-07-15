@@ -81,4 +81,15 @@ public class User extends AbstractEntity implements Serializable {
     public void setConnexionSet(Set<Connexion> connexionSet) {
         this.connexionSet = connexionSet;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + this.getId() + '\'' +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", isLocked=" + isLocked +
+                ", person=" + person +
+                '}';
+    }
 }
