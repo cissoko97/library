@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.partial.FormAddRole">
+   <center>
+      <AnchorPane prefHeight="317.0" prefWidth="600.0">
+         <children>
+            <GridPane layoutX="22.0" prefHeight="291.0" prefWidth="557.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="31.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="199.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="358.0" minWidth="10.0" prefWidth="358.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="109.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="239.0" minHeight="10.0" prefHeight="239.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="label_title" text="label1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <TextField fx:id="titleTextField" GridPane.columnIndex="1" />
+                  <Text fx:id="label_textArray" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.rowIndex="1" />
+                  <TextArea fx:id="textArrayField" prefHeight="245.0" prefWidth="358.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="14.0" top="3.0" />
+         </BorderPane.margin>
+      </AnchorPane>
+   </center>
+   <top>
+      <Text fx:id="title_of_form" fill="#e10606" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 30;" text="Title formulaire" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </Text>
+   </top>
+   <bottom>
+      <Button fx:id="save_btn" mnemonicParsing="false" onAction="#onSave" prefHeight="26.0" prefWidth="279.0" text="Button" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
+</BorderPane>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+
+<GridPane minWidth="400.0" prefHeight="98.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.utils.PresentationEntityComponent">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="240.0" minWidth="10.0" prefWidth="127.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="273.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <top>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="name or title" BorderPane.alignment="TOP_LEFT">
+               <BorderPane.margin>
+                  <Insets left="6.0" />
+               </BorderPane.margin>
+            </Text>
+         </top>
+      </BorderPane>
+   </children>
+</GridPane>
