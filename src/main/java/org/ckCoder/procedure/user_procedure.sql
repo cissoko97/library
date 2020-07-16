@@ -8,8 +8,7 @@ drop procedure if exists save_user;
 create procedure save_user(IN p_name varchar(255),
                            IN p_surname varchar(255),
                            IN p_email varchar(255),
-                           IN p_password varchar(255),
-                           IN p_id_profil INT)
+                           IN p_password varchar(255))
 begin
 
     declare errno INt;
@@ -34,9 +33,12 @@ begin
 
     set new_id = last_insert_id();
 
+    select id into @id_profil from profils where label = 'user' limit 1;
+
     insert into user_profil(user_id, profil_id)
-    values (new_id, p_id_profil);
+    values (new_id, @id_profil);
     select *
+
     from users U
              inner join person P
                         on U.person_id = P.id
@@ -49,7 +51,7 @@ end|
 
 drop procedure if exists lock_or_unlock_user;
 
-create procedure lock_or_unlock_user(IN p_user_id INT, IN p_is_lock BOOL)
+create procedure lock_or_unlock_user(IN p_user_id INT, IN p_is_lock TINYINT(1))
 
 BEGIN
     update users
@@ -88,10 +90,12 @@ create procedure get_user_credential(IN p_email varchar(255),
 
 begin
 
-    select P.* , U.id u_id , U.email U_email
+    select P.*, U.id u_id, U.email U_email, p2.*, f.*
     from users U
-             inner join person P
-                        on U.person_id = P.id
+             left join person P on U.person_id = P.id
+             left join user_profil up on U.id = up.user_id
+             left join profils p2 on up.profil_id = p2.id
+             left join favoris f on U.id = f.user_id
     where U.email = p_email
       AND U.password = p_password;
 end |
@@ -104,7 +108,7 @@ drop procedure if exists get_all_user;
 create procedure get_all_user()
 
 begin
-    select P.*, U.email U_email , U.id U_id
+    select P.*, U.email U_email, U.id U_id
     from users U
              inner join person P
                         on U.person_id = P.id;

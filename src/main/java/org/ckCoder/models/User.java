@@ -1,6 +1,7 @@
 package org.ckCoder.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class User extends AbstractEntity implements Serializable {
@@ -9,10 +10,10 @@ public class User extends AbstractEntity implements Serializable {
     private String password;
     private Boolean isLocked;
     private Person person;
-    private Set<Book> books;
-    private Set<Critique> critiques;
-    private Set<Profil> profils;
-    private Set<Connexion> connexionSet;
+    private Set<Book> books = new HashSet<>();
+    private Set<Critique> critiques = new HashSet<>();
+    private Set<Profil> profils = new HashSet<>();
+    private Set<Connexion> connexionSet = new HashSet<>();
 
     public User() {
 

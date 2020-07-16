@@ -24,4 +24,12 @@ public class Profil extends AbstractEntity {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "Profil{" +
+                "id='" + this.getId()  +'\'' +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
