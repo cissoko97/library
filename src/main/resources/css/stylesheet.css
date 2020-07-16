@@ -3,9 +3,9 @@
  */
 
 .form-input-error{
-    -fx-border-color: red;
-    -fx-text-fill: red;
+    -fx-border-color: #BF0A30;
+    -fx-text-fill: #BF0A30;
 }
 .text-danger {
-    -fx-fill: red;
+    -fx-fill: #BF0A30;
 }

@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="638.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.user.UserControler">
+<BorderPane prefHeight="638.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.user.UserControler">
    <left>
       <VBox maxHeight="485.0" minHeight="399.0" prefHeight="399.0" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane prefHeight="52.0" prefWidth="400.0" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;">
                <children>
-                  <TextField layoutX="14.0" layoutY="12.0" prefHeight="29.0" prefWidth="216.0" />
+                  <TextField layoutX="14.0" layoutY="12.0" prefHeight="29.0" prefWidth="216.0" promptText="bonjour" />
                   <ComboBox layoutX="248.0" layoutY="14.0" prefHeight="26.0" prefWidth="138.0" promptText="trie" />
                </children>
                <VBox.margin>

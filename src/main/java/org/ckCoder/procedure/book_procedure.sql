@@ -7,20 +7,18 @@ DELIMITER |
 create procedure save_book(IN p_title varchar(255), p_descrition text, p_file_name varchar(255),
                            p_fk_id_cathalogue bigint, p_edition_year int, p_valeur_nominal int, p_price double,
                            p_type_livre tinyint(1),
-                           p_img_name varchar(250), inout p_id_book bigint, p_num_method_to_exc int)
+                           p_img_name varchar(250), inout p_id_book bigint)
 
 begin
-    if (p_num_method_to_exc = 1) then
+    if (p_id_book is not null) then
         insert into book(title, description, file_name, id_category, nb_vue, edition_year, valeur_nominal, price, type,
                          img_name, created_at, updated_at)
         values (p_title, p_descrition, p_file_name, p_fk_id_cathalogue, 0, p_edition_year, p_valeur_nominal, p_price,
                 p_type_livre, p_img_name, current_timestamp, current_time);
 
         set p_id_book = LAST_INSERT_ID();
-    end if;
 
-
-    if (p_num_method_to_exc = 2) then
+    else
         update book
         set title          = p_title,
             description    = p_descrition,

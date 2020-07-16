@@ -68,6 +68,7 @@ public class saveBookControler implements Initializable {
                 "Text Files", "*.pdf"
         ));
          selectedFile = fileChooser.showOpenDialog(((Control) actionEvent.getSource()).getScene().getWindow());
+        System.out.println(selectedFile.getName());
     }
 
     @FXML

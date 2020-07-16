@@ -1,7 +1,6 @@
 package org.ckCoder;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,13 +16,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-<<<<<<< HEAD
-import org.ckCoder.database.Connexion;
-=======
 import org.ckCoder.models.User;
 import org.ckCoder.service.UserService;
 import org.ckCoder.utils.SessionManager;
->>>>>>> refs/remotes/origin/master
 
 import java.awt.*;
 import java.io.IOException;
@@ -31,22 +26,16 @@ import java.sql.SQLException;
 
 public class MainApp extends Application {
     private static Scene scene;
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/master
     public static void main(String[] args) {
         launch(args);
     }
-    private boolean lockConnection = false;
+
     @Override
     public void start(Stage primaryStage) throws IOException, SQLException {
-<<<<<<< HEAD
-=======
         SessionManager manager = SessionManager.getInstance();
         UserService userService = new UserService();
 
->>>>>>> refs/remotes/origin/master
         primaryStage.setTitle("Gestion librerie");
         /*scene = new Scene(loadFXML("/view/index"));
         //FXMLLoader loader = new FXMLLoader(this.getClass().getResource(".fxml"));
@@ -78,60 +67,12 @@ public class MainApp extends Application {
 
         Button btn = new Button("Sign in");
         HBox hbBtn = new HBox(10);
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/master
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 1, 4);
 
         Scene scene = new Scene(grid, 500, 500);
-<<<<<<< HEAD
-        btn.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
-            @Override
-            public void handle(javafx.event.ActionEvent event) {
-                try {
-                    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-                    int width = gd.getDisplayMode().getWidth();
-                    int height = gd.getDisplayMode().getHeight();
-                    Scene scene = new Scene(loadFXML("/view/index"), width, height);
-                    scene.getStylesheets().add(this.getClass().getResource("/css/stylesheet.css").toExternalForm());
-                    primaryStage.setScene(scene);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        primaryStage.setScene(scene);
-
-        if (!lockConnection)
-            primaryStage.show();
-//        Connexion.getInstance();
-    }
-
-    public static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-    public void setScene(String pathUrl, Stage stage) throws IOException {
-        Scene scene = new Scene(loadFXML(pathUrl));
-        stage.setScene(scene);
-    }
-
-    @Override
-    public void init() {
-        try {
-            if(Connexion.getConnection().isClosed()){
-                lockConnection = true;
-            }
-        } catch (SQLException throwables) {
-            System.out.println("la connexion est fermée");
-        }
-    }
-}
-=======
         btn.setOnAction(event -> {
 
             String userEmail = userTextField.getText();
@@ -166,4 +107,3 @@ public class MainApp extends Application {
     }
 
 }
->>>>>>> refs/remotes/origin/master

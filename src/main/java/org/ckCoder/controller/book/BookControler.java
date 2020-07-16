@@ -1,11 +1,15 @@
 package org.ckCoder.controller.book;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-public class BookControler {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class BookControler implements Initializable {
     @FXML
     public Text idBook;
     @FXML
@@ -36,4 +40,8 @@ public class BookControler {
     public Text originalNameText;
 
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 }

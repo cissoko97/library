@@ -94,17 +94,11 @@
                   </GridPane>
                </top>
                <center>
-                  <AnchorPane fx:id="principal_pane" prefHeight="857.0" prefWidth="1500.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
-                        <Insets />
-                     </BorderPane.margin>
-                      <children>
+                  <BorderPane fx:id="principal_pane" prefHeight="857.0" prefWidth="1500.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+                      <center>
                           <fx:include fx:id="bookPanel" source="book/book_principal_stage.fxml" />
-                      </children>
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                  </AnchorPane>
+                      </center>
+                  </BorderPane>
                </center>
             </BorderPane>
          </children>

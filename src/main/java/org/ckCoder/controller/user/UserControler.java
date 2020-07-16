@@ -16,7 +16,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class UserControler implements Initializable {
+    @FXML
     private Text id_userText;
+    @FXML
     private Text idAuthorText;
     private Text idAccountText;
     private Text biographieText;
