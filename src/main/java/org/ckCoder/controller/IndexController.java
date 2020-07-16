@@ -9,12 +9,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
+import org.ckCoder.utils.SessionManager;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class IndexController implements Initializable {
+    SessionManager manager = SessionManager.getInstance();
 
     @FXML
     public Pane principal_pane;
@@ -33,6 +35,8 @@ public class IndexController implements Initializable {
 
 
     public void initialize(URL location, ResourceBundle resources) {
+
+        System.out.println("Singleton" + manager.getUser().getProfils());
         prefenre_combobox.getItems().addAll("Caddy", "favorie");
         langue_combobox.getItems().addAll("Français", "Anglais");
         book_btn.setOnAction(new EventHandler<ActionEvent>() {

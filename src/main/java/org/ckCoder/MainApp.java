@@ -17,7 +17,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import org.ckCoder.database.Connexion;
+=======
+import org.ckCoder.models.User;
+import org.ckCoder.service.UserService;
+import org.ckCoder.utils.SessionManager;
+>>>>>>> refs/remotes/origin/master
 
 import java.awt.*;
 import java.io.IOException;
@@ -25,12 +31,22 @@ import java.sql.SQLException;
 
 public class MainApp extends Application {
     private static Scene scene;
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master
     public static void main(String[] args) {
         launch(args);
     }
     private boolean lockConnection = false;
     @Override
     public void start(Stage primaryStage) throws IOException, SQLException {
+<<<<<<< HEAD
+=======
+        SessionManager manager = SessionManager.getInstance();
+        UserService userService = new UserService();
+
+>>>>>>> refs/remotes/origin/master
         primaryStage.setTitle("Gestion librerie");
         /*scene = new Scene(loadFXML("/view/index"));
         //FXMLLoader loader = new FXMLLoader(this.getClass().getResource(".fxml"));
@@ -62,11 +78,16 @@ public class MainApp extends Application {
 
         Button btn = new Button("Sign in");
         HBox hbBtn = new HBox(10);
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 1, 4);
 
         Scene scene = new Scene(grid, 500, 500);
+<<<<<<< HEAD
         btn.setOnAction(new EventHandler<javafx.event.ActionEvent>() {
             @Override
             public void handle(javafx.event.ActionEvent event) {
@@ -110,3 +131,39 @@ public class MainApp extends Application {
         }
     }
 }
+=======
+        btn.setOnAction(event -> {
+
+            String userEmail = userTextField.getText();
+
+            String userPassword = pwBox.getText();
+            User user = userService.findByEmailAndPassword(userEmail, userPassword);
+            try {
+                if (user.getEmail() != null) {
+                    manager.setUser(user);
+                    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                    int width = gd.getDisplayMode().getWidth();
+                    int height = gd.getDisplayMode().getHeight();
+                    Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
+                    primaryStage.setScene(scene1);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+
+    public void setScene(String pathUrl, Stage stage) throws IOException {
+        Scene scene = new Scene(loadFXML(pathUrl));
+        stage.setScene(scene);
+    }
+
+}
+>>>>>>> refs/remotes/origin/master

@@ -1,32 +1,32 @@
-drop procedure if exists save_or_update_category;
-
+/* procedure pour la gstion d elma categorie*/
 DELIMITER |
 
+drop procedure if exists save_category;
+
 create procedure
-    save_or_update_category(IN p_id_category INT, IN p_flag VARCHAR(30),
-                            IN p_description varchar(255),
-                            IN p_operation int)
+    save_category(IN p_flag VARCHAR(30),
+                  IN p_description varchar(255))
 
 begin
-    if p_operation = 1 then
 
-        insert into category(flag, description)
-        values (p_flag, p_description);
+    insert into category(flag, description)
+    values (p_flag, p_description);
 
-        set p_id_category = last_insert_id();
+    select * from category where id = last_insert_id();
 
-        select * from category where id = p_id_category;
-
-    end if;
-
-    if p_operation = 0 then
-        update category
-        set flag        = p_flag,
-            description = p_description
-        where id = p_id_category;
-        select * from category where id = p_id_category;
-    end if;
 end|
+
+drop procedure if EXISTS update_category;
+
+create procedure update_category(IN p_id INT, IN p_flag VARCHAR(30), IN p_description VARCHAR(255))
+
+begin
+    update category
+    set flag        = p_flag,
+        description = p_description
+    where id = p_id;
+    select * from category where id = p_id;
+end |
 
 drop procedure if exists delete_category;
 

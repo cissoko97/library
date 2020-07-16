@@ -85,21 +85,29 @@ public class UserService extends Service implements IService<User, Long> {
     }
 
     public User findByEmailAndPassword(String email, String password) {
+
         User r_user = null;
         try {
             // Hash password
+            String hashPasssword = HashWordUtils.hashWord(password);
             CallableStatement statement = this.connection.prepareCall("CALL get_user_credential(?,?)");
             statement.setString(1, email);
-            statement.setString(2, password);
+            statement.setString(2, hashPasssword);
 
             boolean status = statement.execute();
-
             if (status) {
-                r_user = new User();
                 ResultSet set = statement.getResultSet();
-
                 while (set.next()) {
-                    r_user = this.getUserFromResultset(set);
+                    if (r_user == null) {
+                        r_user = getUserFromResultset(set);
+                    }
+
+                    Profil profil = new Profil();
+                    profil.setId(set.getInt("p2.id"));
+                    profil.setLabel(set.getString("label"));
+                    profil.setDescription(set.getString("description"));
+                    System.out.println(profil);
+                    r_user.getProfils().add(profil);
                 }
             }
 
@@ -149,8 +157,8 @@ public class UserService extends Service implements IService<User, Long> {
         person.setSurname(set.getString("surname"));
 
         user.setId(set.getInt("U_id"));
-        user.setPerson(person);
         user.setEmail(set.getString("U_email"));
+        user.setPerson(person);
 
         return user;
     }

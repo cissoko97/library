@@ -3,7 +3,7 @@ package org.ckCoder.models;
 public class Category extends AbstractEntity {
 
     private String flag;
-    private String dscription;
+    private String description;
 
     public Category() {
     }
@@ -17,12 +17,12 @@ public class Category extends AbstractEntity {
         this.flag = flag;
     }
 
-    public String getDscription() {
-        return dscription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDscription(String dscription) {
-        this.dscription = dscription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

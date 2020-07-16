@@ -26,7 +26,7 @@ begin
         where id = p_id_profils;
         select * from profils where id = p_id_profils;
     end if;
-end|
+end |
 
 drop procedure if exists delete_profils;
 
@@ -53,4 +53,19 @@ begin
         where id = p_id_profils;
     END if;
 end |
+
+drop procedure if exists add_profil_to_user;
+
+create procedure add_profil_to_user(IN p_user_id INT, IN p_profil_id INT)
+
+begin
+    insert into user_profil(user_id, profil_id)
+    values (p_user_id, p_profil_id);
+
+    select true as result;
+#     select *
+#     from profils p
+#     where p.id = last_insert_id();
+end|
+
 DELIMITER ;

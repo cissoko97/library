@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import org.ckCoder.controller.IndexController;
+import org.ckCoder.controller.utils.BottonComponent;
 import org.ckCoder.controller.utils.ControlBtn;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class UserControler implements Initializable {
     @FXML
     private ControlBtn controlBtnController;
 
+    @FXML
+    private BottonComponent bottonComponentController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

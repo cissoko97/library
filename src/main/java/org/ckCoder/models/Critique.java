@@ -5,6 +5,15 @@ public class Critique extends AbstractEntity {
     private int note;
     private String comment;
     private User user;
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     private Book book;
 
     public Critique() {
