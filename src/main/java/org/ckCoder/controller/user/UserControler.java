@@ -56,5 +56,10 @@ public class UserControler implements Initializable {
             //stage.initOwner(this.btn.getScene().getWindows());
             stage.show();
         });
+        initBottomComponent();
+    }
+
+    private void initBottomComponent() {
+        this.bottonComponentController.title_labe.setText("Bonjour");
     }
 }
