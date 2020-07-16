@@ -1,0 +1,11 @@
+/*
+ *error from formulaire
+ */
+
+.form-input-error{
+    -fx-border-color: red;
+    -fx-text-fill: red;
+}
+.text-danger {
+    -fx-fill: red;
+}

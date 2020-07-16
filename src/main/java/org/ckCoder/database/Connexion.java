@@ -39,8 +39,6 @@ public class Connexion {
 
             connection = DriverManager.getConnection(url, username, password);
 
-            System.out.println("Bonjour connecion avec la base de donnée avec succes!!");
-
         } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package org.ckCoder.models;
 
+import java.io.File;
 import java.util.Set;
 
 public class Book extends AbstractEntity {
@@ -17,6 +18,9 @@ public class Book extends AbstractEntity {
     private Integer valeurCritique;
     private Set<AbstractEntity> authors;
     private Boolean availability;
+
+    private File imgfile;
+    private File bookfile;
 
     public String getTitle() {
         return title;
@@ -120,5 +124,21 @@ public class Book extends AbstractEntity {
 
     public void setAvailability(Boolean availability) {
         this.availability = availability;
+    }
+
+    public File getImgfile() {
+        return imgfile;
+    }
+
+    public void setImgfile(File imgfile) {
+        this.imgfile = imgfile;
+    }
+
+    public File getBookfile() {
+        return bookfile;
+    }
+
+    public void setBookfile(File bookfile) {
+        this.bookfile = bookfile;
     }
 }
