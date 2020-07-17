@@ -80,14 +80,16 @@ public class MainApp extends Application {
             String userPassword = pwBox.getText();
             User user = userService.findByEmailAndPassword(userEmail, userPassword);
             try {
-                if (user.getEmail() != null) {
-                    manager.setUser(user);
-                    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-                    int width = gd.getDisplayMode().getWidth();
-                    int height = gd.getDisplayMode().getHeight();
-                    Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
-                    primaryStage.setScene(scene1);
-                }
+//                if (user != null && user.getEmail() != null) {
+//                    manager.setUser(user);
+                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                int width = gd.getDisplayMode().getWidth();
+                int height = gd.getDisplayMode().getHeight();
+                Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
+                primaryStage.setScene(scene1);
+//                } else {
+                System.out.println("User est null");
+//                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

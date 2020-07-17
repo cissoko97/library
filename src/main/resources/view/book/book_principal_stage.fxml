@@ -112,13 +112,10 @@
           </center>
       </BorderPane>
    </bottom>
-   <padding>
-      <Insets top="20.0" />
-   </padding>
    <top>
-      <Text fill="#2a0cc3" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOK PANEL" BorderPane.alignment="CENTER">
+      <Text fill="#171717" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOK PANEL" BorderPane.alignment="CENTER">
          <font>
-            <Font size="43.0" />
+            <Font size="34.0" />
          </font>
       </Text>
    </top>

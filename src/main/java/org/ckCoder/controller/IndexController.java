@@ -8,7 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import org.ckCoder.utils.SessionManager;
 
 import java.io.IOException;
@@ -16,10 +16,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class IndexController implements Initializable {
+    @FXML
+    public BorderPane principal_pane;
     SessionManager manager = SessionManager.getInstance();
 
-    @FXML
-    public Pane principal_pane;
     @FXML
     public Button book_btn;
     @FXML
@@ -36,7 +36,7 @@ public class IndexController implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
 
-        System.out.println("Singleton" + manager.getUser().getProfils());
+        // System.out.println("Singleton" + manager.getUser().getProfils());
         prefenre_combobox.getItems().addAll("Caddy", "favorie");
         langue_combobox.getItems().addAll("Français", "Anglais");
         book_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -45,7 +45,7 @@ public class IndexController implements Initializable {
                 principal_pane.getChildren().removeAll();
                 principal_pane.getChildren().clear();
                 try {
-                    principal_pane.getChildren().add(loadFXML("/view/book/book_principal_stage"));
+                    principal_pane.setCenter(loadFXML("/view/book/book_principal_stage"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -58,7 +58,7 @@ public class IndexController implements Initializable {
                 principal_pane.getChildren().removeAll();
                 principal_pane.getChildren().clear();
                 try {
-                    principal_pane.getChildren().add(loadFXML("/view/order/oder_view"));
+                    principal_pane.setCenter(loadFXML("/view/order/oder_view"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -71,7 +71,7 @@ public class IndexController implements Initializable {
                 principal_pane.getChildren().clear();
                 principal_pane.getChildren().clear();
                 try {
-                    principal_pane.getChildren().add(loadFXML("/view/user/user_view"));
+                    principal_pane.setCenter(loadFXML("/view/user/user_view"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
