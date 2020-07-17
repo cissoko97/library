@@ -4,7 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import org.ckCoder.utils.Verification;
+import sun.font.TextLabel;
 
 import java.io.File;
 import java.net.URL;
@@ -12,6 +15,8 @@ import java.util.ResourceBundle;
 
 public class saveBookControler implements Initializable {
 
+    @FXML
+    private GridPane formContener;
     @FXML
     private TextField valeurNominal_textField;
     @FXML
@@ -83,48 +88,81 @@ public class saveBookControler implements Initializable {
 
     @FXML
     public void onSave(ActionEvent actionEvent) {
-        boolean isGood = false;
+        boolean isGood = true;
+//        formContener.getChildren().forEach(c ->{
+//            c.getStyleClass().removeAll();
+//        });
+
+        System.out.println("click effectué");
+
+        /*category_textField.getStyleClass().removeAll();
+        title_textField.getStyleClass().removeAll();
+        anneeEditionTextField.getStyleClass().removeAll();
+        valeurNominal_textField.getStyleClass().removeAll();
+        type_textField.getStyleClass().removeAll();
+        price_textField.getStyleClass().removeAll();
+        fileName_btn.getStyleClass().removeAll();
+        uploadImgName_btn.getStyleClass().removeAll();
+
+        title_label.getStyleClass().removeAll();
+        category_label.getStyleClass().removeAll();
+        anneeEdition_label.getStyleClass().removeAll();
+        valeurNominal_label.getStyleClass().removeAll();
+        type_label.getStyleClass().removeAll();
+        price_label.getStyleClass().removeAll();
+        fileName_label.getStyleClass().removeAll();
+        imgName_label.getStyleClass().removeAll();*/
+
         if(category_textField.getValue() == null){
-           category_textField.getStyleClass().add("form-input-error");
-           category_label.getStyleClass().add("text-danger");
+           isGood = false;
+           Verification.dangerField(category_textField, category_label);
         }
 
         if(title_textField.getText() == null){
-            title_textField.getStyleClass().add("form-input-error");
-            title_label.getStyleClass().add("text-danger");
+            Verification.dangerField(title_textField, title_label);
+            isGood = false;
         }
 
-        if(anneeEdition_label.getText() == null){
-            anneeEditionTextField.getStyleClass().add("form-input-error");
-            anneeEdition_label.getStyleClass().add("text-danger");
+        if(anneeEditionTextField.getText() == null){
+            Verification.dangerField(anneeEditionTextField, title_label);
+
+            if (!Verification.numeric(anneeEditionTextField.getText()) ||
+                    anneeEditionTextField.getText().length() != 4) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error in form");
+                alert.setContentText("the value of field year is not correctly. Please enter tone numeric value and " +
+                        "length of value is 4 characters");
+                alert.setResizable(false);
+                alert.showAndWait();
+            }
+            isGood = false;
         }
 
         if(valeurNominal_textField.getText() == null){
-            valeurNominal_textField.getStyleClass().add("form-input-error");
-            valeurNominal_textField.getStyleClass().add("text-danger");
+            Verification.dangerField(valeurNominal_textField, valeurNominal_label);
+            isGood = false;
         }
         if(type_textField.getValue() == null){
-            type_textField.getStyleClass().add("form-input-error");
-            type_label.getStyleClass().add("text-danger");
+            Verification.dangerField(type_textField, type_label);
+            isGood = false;
         }
         if(price_textField.getText() == null){
-            price_textField.getStyleClass().add("form-input-error");
-            price_label.getStyleClass().add("text-danger");
+            Verification.dangerField(price_textField, price_label);
+            isGood = false;
         }
         if(selectedFile == null){
-            fileName_btn.getStyleClass().add("form-input-error");
-            fileName_label.getStyleClass().add("text-danger");
+            Verification.dangerField(fileName_btn, fileName_label);
+            isGood = false;
         }
         if(selectedImg == null){
-            uploadImgName_btn.getStyleClass().add("form-input-error");
-            imgName_label.getStyleClass().add("text-danger");
+            Verification.dangerField(uploadImgName_btn, imgName_label);
+            isGood = false;
         }
         if(descriptiopn_text_array.getParagraphs() == null){
-            descriptiopn_text_array.getStyleClass().add("form-input-error");
-            description_label.getStyleClass().add("text-danger");
+            Verification.dangerField(descriptiopn_text_array, description_label);
+            isGood = false;
         }
 
     }
-
 
 }

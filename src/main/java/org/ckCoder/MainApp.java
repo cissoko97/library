@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.ckCoder.database.Connexion;
 import org.ckCoder.models.User;
 import org.ckCoder.service.UserService;
 import org.ckCoder.utils.SessionManager;
@@ -26,7 +27,7 @@ import java.sql.SQLException;
 
 public class MainApp extends Application {
     private static Scene scene;
-
+    private boolean isConnect = false;
     public static void main(String[] args) {
         launch(args);
     }
@@ -90,11 +91,23 @@ public class MainApp extends Application {
 //                } else {
                 System.out.println("User est null");
 //                }
+                scene1.getStylesheets().add("/css/stylesheet.css");
+                primaryStage.setScene(scene1);
+
+                /*if (user.getEmail() != null) {
+                    manager.setUser(user);
+                    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+                    int width = gd.getDisplayMode().getWidth();
+                    int height = gd.getDisplayMode().getHeight();
+                    Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
+                    primaryStage.setScene(scene1);
+                }*/
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
         primaryStage.setScene(scene);
+        if(isConnect)
         primaryStage.show();
     }
 
@@ -108,4 +121,9 @@ public class MainApp extends Application {
         stage.setScene(scene);
     }
 
+    @Override
+    public void init() throws Exception {
+        if(!Connexion.getConnection().isClosed())
+            this.isConnect = true;
+    }
 }
