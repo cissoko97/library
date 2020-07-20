@@ -1,6 +1,7 @@
 package org.ckCoder.models;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Book extends AbstractEntity {
@@ -16,7 +17,8 @@ public class Book extends AbstractEntity {
     private Integer editionYear;
     private Integer valeurNominal;
     private Integer valeurCritique;
-    private Set<AbstractEntity> authors;
+    private Set<Author> authors = new HashSet<>();
+    private Set<Critique> critiques = new HashSet<>();
     private Boolean availability;
 
     private File imgfile;
@@ -117,11 +119,11 @@ public class Book extends AbstractEntity {
         this.valeurCritique = valeurCritique;
     }
 
-    public Set<AbstractEntity> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(Set<AbstractEntity> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 
@@ -163,5 +165,13 @@ public class Book extends AbstractEntity {
 
     public void setBookBinary(byte[] bookBinary) {
         this.bookBinary = bookBinary;
+    }
+
+    public Set<Critique> getCritiques() {
+        return critiques;
+    }
+
+    public void setCritiques(Set<Critique> critiques) {
+        this.critiques = critiques;
     }
 }

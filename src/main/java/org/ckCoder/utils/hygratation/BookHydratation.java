@@ -1,9 +1,6 @@
 package org.ckCoder.utils.hygratation;
 
-import org.ckCoder.models.Author;
-import org.ckCoder.models.Book;
-import org.ckCoder.models.Category;
-import org.ckCoder.models.Critique;
+import org.ckCoder.models.*;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -17,9 +14,9 @@ public class BookHydratation {
         Category category;
         Author author;
         while (res.next()) {
-            critique = new Critique();
-            category = new Category();
-            author = new Author();
+            critique = critiqueHydrateHelper(res);
+            category = getCategoryHelper(res);
+            author = getAuthorHelper(res);
             /*book.setId(res.getLong(1));
             book.setTitle(res.getString(2));
             book.setDescription(res.getString(3));
@@ -38,19 +35,9 @@ public class BookHydratation {
             book.setImgBinary(res.getBytes(17));*/
             book = hydrateBookHelper(res);
 
-            author.setId(res.getLong(18));
-            author.setBibliography(res.getString(19));
-
-            category.setId(res.getLong(20));
-            category.setFlag(res.getString(21));
-            category.setDescription(res.getString(22));
-
-            critique.setId(res.getLong(23));
-            critique.setNote(res.getInt(24));
-            critique.setComment(res.getString(25));
-            critique.setCreatedAt(res.getTimestamp(26).toLocalDateTime());
-
+            critique.setBook(book);
             book.setCategory(category);
+            book.getCritiques().add(critique);
             book.getAuthors().add(author);
         }
 
@@ -67,7 +54,7 @@ public class BookHydratation {
 
     public static Book hydrateBookHelper(ResultSet res) throws SQLException {
         Book book = new Book();
-        book.setId(res.getLong("id"));
+        book.setId(res.getLong("book_id"));
         book.setTitle(res.getString("title"));
         book.setDescription(res.getString("description"));
         book.setFileName(res.getString("file_name"));
@@ -79,10 +66,52 @@ public class BookHydratation {
         book.setPrice(res.getDouble("price"));
         book.setType(res.getString("type"));
         book.setImgName(res.getString("img_name"));
-        book.setCreatedAt(res.getTimestamp("created_at").toLocalDateTime());
-        book.setUpdatedAt(res.getTimestamp("updated_at").toLocalDateTime());
+        book.setCreatedAt(res.getTimestamp("book_created_at").toLocalDateTime());
+        book.setUpdatedAt(res.getTimestamp("book_updated_at").toLocalDateTime());
         book.setBookBinary(res.getBytes("fileByte"));
         book.setImgBinary(res.getBytes("imgByte"));
         return book;
     }
+
+    public static Critique critiqueHydrateHelper(ResultSet res) throws SQLException {
+        Critique critique = new Critique();
+        if(res.getTimestamp("critique_created_at") != null)
+            critique.setCreatedAt(res.getTimestamp("critique_created_at").toLocalDateTime());
+        critique.setNote(res.getInt("critique_note"));
+        critique.setComment(res.getString("critique_comment"));
+        critique.setId(res.getLong("critique_id"));
+        return critique;
+    }
+
+    public static Author getAuthorHelper(ResultSet resultSet) throws SQLException {
+        Author author = new Author();
+        Person person =new Person();
+        author.setId(resultSet.getLong("author_id"));
+        author.setBibliography(resultSet.getString("authoer_bibliography"));
+        /*if(resultSet.getTimestamp("author_update_at") != null)
+            author.setUpdatedAt(resultSet.getTimestamp("author_update_at").toLocalDateTime());*/
+        /*if(resultSet.getTimestamp("author_created_at") != null)
+            author.setCreatedAt(resultSet.getTimestamp("author_created_at").toLocalDateTime());*/
+        person.setId(resultSet.getLong("person_id"));
+        person.setSurname(resultSet.getString("person_surname"));
+        person.setName(resultSet.getString("person_name"));
+
+        /*if(resultSet.getTimestamp("person_update_at") != null)
+            person.setUpdatedAt(resultSet.getTimestamp("person_update_at").toLocalDateTime());
+        if(resultSet.getTimestamp("person_created_at") != null)
+            person.setCreatedAt(resultSet.getTimestamp("person_created_at").toLocalDateTime());*/
+
+        author.setPerson(person);
+        return author;
+    }
+
+    public static Category getCategoryHelper(ResultSet res) throws SQLException {
+        Category category = new Category();
+        category.setId(res.getLong("category_id"));
+        category.setDescription(res.getString("category_description"));
+        category.setFlag(res.getString("category_flag"));
+        return category;
+    }
+
+
 }

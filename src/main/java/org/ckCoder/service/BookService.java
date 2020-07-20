@@ -91,5 +91,16 @@ public class BookService implements IService<Book, Long> {
         }
     }
 
+    public Book findAllBookAndtherElement(Long id) throws SQLException, IOException {
+        CallableStatement stm = Connexion.getConnection().prepareCall("call select_book_author_categorie_critique(?)");
+        stm.setLong(1,id);
+        Book book;
+        if (stm.execute()) {
+            book = BookHydratation.book_critique_category_favory_authorHydrate(stm.getResultSet());
+        } else
+            book = new Book();
+        return book;
+    }
+
 
 }

@@ -1,15 +1,19 @@
 package org.ckCoder;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -22,10 +26,13 @@ import org.ckCoder.database.Connexion;
 import org.ckCoder.models.User;
 import org.ckCoder.service.UserService;
 import org.ckCoder.utils.SessionManager;
+import org.ckCoder.utils.Verification;
 
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainApp extends Application {
 
@@ -80,29 +87,40 @@ public class MainApp extends Application {
         grid.add(hbBtn, 1, 4);
 
         Scene scene = new Scene(grid, 500, 500);
-        btn.setOnAction(event -> {
 
-            String userEmail = userTextField.getText();
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
+        scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
 
-            String userPassword = pwBox.getText();
-            User user = userService.findByEmailAndPassword(userEmail, userPassword);
-            try {
-                if (user != null && user.getEmail() != null) {
-                    manager.setUser(user);
-                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-                int width = gd.getDisplayMode().getWidth();
-                int height = gd.getDisplayMode().getHeight();
-                Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
-                scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
-                primaryStage.setScene(scene1);
-                } else {
-                System.out.println("User est null");
+        scene1.setOnKeyTyped(e -> {
+            System.out.println("je suis dedans");
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                if (validationForm(userTextField, pwBox, grid)) {
+                    loadUser(userTextField,pwBox,userService,primaryStage,manager);
                 }
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         });
+
+        btn.setOnAction(event -> {
+            if (validationForm(userTextField, pwBox, grid)) {
+                //loadUser(userTextField,pwBox,userService,primaryStage,manager);
+                String userEmail = userTextField.getText();
+
+                String userPassword = pwBox.getText();
+                User user = userService.findByEmailAndPassword(userEmail, userPassword);
+                if (user != null && user.getEmail() != null) {
+                    manager.setUser(user);
+                    primaryStage.setScene(scene1);
+                } else {
+                    List<String> message = new ArrayList<>();
+                    message.add("bad credentiel");
+                    Verification.alertMessage(message, Alert.AlertType.ERROR);
+                }
+            }
+        });
+
         primaryStage.setScene(scene);
         if (isConnect)
             primaryStage.show();
@@ -122,5 +140,31 @@ public class MainApp extends Application {
     public void init() throws Exception {
         if (!Connexion.getConnection().isClosed())
             this.isConnect = true;
+    }
+
+    private boolean validationForm(TextField userTextField, PasswordField pwField, GridPane pane) {
+        pane.getChildren().forEach(Verification::remouveDangerClass);
+        List<String> list = new ArrayList<>();
+        if (userTextField.getText().equals("") || pwField.getText().equals("")) {
+            list.add("please fill in all field");
+            Verification.dangerField(userTextField);
+            Verification.dangerField(pwField);
+            Verification.alertMessage(list, Alert.AlertType.ERROR);
+            return false;
+        } else {
+            if (!Verification.emailVerificatio(userTextField.getText())) {
+                list.add("this adresse is not valid pleace verify");
+                Verification.dangerField(pwField);
+                Verification.alertMessage(list, Alert.AlertType.ERROR);
+                return false;
+            }
+            return true;
+        }
+    }
+
+    private void loadUser(TextField userTextField, PasswordField pwBox,
+                          UserService userService, Stage primaryStage,
+                          SessionManager manager) {
+
     }
 }

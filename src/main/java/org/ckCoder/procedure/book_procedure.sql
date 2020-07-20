@@ -158,7 +158,10 @@ drop procedure if exists find_all_book |
 
 create procedure find_all_book()
 begin
-    select * from book;
+    select book.id as book_id, book.title, book.description, book.file_name, book.nb_vue, book.edition_year,
+           book.valeur_critique, book.valeur_nominal, book.price, book.type, book.img_name,
+           book.created_at as book_created_at, book.updated_at as book_updated_at,
+           book.availability, book.fileByte, book.imgByte from book;
 end |
 
 /*
@@ -186,10 +189,19 @@ drop procedure if exists select_book_author_categorie_critique |
 
 create procedure select_book_author_categorie_critique(IN p_id_book BIGINT)
 begin
-    select book.id, book.title, book.description, book.file_name, book.nb_vue, book.edition_year, book.valeur_critique, book.valeur_nominal, book.price, book.type, book.img_name,
-           book.created_at, book.updated_at, book.availability, book.fileByte, book.imgByte, a.id, a.bibliography, c.id, c.flag, c.description, cr.id, cr.note, cr.comment, cr.created_at
-    from book left join author_book ab on book.id = ab.book_id left join category c on book.id_category = c.id
-              left join critiques cr on book.id = cr.book_id left join author a on ab.author_id = a.id where book.id= p_id_book;
+    select book.id as book_id, book.title, book.description, book.file_name, book.nb_vue, book.edition_year,
+           book.valeur_critique, book.valeur_nominal, book.price, book.type, book.img_name,
+           book.created_at as book_created_at, book.updated_at as book_updated_at,
+           book.availability, book.fileByte, book.imgByte, a.id as author_id, a.bibliography as authoer_bibliography,
+           c.id as category_id, c.flag as category_flag, c.description as category_description,
+           cr.id as critique_id, cr.note as critique_note, cr.comment as critique_comment,
+           cr.created_at as critique_created_at,p.id as person_id, p.name as person_name, p.surname as person_surname
+    from book
+        left join author_book ab on book.id = ab.book_id
+        left join category c on book.id_category = c.id
+        left join critiques cr on book.id = cr.book_id
+        left join author a on ab.author_id = a.id
+        left join person p on a.person_id = p.id where book.id= p_id_book;
 end |
 
 DELIMITER ;

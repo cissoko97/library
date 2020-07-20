@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -28,6 +29,7 @@
                   <Insets />
                </VBox.margin>
             </AnchorPane>
+            <ListView fx:id="cardPaneBook_listview" prefHeight="429.0" prefWidth="400.0" />
          </children>
       </VBox>
    </left>
@@ -36,7 +38,7 @@
          <center>
             <AnchorPane minHeight="400.0" prefHeight="400.0" prefWidth="1349.0">
                <children>
-                  <GridPane hgap="4.0" layoutY="4.0" minHeight="313.0" minWidth="600.0" prefHeight="355.0" prefWidth="922.0" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <GridPane alignment="BOTTOM_CENTER" hgap="4.0" layoutY="4.0" minHeight="313.0" minWidth="600.0" prefHeight="355.0" prefWidth="922.0" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="428.0" minWidth="10.0" prefWidth="146.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="637.0" minWidth="0.0" prefWidth="240.0" />
@@ -55,7 +57,7 @@
                         <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="79.0" minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />
@@ -69,7 +71,10 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="type of book" GridPane.rowIndex="8" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="update date" GridPane.rowIndex="10" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="création date" GridPane.rowIndex="9" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="11" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="11">
+                           <GridPane.margin>
+                              <Insets top="6.0" />
+                           </GridPane.margin></Text>
                         <Text fx:id="idBook" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
                         <Text fx:id="creatrionDate" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                         <Text fx:id="typeBook" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -87,6 +92,9 @@
                                     <Insets left="10.0" />
                                  </padding></TextFlow>
                            </children>
+                           <padding>
+                              <Insets top="6.0" />
+                           </padding>
                         </TextFlow>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of seen" GridPane.rowIndex="2" />
                         <VBox fx:id="imageBox" prefHeight="107.0" prefWidth="237.0" GridPane.columnIndex="2" GridPane.rowSpan="5" />

@@ -29,6 +29,10 @@ public class Verification {
         comboBox.getStyleClass().add("form-input-error");
     }
 
+    public static void dangerField(PasswordField comboBox) {
+        comboBox.getStyleClass().add("form-input-error");
+    }
+
 
     public static void dangerField(Button comboBox) {
         comboBox.getStyleClass().add("form-input-error");
@@ -53,6 +57,14 @@ public class Verification {
         }
 
         alert.setContentText(text.toString());
+
+        alert.showAndWait();
+
+    }
+
+    public static void alertMessage(String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setContentText(message);
 
         alert.showAndWait();
 
