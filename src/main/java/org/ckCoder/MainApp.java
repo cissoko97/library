@@ -35,7 +35,7 @@ public class MainApp extends Application {
     private boolean isConnect = false;
 
     public static void main(String[] args) {
-//        PropertyConfigurator.configure("log4j.properties");
+        PropertyConfigurator.configure(MainApp.class.getResource("/properties/log4j.properties"));
         launch(args);
     }
 
@@ -43,7 +43,6 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws IOException, SQLException {
         SessionManager manager = SessionManager.getInstance();
         UserService userService = new UserService();
-
         primaryStage.setTitle("Gestion librerie");
         /*scene = new Scene(loadFXML("/view/index"));
         //FXMLLoader loader = new FXMLLoader(this.getClass().getResource(".fxml"));
@@ -88,19 +87,17 @@ public class MainApp extends Application {
             String userPassword = pwBox.getText();
             User user = userService.findByEmailAndPassword(userEmail, userPassword);
             try {
-//                if (user != null && user.getEmail() != null) {
-//                    manager.setUser(user);
+                if (user != null && user.getEmail() != null) {
+                    manager.setUser(user);
                 GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
                 int width = gd.getDisplayMode().getWidth();
                 int height = gd.getDisplayMode().getHeight();
                 Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
-                primaryStage.setScene(scene1);
-//                } else {
-                System.out.println("User est null");
-//                }
                 scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
-
                 primaryStage.setScene(scene1);
+                } else {
+                System.out.println("User est null");
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();

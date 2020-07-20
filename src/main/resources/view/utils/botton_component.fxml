@@ -55,7 +55,7 @@
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TextField>
-            <TextArea fx:id="descriptionTextArray" prefHeight="125.0" prefWidth="234.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextArea fx:id="descriptionTextArray" prefHeight="125.0" prefWidth="234.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <HBox prefHeight="50.0" prefWidth="277.0" spacing="10.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                <children>
                   <Button fx:id="submitOrUpdude_btn" mnemonicParsing="false" onAction="#onSaveOrUpdate" prefHeight="26.0" prefWidth="104.0" style="-fx-border-width: 5;" text="Button">
@@ -91,7 +91,7 @@
    <padding>
       <Insets bottom="4.0" top="1.0" />
    </padding>
-   <center>
+  <!-- <center>
       <TableView fx:id="tableView" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
@@ -104,5 +104,5 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-   </center>
+   </center>-->
 </BorderPane>

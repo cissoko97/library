@@ -155,8 +155,10 @@ public class UserService extends Service implements IService<User, Long> {
         person.setId(set.getInt("id"));
         person.setName(set.getString("name"));
         person.setSurname(set.getString("surname"));
-        person.setCreatedAt(DateConverted.sqlDateToUtilDate(set.getDate("created_at")));
-        person.setUpdatedAt(DateConverted.sqlDateToUtilDate(set.getDate("updated_at")));
+        /*person.setCreatedAt(DateConverted.sqlDateToUtilDate(set.getDate("created_at")));
+        person.setUpdatedAt(DateConverted.sqlDateToUtilDate(set.getDate("updated_at")));*/
+        person.setCreatedAt(set.getTimestamp("created_at").toLocalDateTime());
+        person.setUpdatedAt(set.getTimestamp("updated_at").toLocalDateTime());
         user.setId(set.getInt("U_id"));
         user.setEmail(set.getString("U_email"));
         user.setLocked(set.getBoolean("is_locked"));

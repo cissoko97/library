@@ -90,7 +90,7 @@ create procedure get_user_credential(IN p_email varchar(255),
 
 begin
 
-    select P.*, U.id u_id, U.email U_email, p2.*, f.*
+    select P.*, U.id u_id, U.email U_email , U.is_locked, p2.*, f.*
     from users U
              left join person P on U.person_id = P.id
              left join user_profil up on U.id = up.user_id

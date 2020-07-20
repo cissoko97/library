@@ -9,7 +9,3 @@
 .text-danger {
     -fx-text-fill: #BF0A30;
 }
-
-.border-boton {
-    -fx-border-bottom: 2px solid;
-}

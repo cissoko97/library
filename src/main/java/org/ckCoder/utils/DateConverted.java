@@ -1,6 +1,7 @@
 package org.ckCoder.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class DateConverted {
@@ -9,7 +10,7 @@ public class DateConverted {
         return (new Date(date.getTime()));
     }
 
-    public static String formatDateToString(Date date) {
+    public static String formatDateToString(LocalDateTime date) {
         SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
         return format.format(date);
     }

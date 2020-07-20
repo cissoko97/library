@@ -231,10 +231,11 @@ public class UserControler implements Initializable {
             userCreatedAt.setText("");
             userIsLocked.setText(String.valueOf(user.getLocked()));
             userEmail.setText(user.getEmail());
-            personUpdatedAt.setText(DateConverted.formatDateToString(user.getPerson().getUpdatedAt()));
-            personCreatedAt.setText(DateConverted.formatDateToString(user.getPerson().getCreatedAt()));
             userSurname.setText(user.getPerson().getSurname());
             userName.setText(user.getPerson().getName());
+            personUpdatedAt.setText(DateConverted.formatDateToString(user.getPerson().getUpdatedAt()));
+            personCreatedAt.setText(DateConverted.formatDateToString(user.getPerson().getCreatedAt()));
+
 
         }
     }
