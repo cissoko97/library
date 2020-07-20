@@ -9,6 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
+import org.apache.log4j.Logger;
+import org.ckCoder.models.Profil;
+import org.ckCoder.models.User;
 import org.ckCoder.utils.SessionManager;
 
 import java.io.IOException;
@@ -16,9 +19,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class IndexController implements Initializable {
+    SessionManager manager = SessionManager.getInstance();
+    Logger logger = Logger.getLogger(this.getClass());
     @FXML
     public BorderPane principal_pane;
-    SessionManager manager = SessionManager.getInstance();
 
     @FXML
     public Button book_btn;
@@ -35,8 +39,30 @@ public class IndexController implements Initializable {
 
 
     public void initialize(URL location, ResourceBundle resources) {
+        initialiseMenu();
+        manageMenu();
+    }
 
-        // System.out.println("Singleton" + manager.getUser().getProfils());
+    public static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(IndexController.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+
+
+    private void manageMenu() {
+        User user = manager.getUser();
+        Profil profilAdmin =
+                user
+                        .getProfils()
+                        .stream()
+                        .filter(profil -> profil.getLabel().equalsIgnoreCase("admin")).findFirst().orElse(null);
+        if (profilAdmin == null) {
+            order_btn.setVisible(false);
+            user_btn.setVisible(false);
+        }
+    }
+
+    private void initialiseMenu() {
         prefenre_combobox.getItems().addAll("Caddy", "favorie");
         langue_combobox.getItems().addAll("Français", "Anglais");
         book_btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -78,11 +104,4 @@ public class IndexController implements Initializable {
             }
         });
     }
-
-    public static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(IndexController.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-
 }
