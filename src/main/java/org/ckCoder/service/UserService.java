@@ -5,6 +5,7 @@ import org.ckCoder.models.Profil;
 import org.ckCoder.models.User;
 import org.ckCoder.service.contract.IService;
 import org.ckCoder.service.contract.Service;
+import org.ckCoder.utils.DateConverted;
 import org.ckCoder.utils.HashWordUtils;
 
 import java.sql.CallableStatement;
@@ -106,7 +107,6 @@ public class UserService extends Service implements IService<User, Long> {
                     profil.setId(set.getInt("p2.id"));
                     profil.setLabel(set.getString("label"));
                     profil.setDescription(set.getString("description"));
-                    System.out.println(profil);
                     r_user.getProfils().add(profil);
                 }
             }
@@ -155,9 +155,11 @@ public class UserService extends Service implements IService<User, Long> {
         person.setId(set.getInt("id"));
         person.setName(set.getString("name"));
         person.setSurname(set.getString("surname"));
-
+        person.setCreatedAt(DateConverted.sqlDateToUtilDate(set.getDate("created_at")));
+        person.setUpdatedAt(DateConverted.sqlDateToUtilDate(set.getDate("updated_at")));
         user.setId(set.getInt("U_id"));
         user.setEmail(set.getString("U_email"));
+        user.setLocked(set.getBoolean("is_locked"));
         user.setPerson(person);
 
         return user;

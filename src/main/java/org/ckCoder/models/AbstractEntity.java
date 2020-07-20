@@ -1,12 +1,12 @@
 package org.ckCoder.models;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public abstract class AbstractEntity {
     private long id;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
     public long getId() {
         return id;
@@ -16,19 +16,19 @@ public abstract class AbstractEntity {
         this.id = id;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
