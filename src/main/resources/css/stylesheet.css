@@ -4,8 +4,12 @@
 
 .form-input-error{
     -fx-border-color: #BF0A30;
-    -fx-text-fill: #BF0A30;
+    /*-fx-text-fill: #BF0A30;*/
 }
 .text-danger {
-    -fx-fill: #BF0A30;
+    -fx-text-fill: #BF0A30;
+}
+
+.border-boton {
+    -fx-border-bottom: 2px solid;
 }

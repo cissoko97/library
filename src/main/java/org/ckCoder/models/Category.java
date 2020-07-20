@@ -8,6 +8,9 @@ public class Category extends AbstractEntity {
     public Category() {
     }
 
+    public Category(long id) {
+        this.id = id;
+    }
 
     public String getFlag() {
         return flag;

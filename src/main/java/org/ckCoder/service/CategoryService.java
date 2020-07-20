@@ -26,7 +26,7 @@ public class CategoryService extends Service implements IService<Category, Long>
                 while (set.next()) {
                     category.setId(set.getInt("id"));
                     category.setFlag(set.getString("flag"));
-                    category.setDescription(set.getString("flag"));
+                    category.setDescription(set.getString("description"));
                 }
             }
 
@@ -52,7 +52,7 @@ public class CategoryService extends Service implements IService<Category, Long>
                 while (set.next()) {
                     category.setId(set.getInt("id"));
                     category.setFlag(set.getString("flag"));
-                    category.setDescription(set.getString("flag"));
+                    category.setDescription(set.getString("description"));
                 }
             }
 
@@ -74,7 +74,8 @@ public class CategoryService extends Service implements IService<Category, Long>
         Set<Category> categories = new HashSet<>();
         try {
             CallableStatement statement = connection.prepareCall("CALL fetch_category(?)");
-            statement.setInt(1, (int) category.getId());
+            System.out.println(category.getId());
+            statement.setLong(1, category.getId());
 
             boolean result = statement.execute();
             if (result) {
@@ -87,6 +88,7 @@ public class CategoryService extends Service implements IService<Category, Long>
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        System.out.println(categories.size());
         return categories;
     }
 
@@ -99,7 +101,7 @@ public class CategoryService extends Service implements IService<Category, Long>
         Category category = new Category();
         category.setId(resultSet.getInt("id"));
         category.setFlag(resultSet.getString("flag"));
-        category.setDescription(resultSet.getString("flag"));
+        category.setDescription(resultSet.getString("description"));
 
         return category;
     }

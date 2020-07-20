@@ -91,7 +91,8 @@ public class MainApp extends Application {
 //                } else {
                 System.out.println("User est null");
 //                }
-                scene1.getStylesheets().add("/css/stylesheet.css");
+                scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
+
                 primaryStage.setScene(scene1);
 
                 /*if (user.getEmail() != null) {

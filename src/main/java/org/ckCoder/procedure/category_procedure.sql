@@ -45,7 +45,7 @@ drop procedure if exists fetch_category;
 create procedure fetch_category(IN p_id_category INT)
 
 begin
-    IF p_id_category IS NULL THEN
+    IF p_id_category=0 THEN
         select * from category;
     ELSE
         select *

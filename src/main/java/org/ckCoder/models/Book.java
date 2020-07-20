@@ -22,6 +22,13 @@ public class Book extends AbstractEntity {
     private File imgfile;
     private File bookfile;
 
+    private byte[] imgBinary;
+    private byte[] bookBinary;
+
+    public Book() {
+        availability = true;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -140,5 +147,21 @@ public class Book extends AbstractEntity {
 
     public void setBookfile(File bookfile) {
         this.bookfile = bookfile;
+    }
+
+    public byte[] getImgBinary() {
+        return imgBinary;
+    }
+
+    public void setImgBinary(byte[] imgBinary) {
+        this.imgBinary = imgBinary;
+    }
+
+    public byte[] getBookBinary() {
+        return bookBinary;
+    }
+
+    public void setBookBinary(byte[] bookBinary) {
+        this.bookBinary = bookBinary;
     }
 }

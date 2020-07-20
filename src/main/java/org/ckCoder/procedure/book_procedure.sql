@@ -1,23 +1,27 @@
 /*
 *   procedure ajouter et mise a jour d'un livre
  */
-drop procedure if exists save_book;
-
 DELIMITER |
-create procedure save_book(IN p_title varchar(255), p_descrition text, p_file_name varchar(255),
-                           p_fk_id_cathalogue bigint, p_edition_year int, p_valeur_nominal int, p_price double,
-                           p_type_livre tinyint(1),
-                           p_img_name varchar(250), inout p_id_book bigint)
+drop procedure if exists save_book|
 
+create
+    /*definer = virtual_libadmin@`%`*/ procedure save_book(IN p_title varchar(255), IN p_descrition text,
+                                                       IN p_file_name varchar(255), IN p_fk_id_cathalogue bigint,
+                                                       IN p_edition_year int, IN p_valeur_nominal int,
+                                                       IN p_price double, IN p_type_livre varchar(30),
+                                                       IN p_img_name varchar(250), IN p_id_book bigint,
+                                                       IN p_file_book mediumblob, IN p_img_book mediumblob)
 begin
-    if (p_id_book is not null) then
+    declare last_id bigint;
+    set last_id = p_id_book;
+
+    if (p_id_book=0) then
         insert into book(title, description, file_name, id_category, nb_vue, edition_year, valeur_nominal, price, type,
-                         img_name, created_at, updated_at)
+                         img_name, created_at, updated_at, fileByte, imgByte)
         values (p_title, p_descrition, p_file_name, p_fk_id_cathalogue, 0, p_edition_year, p_valeur_nominal, p_price,
-                p_type_livre, p_img_name, current_timestamp, current_time);
+                p_type_livre, p_img_name, current_timestamp, current_time, p_file_book, p_img_book);
 
-        set p_id_book = LAST_INSERT_ID();
-
+        set last_id = LAST_INSERT_ID();
     else
         update book
         set title          = p_title,
@@ -30,10 +34,19 @@ begin
             type           = p_type_livre,
             img_name       = p_img_name,
             updated_at     = current_timestamp
-        where id = p_id_book;
+        where id = last_id;
     end if;
     /*set p_id_book = SCOPE_IDENTITY();*/
-    select * from book;
+    /*call select_book_and_critique();*/
+    select * from book where id=last_id;
+end|
+
+
+drop procedure if exists add_authorAtBook |
+
+create procedure add_authorAtBook(IN p_id_book int(10), IN p_id_author int(10))
+begin
+   insert into author_book(book_id, author_id) VALUES (p_id_book, p_id_author);
 end |
 
 /*
@@ -139,4 +152,44 @@ begin
         where critiques.id = person_id;
     end if;
 end |
+
+
+drop procedure if exists find_all_book |
+
+create procedure find_all_book()
+begin
+    select * from book;
+end |
+
+/*
+ *this procedure recall all books and associated comment
+ *with those books
+ */
+drop procedure if exists select_book_and_critique |
+
+create procedure select_book_and_critique()
+begin
+    select book.id, book.title, book.description, book.file_name,
+           book.nb_vue, book.edition_year, book.valeur_critique,
+           book.valeur_nominal, book.price, book.type, book.img_name,
+           book.created_at, book.updated_at, book.availability,
+           book.fileByte, book.imgByte,
+           c.id, c.comment, c.note, c.created_at
+    from book left join critiques as c on book.id = c.book_id;
+end |
+
+/*
+ * this procedure recall one book and author, categories, critique
+ */
+
+drop procedure if exists select_book_author_categorie_critique |
+
+create procedure select_book_author_categorie_critique(IN p_id_book BIGINT)
+begin
+    select book.id, book.title, book.description, book.file_name, book.nb_vue, book.edition_year, book.valeur_critique, book.valeur_nominal, book.price, book.type, book.img_name,
+           book.created_at, book.updated_at, book.availability, book.fileByte, book.imgByte, a.id, a.bibliography, c.id, c.flag, c.description, cr.id, cr.note, cr.comment, cr.created_at
+    from book left join author_book ab on book.id = ab.book_id left join category c on book.id_category = c.id
+              left join critiques cr on book.id = cr.book_id left join author a on ab.author_id = a.id where book.id= p_id_book;
+end |
+
 DELIMITER ;

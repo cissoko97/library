@@ -3,6 +3,7 @@ package org.ckCoder.controller.utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 
 public class BottonComponent {
     @FXML
@@ -22,6 +23,11 @@ public class BottonComponent {
 
     @FXML
     public TableView tableView;
+
+    @FXML
+    public GridPane formArray;
+    @FXML
+    public Button reset_btn;
 
     public void onSaveOrUpdate(ActionEvent actionEvent) {
 
