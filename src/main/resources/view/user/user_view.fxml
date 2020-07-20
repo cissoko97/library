@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -12,71 +13,64 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
 <BorderPane prefHeight="638.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.user.UserControler">
    <center>
       <HBox BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane style="-fx-border-color: #8A8B8F; -fx-border-width: 3;">
+            <VBox>
                <children>
-                  <TextField layoutX="14.0" layoutY="12.0" prefHeight="29.0" prefWidth="216.0" promptText="bonjour" />
-                  <ComboBox layoutX="248.0" layoutY="14.0" prefHeight="26.0" prefWidth="138.0" promptText="trie" />
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;">
+                     <children>
+                        <TextField layoutX="14.0" layoutY="8.0" prefHeight="29.0" prefWidth="216.0" promptText="bonjour" />
+                        <ComboBox layoutX="240.0" layoutY="9.0" maxWidth="100.0" minWidth="100.0" promptText="trie" />
+                     </children>
+                  </AnchorPane>
+                  <ListView fx:id="userListView" VBox.vgrow="ALWAYS" />
                </children>
-            </AnchorPane>
+            </VBox>
             <BorderPane>
                <center>
                   <VBox alignment="CENTER" AnchorPane.bottomAnchor="88.0" AnchorPane.topAnchor="20.0" BorderPane.alignment="TOP_LEFT">
                      <children>
-                        <GridPane hgap="12.0" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;" VBox.vgrow="ALWAYS">
+                        <GridPane style="-fx-border-color: #8A8B8F; -fx-border-width: 3;" VBox.vgrow="ALWAYS">
                           <columnConstraints>
                             <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="428.0" minWidth="10.0" prefWidth="268.0" />
                             <ColumnConstraints hgrow="ALWAYS" maxWidth="637.0" minWidth="10.0" prefWidth="286.0" />
-                              <ColumnConstraints hgrow="ALWAYS" maxWidth="637.0" minWidth="10.0" prefWidth="333.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="25.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="34.0" minHeight="20.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id user" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="date created account user" GridPane.rowIndex="7" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Created at" GridPane.rowIndex="7" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="is_locked" GridPane.rowIndex="6" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="username" GridPane.rowIndex="5" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="date last update" GridPane.rowIndex="4" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="date create account" GridPane.rowIndex="3" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="email" GridPane.rowIndex="5" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Person last updated at" GridPane.rowIndex="4" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Person created at" GridPane.rowIndex="3" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="surname" GridPane.rowIndex="2" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.rowIndex="1" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="id author" GridPane.rowIndex="11" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="date last update acounte user" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="id account" GridPane.rowIndex="10" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="biographie" GridPane.rowIndex="9" />
-                              <Text fx:id="id_userText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
-                              <Text fx:id="idAuthorText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                              <Text fx:id="idAccountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                              <Text fx:id="biographieText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                              <Text fx:id="dateUpdateAccount" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                              <Text fx:id="dateCreatedText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Text fx:id="isLockText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Text fx:id="usernameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Text fx:id="dateLastUpdatText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Text fx:id="dateCreateAccountText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Text fx:id="surnameText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Text fx:id="nameUserText" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextFlow fx:id="biographieTextFlow" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowSpan="11" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User last Updated at" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
+                              <Text fx:id="userId" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
+                              <Text fx:id="userUpdateddAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                              <Text fx:id="userCreatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                              <Text fx:id="userIsLocked" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                              <Text fx:id="userEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Text fx:id="personUpdatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Text fx:id="personCreatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Text fx:id="userSurname" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                            <padding>
-                              <Insets left="20.0" />
+                              <Insets left="10.0" />
                            </padding>
                         </GridPane>
                            <fx:include fx:id="controlBtn" source="../utils/control_btn.fxml" />

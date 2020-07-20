@@ -108,7 +108,7 @@ drop procedure if exists get_all_user;
 create procedure get_all_user()
 
 begin
-    select P.*, U.email U_email, U.id U_id
+    select P.*, U.email U_email, U.id U_id , U.is_locked
     from users U
              inner join person P
                         on U.person_id = P.id;

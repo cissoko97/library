@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<BorderPane fx:id="gridPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <HBox maxHeight="1.7976931348623157E308">
+            <children>
+                <Pane prefHeight="80.0" prefWidth="60.0">
+                    <children>
+                        <Text fx:id="filigrane" layoutX="16.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Text"/>
+                    </children>
+                </Pane>
+                <Pane prefWidth="250.0">
+                    <children>
+                        <Text fx:id="name" layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Text"/>
+                        <Text fx:id="surname" layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Text"/>
+                        <Text fx:id="email" layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Text"/>
+                    </children>
+                </Pane>
+            </children>
+        </HBox>
+    </center>
+</BorderPane>
