@@ -37,8 +37,8 @@ begin
 
     insert into user_profil(user_id, profil_id)
     values (new_id, @id_profil);
-    select *
 
+    select *
     from users U
              inner join person P
                         on U.person_id = P.id
@@ -77,7 +77,7 @@ BEGIN
         password = p_password
     where id = p_user_id;
 
-    select true;
+    select * from users where id = p_user_id;
 end |
 
 /*
@@ -90,7 +90,14 @@ create procedure get_user_credential(IN p_email varchar(255),
 
 begin
 
-    select P.*, U.id u_id, U.email U_email , U.is_locked, p2.*, f.*
+    select P.*,
+           U.id         u_id,
+           U.email      U_email,
+           U.is_locked,
+           U.updated_at U_updated_at,
+           U.created_at U_created_at,
+           p2.*,
+           f.*
     from users U
              left join person P on U.person_id = P.id
              left join user_profil up on U.id = up.user_id
@@ -108,8 +115,48 @@ drop procedure if exists get_all_user;
 create procedure get_all_user()
 
 begin
-    select P.*, U.email U_email, U.id U_id , U.is_locked
+    select P.*, U.email U_email, U.id U_id, U.updated_at U_updated_at, U.created_at U_created_at, U.is_locked
     from users U
              inner join person P
                         on U.person_id = P.id;
+end |
+
+drop procedure if exists create_user_from_person;
+
+create procedure create_user_from_person(IN p_id_person INT,
+                                         IN p_email varchar(255),
+                                         IN p_password varchar(255))
+
+begin
+
+    declare errno INt;
+    declare msg TEXT;
+    Declare new_id INT;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+            ROLLBACK;
+            GET STACKED DIAGNOSTICS CONDITION 1
+                errno = MYSQL_ERRNO, msg = MESSAGE_TEXT;
+            SELECT 'stacked DA before mapped insert' AS op, errno, msg;
+        END;
+
+    insert into users(email, password, person_id)
+    values (p_email, p_password, p_id_person);
+
+    set new_id = last_insert_id();
+
+    select id into @id_profil from profils where label = 'user' limit 1;
+
+    insert into user_profil(user_id, profil_id)
+    values (new_id, @id_profil);
+
+
+    select U.*, P.*, p2.*
+    from users U
+             inner join person P on U.person_id = P.id
+             inner join user_profil up on U.id = up.user_id
+             inner join profils p2 on up.profil_id = p2.id
+    where U.id = new_id;
+
 end |

@@ -151,7 +151,35 @@ public class UserControler implements Initializable {
             Stage stage = new Stage();
             Scene scene = null;
             try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainApp.class.getResource("/view/partial/form_add_user.fxml"));
+                BorderPane page = (BorderPane) loader.load();
 
+                UserModalController userModalController = loader.getController();
+                userModalController.setUser(null);
+
+                //do this for get current stage
+                stage.initModality(Modality.WINDOW_MODAL);
+                stage.initOwner(((Control) event.getSource()).getScene().getWindow());
+
+                scene = new Scene(page);
+                stage.setScene(scene);
+                stage.setTitle("Save user Form");
+
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        controlBtnController.getLockUser_btn().setOnAction(event -> {
+
+        });
+
+        controlBtnController.getDelete_btn().setOnAction(event -> {
+            Stage stage = new Stage();
+            Scene scene = null;
+            try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainApp.class.getResource("/view/partial/form_add_user.fxml"));
                 BorderPane page = (BorderPane) loader.load();
@@ -165,22 +193,12 @@ public class UserControler implements Initializable {
 
                 scene = new Scene(page);
                 stage.setScene(scene);
-                stage.setTitle("Save user Form");
-
+                stage.setTitle("Update User");
 
                 stage.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-        });
-
-        controlBtnController.getLockUser_btn().setOnAction(event -> {
-            System.out.println("Lock user");
-        });
-
-        controlBtnController.getDelete_btn().setOnAction(event -> {
-            System.out.println("Update user");
         });
     }
 
@@ -227,8 +245,8 @@ public class UserControler implements Initializable {
             userName.setText("");
         } else {
             userId.setText(String.valueOf(user.getId()));
-            userUpdateddAt.setText("");
-            userCreatedAt.setText("");
+            userUpdateddAt.setText(DateConverted.formatDateToString(user.getUpdatedAt()));
+            userCreatedAt.setText(DateConverted.formatDateToString(user.getCreatedAt()));
             userIsLocked.setText(String.valueOf(user.getLocked()));
             userEmail.setText(user.getEmail());
             userSurname.setText(user.getPerson().getSurname());

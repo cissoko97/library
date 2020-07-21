@@ -45,7 +45,7 @@ drop procedure if exists fetch_profils;
 create procedure fetch_profils(IN p_id_profils INT)
 
 begin
-    IF p_id_profils IS NULL THEN
+    IF p_id_profils = 0 THEN
         select * from profils;
     ELSE
         select *

@@ -1,7 +1,7 @@
 package org.ckCoder.utils;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class DateConverted {
@@ -11,7 +11,7 @@ public class DateConverted {
     }
 
     public static String formatDateToString(LocalDateTime date) {
-        SimpleDateFormat format = new SimpleDateFormat("dd MMMM yyyy HH:mm:ss");
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss");
         return format.format(date);
     }
 }
