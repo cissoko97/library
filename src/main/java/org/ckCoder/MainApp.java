@@ -40,6 +40,8 @@ public class MainApp extends Application {
 
     private static Scene scene;
     private boolean isConnect = false;
+    UserService userService = new UserService();
+    SessionManager manager = SessionManager.getInstance();
 
     public static void main(String[] args) {
         PropertyConfigurator.configure(MainApp.class.getResource("/properties/log4j.properties"));
@@ -48,8 +50,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException, SQLException {
-        SessionManager manager = SessionManager.getInstance();
-        UserService userService = new UserService();
         primaryStage.setTitle("Gestion librerie");
         /*scene = new Scene(loadFXML("/view/index"));
         //FXMLLoader loader = new FXMLLoader(this.getClass().getResource(".fxml"));
@@ -88,38 +88,46 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(grid, 500, 500);
 
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        /*GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
         Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
-        scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
+        scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");*/
 
         pwBox.setOnKeyPressed(e-> {
-            System.out.println("je suis dedans");
             if (e.getCode().equals(KeyCode.ENTER)) {
                 if (validationForm(userTextField, pwBox, grid)) {
-                    primaryStage.setScene(scene1);
+                    valideCredentiel(userTextField, pwBox, primaryStage);
                 }
             }
         });
 
         btn.setOnAction(event -> {
-            primaryStage.setScene(scene1);
-            /*if (validationForm(userTextField, pwBox, grid)) {
+            //primaryStage.setScene(scene1);
+            if (validationForm(userTextField, pwBox, grid)) {
                 //loadUser(userTextField,pwBox,userService,primaryStage,manager);
-                String userEmail = userTextField.getText();
+                /*String userEmail = userTextField.getText();
 
                 String userPassword = pwBox.getText();
                 User user = userService.findByEmailAndPassword(userEmail, userPassword);
                 if (user != null && user.getEmail() != null) {
                     manager.setUser(user);
-                    primaryStage.setScene(scene1);
+                    try {
+                        Scene scene1  = new Scene(loadFXML("/view/index"), width, height);
+                        scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
+                        primaryStage.setScene(scene1);
+                        primaryStage.setScene(scene1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     List<String> message = new ArrayList<>();
                     message.add("bad credentiel");
                     Verification.alertMessage(message, Alert.AlertType.ERROR);
-                }
-            }*/
+                }*/
+
+                valideCredentiel(userTextField, pwBox, primaryStage);
+            }
         });
 
         primaryStage.setScene(scene);
@@ -160,6 +168,32 @@ public class MainApp extends Application {
                 return false;
             }
             return true;
+        }
+    }
+
+    private void valideCredentiel(TextField userTextField, PasswordField pwBox, Stage primaryStage) {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        String userEmail = userTextField.getText();
+
+        String userPassword = pwBox.getText();
+        User user = userService.findByEmailAndPassword(userEmail, userPassword);
+        if (user != null && user.getEmail() != null) {
+            manager.setUser(user);
+            try {
+                Scene scene1  = new Scene(loadFXML("/view/index"), width, height);
+                scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
+                primaryStage.setScene(scene1);
+                primaryStage.setScene(scene1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            List<String> message = new ArrayList<>();
+            message.add("bad credentiel");
+            Verification.alertMessage(message, Alert.AlertType.ERROR);
         }
     }
 

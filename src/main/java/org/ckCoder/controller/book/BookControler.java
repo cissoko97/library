@@ -95,6 +95,8 @@ public class BookControler implements Initializable {
     private Set<Book> books = new HashSet<>();
     private BookService bookService = new BookService();
 
+    private ObservableList<Book> observableListBook;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -110,27 +112,7 @@ public class BookControler implements Initializable {
         }
 
 
-        btn_controlController.getAdd_btn().setOnAction(event ->      /*Stage stage = new Stage();
-            Scene scene = null;
-
-            try {
-                scene = new Scene(IndexController.loadFXML("/view/partial/form_save_book"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            stage.setScene(scene);
-            stage.setTitle("add book form");
-            scene.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
-            //do this for get current stage
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.initOwner(((Control) event.getSource()).getScene().getWindow());
-            stage.setOnCloseRequest(event1 -> {
-
-            });
-            // or do this
-            //stage.initOwner(this.btn.getScene().getWindows());
-            stage.showAndWait();*/
+        btn_controlController.getAdd_btn().setOnAction(event ->
         {
             try {
                 openSaveBookForm(new Book(), event);
@@ -186,9 +168,9 @@ public class BookControler implements Initializable {
 
         bottonComponentController.tableView.setItems(observableList);
 
-        addDeleteButtonToTable();
+       // addDeleteButtonToTable();
         addUpDateButtonToTable();
-
+        addSeeBookForCategoryButtonToTable();
         bottonComponentController.submitOrUpdude_btn.getStyleClass().add("dark-blue");
         bottonComponentController.submitOrUpdude_btn.setOnAction(event -> {
             if (controlForm()) {
@@ -240,6 +222,9 @@ public class BookControler implements Initializable {
     }
 
 
+    /*
+     * cette partie a été commenté car on ne supprime pas une catégorie déja créé
+     */
     private void addDeleteButtonToTable() {
         TableColumn<Category, Void> colBtn = new TableColumn<>("");
         setwidthBtn(colBtn);
@@ -328,6 +313,74 @@ public class BookControler implements Initializable {
 
     }
 
+    private void addSeeBookForCategoryButtonToTable() {
+        TableColumn<Category, Void> colBtn = new TableColumn<>("");
+        setwidthBtn(colBtn);
+
+        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellGet= new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
+
+            @Override
+            public TableCell<Category, Void> call(TableColumn<Category, Void> param) {
+                final TableCell<Category, Void> cell = new TableCell<Category, Void>(){
+                    final Button btn = new Button("see");
+                    {
+                        btn.getStyleClass().add("round-red");
+                        btn.setOnAction(event -> {
+                            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/book/catalogue_book.fxml"));
+                            CategoryAndBookController categoryAndBookController = new CategoryAndBookController();
+                            loader.setController(categoryAndBookController);
+                            Stage stage = new Stage();
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.initStyle(StageStyle.UTILITY);
+
+                            category = getTableView().getItems().get(getIndex());
+                            bottonComponentController.titleTextFied.setText(category.getFlag());
+                            bottonComponentController.descriptionTextArray.setText(category.getDescription());
+
+                            stage.setTitle("Category-" + category.getFlag());
+
+                            categoryAndBookController.addButtonToBook(category);
+
+                            try {
+                               Scene scene = new Scene(loader.load());
+                               scene.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
+                               stage.setScene(scene);
+                               stage.showAndWait();
+
+                                if (categoryAndBookController.getCurrentBook() != null) {
+                                    book = categoryAndBookController.getCurrentBook();
+                                    loadBook(book);
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            //do this for get current stage
+
+
+                        });
+                    }
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        colBtn.setCellFactory(cellGet);
+
+        bottonComponentController.tableView.getColumns().add(colBtn);
+
+    }
+
+
+
     private void setwidthBtn(TableColumn colBtn) {
         colBtn.setMaxWidth(68);
         colBtn.setMinWidth(68);
@@ -360,13 +413,19 @@ public class BookControler implements Initializable {
 
         saveBookControler.setBook(book);
         stage.showAndWait();
+        if(saveBookControler.getIsNewBook())
+            observableListBook.add(saveBookControler.getBook());
+        else {
+            int index = observableListBook.indexOf(saveBookControler.getBook());
+            observableListBook.set(index, saveBookControler.getBook());
+        }
     }
 
     private void getAllBookCard() throws SQLException, IOException {
         books = bookService.findAll(new Book());
 
-        ObservableList<Book> observableList = FXCollections.observableArrayList(books);
-        cardPaneBook_listview.setItems(observableList);
+        observableListBook = FXCollections.observableArrayList(books);
+        cardPaneBook_listview.setItems(observableListBook);
         cardPaneBook_listview.setCellFactory(book-> new CardEntityComtroller());
 
         cardPaneBook_listview.setOnMouseClicked(event -> {
@@ -381,13 +440,13 @@ public class BookControler implements Initializable {
             }
         });
 
-        for (Book b : books) {
+        /*for (Book b : books) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/utils/card_entity.fxml"));
             CardEntityComtroller cardEntityComtroller = new CardEntityComtroller();
             loader.setController(cardEntityComtroller);
             HBox cardBook = loader.load();
 
-            /*cardEntityComtroller.nameBook_text.setText(b.getTitle());
+            cardEntityComtroller.nameBook_text.setText(b.getTitle());
             cardEntityComtroller.noteTextField.setText((b.getValeurNominal() + b.getValeurCritique())+"");
             cardEntityComtroller.typeTextFied.setText(b.getType());
             if(b.getPrice() > 0.0)
@@ -403,13 +462,13 @@ public class BookControler implements Initializable {
             imageView.setSmooth(true);
             imageView.setCache(true);
 
-            cardEntityComtroller.paneImg_vbox.getChildren().add(imageView);*/
+            cardEntityComtroller.paneImg_vbox.getChildren().add(imageView);
 
             cardBook.setOnMouseClicked(event -> {
 
             });
 
-        }
+        }*/
     }
 
     private void loadBook(Book book) {

@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import org.ckCoder.models.AbstractEntity;
 import org.ckCoder.models.Author;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Category;
@@ -17,14 +16,10 @@ import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
 import org.ckCoder.service.contract.IService;
 import org.ckCoder.utils.Verification;
-import sun.font.TextLabel;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -40,7 +35,7 @@ public class SaveBookControler implements Initializable {
     @FXML
     private GridPane formContener;
     @FXML
-    private TextField valeurNominal_textField;
+    private ComboBox<Integer> valeurNominal_textField;
     @FXML
     private ComboBox<String> type_textField;
     @FXML
@@ -84,7 +79,7 @@ public class SaveBookControler implements Initializable {
     private final IService<Category, Long> categoryLongIService = new CategoryService();
     private final IService<Author, Long> authorService = new AuthorService();
     private final BookService bookService = new BookService();
-
+    private boolean isNewBook = true;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -104,6 +99,9 @@ public class SaveBookControler implements Initializable {
                     price_textField.setDisable(false);
             }
         });
+
+        valeurNominal_textField.getItems().addAll(10,25,50,75,100);
+        valeurNominal_textField.setValue(10);
     }
 
     @FXML
@@ -122,7 +120,7 @@ public class SaveBookControler implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select image book");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
-                "Imge Files", "*.png", "*.jpng", "*.jpg"
+                "Imge Files", "*.png", "*.jpg", "*.jpeg"
         ));
         selectedImg = fileChooser.showOpenDialog(((Control) actionEvent.getSource()).getScene().getWindow());
         uploadImgName_btn.setText(selectedImg.getName());
@@ -130,6 +128,9 @@ public class SaveBookControler implements Initializable {
 
     @FXML
     public void onSave(ActionEvent actionEvent) throws IOException, SQLException {
+        if (book.getId() > 0) {
+            isNewBook = false;
+        }
         List<String> errorList = new ArrayList<>();
         formContener.getChildren().forEach(Verification::remouveDangerClass);
 
@@ -164,13 +165,13 @@ public class SaveBookControler implements Initializable {
             Verification.dangerField(anneeEditionTextField);
         }
 
-        if(valeurNominal_textField.getText().equals("")){
+        /*if(valeurNominal_textField.getText().equals("")){
             Verification.dangerField(valeurNominal_textField);
             errorList.add("what is à nominal value of book?");
         } else if (!Verification.numeric(valeurNominal_textField.getText())) {
             errorList.add("the nominal value must be a number");
             Verification.dangerField(valeurNominal_textField);
-        }
+        }*/
         if(type_textField.getValue() == null){
             Verification.dangerField(type_textField);
         }
@@ -198,7 +199,7 @@ public class SaveBookControler implements Initializable {
             // book.set
             book.setTitle(title_textField.getText());
             book.setEditionYear(Integer.parseInt(anneeEditionTextField.getText()));
-            book.setValeurNominal(Integer.parseInt(valeurNominal_textField.getText()));
+            book.setValeurNominal(valeurNominal_textField.getValue());
 
             book.setType(type_textField.getValue());
 
@@ -226,6 +227,7 @@ public class SaveBookControler implements Initializable {
     }
 
     private void initForm() throws SQLException {
+        book = new Book();
         price_textField.setDisable(true);
         Set<Category> categories = categoryLongIService.findAll(new Category());
         Set<Author> authors = authorService.findAll(new Author());
@@ -240,10 +242,14 @@ public class SaveBookControler implements Initializable {
 
         resetBtn.setOnAction(event -> {
             resetForm();
+            book = new Book();
         });
 
-        category_textField.valueProperty().addListener((observable, oldValue, newValue) ->
-            this.book.setCategory(new Category(convertToStringValue(newValue))));
+        category_textField.valueProperty().addListener((observable, oldValue, newValue) ->{
+            if(!newValue.equals(""))
+                this.book.setCategory(new Category(convertToStringValue(newValue)));
+        });
+
 
         List<MenuItem> menuItems = new ArrayList<>();
         for (Author author : authors) {
@@ -278,7 +284,7 @@ public class SaveBookControler implements Initializable {
         category_textField.setValue("");
         title_textField.setText("");
         anneeEditionTextField.setText("");
-        valeurNominal_textField.setText("");
+        valeurNominal_textField.setValue(10);
         price_textField.setText("");
         descriptiopn_text_array.setText("");
         selectedImg = null;
@@ -291,7 +297,7 @@ public class SaveBookControler implements Initializable {
             category_textField.setValue(book.getCategory().getId()+"_"+book.getCategory().getFlag());
             title_textField.setText(book.getTitle());
             anneeEditionTextField.setText(book.getEditionYear()+"");
-            valeurNominal_textField.setText(book.getValeurNominal()+"");
+            valeurNominal_textField.setValue(book.getValeurNominal());
             type_textField.setValue(book.getType());
             if(book.getType().equals("privé")){
                 price_textField.setDisable(false);
@@ -315,7 +321,13 @@ public class SaveBookControler implements Initializable {
 
     }
 
+
+
     public Book getBook() {
         return book;
+    }
+
+    public boolean getIsNewBook() {
+        return isNewBook;
     }
 }

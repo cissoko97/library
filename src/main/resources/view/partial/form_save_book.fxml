@@ -18,6 +18,7 @@
 <?import javafx.scene.text.Text?>
 
 <!--<BorderPane prefHeight="645.0" prefWidth="526.0" stylesheets="/css/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.book.SaveBookControler">-->
+
 <BorderPane prefHeight="645.0" prefWidth="526.0" stylesheets="/css/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <VBox>
@@ -40,7 +41,6 @@
                   <RowConstraints maxHeight="256.0" minHeight="10.0" prefHeight="231.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="valeurNominal_textField" prefHeight="26.0" prefWidth="281.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <TextField fx:id="price_textField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   <TextField fx:id="title_textField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label fx:id="title_label" text="title" GridPane.rowIndex="2" />
@@ -65,6 +65,7 @@
                       <MenuItem mnemonicParsing="false" text="Action 2" />
                     </items>
                   </MenuButton>
+                  <ComboBox fx:id="valeurNominal_textField" prefHeight="26.0" prefWidth="365.0" promptText="select nominal value" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
          </children>

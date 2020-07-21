@@ -53,4 +53,5 @@ begin
         where id = p_id_category;
     END if;
 end |
+
 DELIMITER ;

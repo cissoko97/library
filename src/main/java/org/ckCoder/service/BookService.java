@@ -120,4 +120,21 @@ public class BookService implements IService<Book, Long> {
     }
 
 
+    public Set<Book> findBookByCategory(Long idCategory) throws SQLException {
+        CallableStatement stm = Connexion.getConnection().prepareCall("call find_product_by_category(?)");
+        stm.setLong(1, idCategory);
+
+        Set<Book> books = new HashSet<>();
+
+        if (stm.execute()) {
+            ResultSet res = stm.getResultSet();
+            while (res.next()) {
+                books.add(BookHydratation.hydrateBookHelper(res));
+            }
+        }
+
+        return books;
+    }
+
+
 }

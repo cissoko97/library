@@ -24,7 +24,11 @@ begin
 
     /*set p_id_book = SCOPE_IDENTITY();*/
     /*call select_book_and_critique();*/
-    select * from book where id=last_id;
+    select book.id as book_id, book.title, book.description, book.file_name, book.nb_vue,
+           book.edition_year,book.valeur_critique, book.valeur_nominal,
+           book.price, book.type, book.img_name,
+           book.created_at as book_created_at, book.updated_at as book_updated_at,
+           book.availability, book.fileByte, book.imgByte from book where id=last_id;
 end|
 
 drop procedure if exists update_book |
@@ -186,6 +190,8 @@ begin
     from book left join critiques as c on book.id = c.book_id;
 end |
 
+
+
 /*
  * this procedure recall one book and author, categories, critique
  */
@@ -208,5 +214,22 @@ begin
         left join author a on ab.author_id = a.id
         left join person p on a.person_id = p.id where book.id= p_id_book;
 end |
+
+
+
+drop procedure if exists find_product_by_category;
+
+create procedure find_product_by_category(IN p_id_category bigint)
+begin
+    select book.id as book_id, book.title, book.description, book.file_name, book.nb_vue, book.edition_year,
+           book.valeur_critique, book.valeur_nominal, book.price, book.type, book.img_name,
+           book.created_at as book_created_at, book.updated_at as book_updated_at,
+           book.availability, book.fileByte, book.imgByte
+    from book where book.id_category = p_id_category order by book.title;
+end |
+
+/*
+ * delete book
+ */
 
 DELIMITER ;
