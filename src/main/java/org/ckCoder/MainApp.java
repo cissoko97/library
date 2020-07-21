@@ -94,17 +94,18 @@ public class MainApp extends Application {
         Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
         scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
 
-        scene1.setOnKeyTyped(e -> {
+        pwBox.setOnKeyPressed(e-> {
             System.out.println("je suis dedans");
             if (e.getCode().equals(KeyCode.ENTER)) {
                 if (validationForm(userTextField, pwBox, grid)) {
-                    loadUser(userTextField,pwBox,userService,primaryStage,manager);
+                    primaryStage.setScene(scene1);
                 }
             }
         });
 
         btn.setOnAction(event -> {
-            if (validationForm(userTextField, pwBox, grid)) {
+            primaryStage.setScene(scene1);
+            /*if (validationForm(userTextField, pwBox, grid)) {
                 //loadUser(userTextField,pwBox,userService,primaryStage,manager);
                 String userEmail = userTextField.getText();
 
@@ -118,7 +119,7 @@ public class MainApp extends Application {
                     message.add("bad credentiel");
                     Verification.alertMessage(message, Alert.AlertType.ERROR);
                 }
-            }
+            }*/
         });
 
         primaryStage.setScene(scene);
@@ -162,9 +163,4 @@ public class MainApp extends Application {
         }
     }
 
-    private void loadUser(TextField userTextField, PasswordField pwBox,
-                          UserService userService, Stage primaryStage,
-                          SessionManager manager) {
-
-    }
 }

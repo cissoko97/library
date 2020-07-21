@@ -12,7 +12,7 @@ public interface IService<T, I> {
 
     T create(T t) throws SQLException, IOException;
 
-    T update(T t);
+    T update(T t) throws SQLException;
 
     boolean delete(I i);
 

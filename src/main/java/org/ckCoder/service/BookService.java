@@ -19,26 +19,41 @@ public class BookService implements IService<Book, Long> {
 
     @Override
     public Book create(Book book) throws SQLException, IOException {
-        CallableStatement stm = Connexion.getConnection().
-                prepareCall("call save_book(?,?,?,?,?,?,?,?,?,?,?,?)");
+        CallableStatement stm;
+        if (book.getId() == 0) {
+            stm = Connexion.getConnection().
+                    prepareCall("call save_book(?,?,?,?,?,?,?,?,?,?,?,?)");
+            FileInputStream stream = new FileInputStream(book.getBookfile());
+            FileInputStream streamImg = new FileInputStream(book.getImgfile());
+            stm.setString(1, book.getTitle());
+            stm.setString(2, book.getDescription());
+            stm.setString(3, book.getBookfile().getName());
+            stm.setInt(4, (int) book.getCategory().getId());
+            stm.setInt(5, book.getEditionYear());
+            stm.setInt(6, book.getValeurNominal());
+            if(book.getPrice() == null)
+                book.setPrice(0.0);
+            stm.setDouble(7, book.getPrice());
+            stm.setString(8, book.getType());
+            stm.setString(9, book.getImgfile().getName());
+            stm.setLong(10, book.getId());
+            stm.setBytes(11, IOUtils.toByteArray(stream));
+            stm.setBytes(12, IOUtils.toByteArray(streamImg));
+        } else {
+            stm = Connexion.getConnection().
+                    prepareCall("call update_book(?,?,?,?,?,?,?,?)");
+            stm.setString(1, book.getTitle());
+            stm.setString(2, book.getDescription());
+            stm.setInt(3, (int) book.getCategory().getId());
+            stm.setInt(4, book.getEditionYear());
+            stm.setInt(5, book.getValeurNominal());
+            if(book.getPrice() == null)
+                book.setPrice(0.0);
+            stm.setDouble(6, book.getPrice());
+            stm.setString(7, book.getType());
+            stm.setLong(8, book.getId());
 
-        System.out.println(book.getId());
-        FileInputStream stream = new FileInputStream(book.getBookfile());
-        FileInputStream streamImg = new FileInputStream(book.getImgfile());
-        stm.setString(1, book.getTitle());
-        stm.setString(2, book.getDescription());
-        stm.setString(3, book.getBookfile().getName());
-        stm.setInt(4, (int) book.getCategory().getId());
-        stm.setInt(5, book.getEditionYear());
-        stm.setInt(6, book.getValeurNominal());
-        if(book.getPrice() == null)
-            book.setPrice(0.0);
-        stm.setDouble(7, book.getPrice());
-        stm.setString(8, book.getType());
-        stm.setString(9, book.getImgfile().getName());
-        stm.setLong(10, book.getId());
-        stm.setBytes(11, IOUtils.toByteArray(stream));
-        stm.setBytes(12, IOUtils.toByteArray(streamImg));
+        }
 
 
         if (stm.execute()) {
@@ -52,7 +67,9 @@ public class BookService implements IService<Book, Long> {
 
 
     @Override
-    public Book update(Book book) {
+    public Book update(Book book) throws SQLException {
+
+        // stm.setString(3, );
         return null;
     }
 

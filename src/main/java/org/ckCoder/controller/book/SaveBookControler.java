@@ -138,9 +138,11 @@ public class SaveBookControler implements Initializable {
             errorList.add("the price value must be a number");
         }
 
-        if(authorField.getItems().size() == 0){
-            Verification.dangerField(authorField);
-            errorList.add("please select at last one author");
+        if (book.getId() == 0) {
+            if(authorField.getItems().size() == 0){
+                Verification.dangerField(authorField);
+                errorList.add("please select at last one author");
+            }
         }
 
         if(category_textField.getValue() == null){
@@ -172,14 +174,18 @@ public class SaveBookControler implements Initializable {
         if(type_textField.getValue() == null){
             Verification.dangerField(type_textField);
         }
-        if(selectedFile == null){
-            Verification.dangerField(fileName_btn);
-            errorList.add("please select file book");
+
+        if (book.getId() == 0) {
+            if(selectedFile == null){
+                Verification.dangerField(fileName_btn);
+                errorList.add("please select file book");
+            }
+            if(selectedImg == null){
+                Verification.dangerField(uploadImgName_btn);
+                errorList.add("pleace select image book");
+            }
         }
-        if(selectedImg == null){
-            Verification.dangerField(uploadImgName_btn);
-            errorList.add("pleace select image book");
-        }
+
         if(descriptiopn_text_array.getText() == null || descriptiopn_text_array.getText().equals("")){
             Verification.dangerField(descriptiopn_text_array);
             errorList.add("pleace put a description for this book");
@@ -207,7 +213,9 @@ public class SaveBookControler implements Initializable {
             //if(price)
 
             book = bookService.create(book);
-            bookService.createAndAffectAuthor_Categorie_AtBook(book.getId(), idAuthor);
+
+            if(idAuthor.size() > 0)
+                bookService.createAndAffectAuthor_Categorie_AtBook(book.getId(), idAuthor);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("register book status");
@@ -277,14 +285,14 @@ public class SaveBookControler implements Initializable {
         selectedFile = null;
     }
 
-    public void setBook(Book b) throws IOException {
+    public void setBook(Book b) {
         this.book = b;
         if (this.book.getId() > 0) {
             category_textField.setValue(book.getCategory().getId()+"_"+book.getCategory().getFlag());
             title_textField.setText(book.getTitle());
             anneeEditionTextField.setText(book.getEditionYear()+"");
             valeurNominal_textField.setText(book.getValeurNominal()+"");
-            type_textField.setValue(book.getTitle());
+            type_textField.setValue(book.getType());
             if(book.getType().equals("privé")){
                 price_textField.setDisable(false);
                 price_textField.setText(book.getPrice() + "");
@@ -299,7 +307,15 @@ public class SaveBookControler implements Initializable {
         fileBookImage.close();*/
 
             descriptiopn_text_array.setText(book.getDescription());
+            fileName_btn.setVisible(false);
+            uploadImgName_btn.setVisible(false);
+            fileName_label.setVisible(false);
+            imgName_label.setVisible(false);
         }
 
+    }
+
+    public Book getBook() {
+        return book;
     }
 }

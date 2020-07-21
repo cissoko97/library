@@ -15,32 +15,37 @@ begin
     declare last_id bigint;
     set last_id = p_id_book;
 
-    if (p_id_book=0) then
         insert into book(title, description, file_name, id_category, nb_vue, edition_year, valeur_nominal, price, type,
                          img_name, created_at, updated_at, fileByte, imgByte)
         values (p_title, p_descrition, p_file_name, p_fk_id_cathalogue, 0, p_edition_year, p_valeur_nominal, p_price,
                 p_type_livre, p_img_name, current_timestamp, current_time, p_file_book, p_img_book);
 
         set last_id = LAST_INSERT_ID();
-    else
-        update book
-        set title          = p_title,
-            description    = p_descrition,
-            file_name      = p_file_name,
-            id_category    = p_fk_id_cathalogue,
-            edition_year   = p_edition_year,
-            valeur_nominal = p_valeur_nominal,
-            price          = p_price,
-            type           = p_type_livre,
-            img_name       = p_img_name,
-            updated_at     = current_timestamp
-        where id = last_id;
-    end if;
+
     /*set p_id_book = SCOPE_IDENTITY();*/
     /*call select_book_and_critique();*/
     select * from book where id=last_id;
 end|
 
+drop procedure if exists update_book |
+
+create procedure update_book(IN p_title varchar(255), IN p_descrition text,
+                             IN p_fk_id_cathalogue bigint,
+                             IN p_edition_year int, IN p_valeur_nominal int,
+                             IN p_price double, IN p_type_livre varchar(30),
+                              IN p_id_book bigint)
+                             begin
+                                 update book
+                                 set title          = p_title,
+                                     description    = p_descrition,
+                                     id_category    = p_fk_id_cathalogue,
+                                     edition_year   = p_edition_year,
+                                     valeur_nominal = p_valeur_nominal,
+                                     price          = p_price,
+                                     type           = p_type_livre,
+                                     updated_at     = current_timestamp
+                                 where id = p_id_book;
+                             end |
 
 drop procedure if exists add_authorAtBook |
 

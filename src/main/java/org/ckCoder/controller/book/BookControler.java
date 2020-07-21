@@ -81,7 +81,7 @@ public class BookControler implements Initializable {
     @FXML
     public TextFlow aboutAuthor_textFlow;
     @FXML
-    public VBox cardPaneBook_Vbox;
+    public ImageView imageView;
     @FXML
     public ListView<Book> cardPaneBook_listview;
     @FXML
@@ -337,7 +337,8 @@ public class BookControler implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/partial/form_save_book.fxml"));
         Stage stage = new Stage();
         Scene scene = null;
-        SaveBookControler saveBookControler = loader.getController();
+        SaveBookControler saveBookControler = new SaveBookControler();
+        loader.setController(saveBookControler);
         try {
             // scene = new Scene(IndexController.loadFXML("/view/partial/form_save_book"));
             scene = new Scene(loader.load());
@@ -356,7 +357,8 @@ public class BookControler implements Initializable {
             });*/
         // or do this
         //stage.initOwner(this.btn.getScene().getWindows());
-        //saveBookControler.setBook(book);
+
+        saveBookControler.setBook(book);
         stage.showAndWait();
     }
 
@@ -423,27 +425,29 @@ public class BookControler implements Initializable {
         updateDate.setText(book.getUpdatedAt().format(DateTimeFormatter.ISO_DATE));
         descriptionField.setTextAlignment(TextAlignment.JUSTIFY);
         descriptionField.setLineSpacing(4.0);
+
+        descriptionField.getChildren().clear();
         descriptionField.getChildren().add(new Text(book.getDescription()));
 
-        ImageView currentImageView = UtilForArray.getImageView(150, book.getImgBinary());
+        InputStream file = new ByteArrayInputStream(book.getImgBinary());
+        Image image = new Image(file);
+        imageView.setImage(image);
 
-
-
-
-        imageBox.getChildren().add(currentImageView);
         originalNameText.setText(book.getImgName());
         /*
          *a propos de l'autheur
          */
+
+        aboutAuthor_textFlow.getChildren().clear();
         int lengthAuthor = book.getAuthors().size();
 
         Text line1;
         if(lengthAuthor == 0)
             line1 = new Text("this book has " + lengthAuthor
-                    + "Author");
+                    + " Author \n");
         else
             line1 = new Text("this book has " + lengthAuthor
-                    + "Authors");
+                    + " Authors \n");
 
         aboutAuthor_textFlow.getChildren().add(line1);
         book.getAuthors().forEach(aut-> {
