@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import org.apache.log4j.Logger;
 import org.ckCoder.models.Profil;
 import org.ckCoder.models.User;
@@ -19,6 +20,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class IndexController implements Initializable {
+    @FXML
+    public HBox hbooxMenu;
     SessionManager manager = SessionManager.getInstance();
     Logger logger = Logger.getLogger(this.getClass());
     @FXML
@@ -58,8 +61,7 @@ public class IndexController implements Initializable {
                         .stream()
                         .filter(profil -> profil.getLabel().equalsIgnoreCase("admin")).findFirst().orElse(null);
         if (profilAdmin == null) {
-            order_btn.setVisible(false);
-            user_btn.setVisible(false);
+            hbooxMenu.getChildren().removeAll(order_btn, user_btn);
         }
     }
 

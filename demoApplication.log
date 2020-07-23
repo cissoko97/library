@@ -95,3 +95,4 @@ Log user
 User{id='113'email='steve@gmail.com', password='null', isLocked=false, person=AbstractEntity{id=113, createdAt=2020-07-23T11:47:26, updatedAt=2020-07-23T11:47:26} Person{name='steve', surname='steveo'}}
 Log user
 User{id='111'email='boriscissoko@gmail.com', password='null', isLocked=false, person=AbstractEntity{id=111, createdAt=2020-07-16T12:24:02, updatedAt=2020-07-16T12:24:02} Person{name='boris', surname='cissoko'}}
+User{id='0'email='davidluiz.matjaba@gmail.com', password='123456', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='matjaba', surname='david'}}
