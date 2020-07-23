@@ -24,4 +24,9 @@ public class UtilForArray {
         return imageView;
     }
 
+    public static void setwidthBtn(TableColumn colBtn) {
+        colBtn.setMaxWidth(68);
+        colBtn.setMinWidth(68);
+    }
+
 }

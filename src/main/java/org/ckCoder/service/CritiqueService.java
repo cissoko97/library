@@ -21,6 +21,7 @@ public class CritiqueService extends Service implements IService<Critique, Long>
             statement.setInt(3, (int) critique.getUser().getId());
             statement.setInt(4, (int) critique.getBook().getId());
 
+            statement.execute();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();

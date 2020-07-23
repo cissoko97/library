@@ -128,6 +128,7 @@ create procedure save_critique(p_note int, p_comment text, p_fk_book_id BIGINT,
 begin
     declare current_value_nominal_for_book int(10);
     start transaction;
+
     insert into critiques(book_id, user_id, note, comment, updated_at, created_at)
     values (p_fk_book_id, p_fk_user_id, p_note, p_comment, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -145,21 +146,15 @@ end |
 
 drop procedure if exists get_critique |
 
-create procedure get_critique(p_critique_id bigint)
+create procedure get_critique(IN p_book_id bigint)
 begin
-    if p_critique_id is null then
-        select *
-        from critiques
-                 inner join users on critiques.user_id = users.id
-                 left join person on users.person_id = person.id;
-
-    else
-        select *
-        from critiques
-                 inner join users on critiques.user_id = users.id
-                 left join person on users.person_id = person.id
-        where critiques.id = person_id;
-    end if;
+    select critiques.note as critique_note, critiques.comment as critique_comment,
+           critiques.created_at as critique_created_at, critiques.updated_at as critique_updaated_at,
+           users.email as user_email
+    from critiques
+             inner join users on critiques.user_id = users.id
+             left join person on users.person_id = person.id
+    where critiques.book_id = p_book_id;
 end |
 
 

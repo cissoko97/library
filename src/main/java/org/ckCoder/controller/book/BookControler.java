@@ -1,5 +1,6 @@
 package org.ckCoder.controller.book;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,11 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -21,27 +21,26 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import org.ckCoder.controller.IndexController;
+import org.ckCoder.controller.readpdf.ViewReaderControler;
 import org.ckCoder.controller.utils.BottonComponent;
 import org.ckCoder.controller.utils.CardEntityComtroller;
 import org.ckCoder.controller.utils.ControlBtn;
-import org.ckCoder.models.Author;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Category;
 import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
 import org.ckCoder.service.contract.IService;
-import org.ckCoder.utils.UtilForArray;
 import org.ckCoder.utils.Verification;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 public class BookControler implements Initializable {
     @FXML
@@ -125,6 +124,14 @@ public class BookControler implements Initializable {
         btn_controlController.getUpdate_btn3().setOnAction(event -> {
             try {
                 openSaveBookForm(book, event);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        btn_controlController.getLoad_btn().setOnAction(event-> {
+            try {
+                openPDF(event);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -326,20 +333,23 @@ public class BookControler implements Initializable {
                     {
                         btn.getStyleClass().add("round-red");
                         btn.setOnAction(event -> {
-                            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/book/catalogue_book.fxml"));
                             CategoryAndBookController categoryAndBookController = new CategoryAndBookController();
+                            category = getTableView().getItems().get(getIndex());
+
+                            //loading of category in controller
+                            categoryAndBookController.addButtonToBook(category);
+
+                            FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/view/book/catalogue_book.fxml"));
                             loader.setController(categoryAndBookController);
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.UTILITY);
 
-                            category = getTableView().getItems().get(getIndex());
                             bottonComponentController.titleTextFied.setText(category.getFlag());
                             bottonComponentController.descriptionTextArray.setText(category.getDescription());
 
                             stage.setTitle("Category-" + category.getFlag());
 
-                            categoryAndBookController.addButtonToBook(category);
 
                             try {
                                Scene scene = new Scene(loader.load());
@@ -379,13 +389,6 @@ public class BookControler implements Initializable {
 
     }
 
-
-
-    private void setwidthBtn(TableColumn colBtn) {
-        colBtn.setMaxWidth(68);
-        colBtn.setMinWidth(68);
-    }
-
     private void openSaveBookForm(Book book, ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/partial/form_save_book.fxml"));
         Stage stage = new Stage();
@@ -419,6 +422,46 @@ public class BookControler implements Initializable {
             int index = observableListBook.indexOf(saveBookControler.getBook());
             observableListBook.set(index, saveBookControler.getBook());
         }
+    }
+
+    private void openPDF(ActionEvent event) throws IOException {
+        if (book.getId() == 0) {
+            Verification.alertMessage("Please select one book", Alert.AlertType.ERROR);
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/web/view_reader.fxml"));
+        ViewReaderControler viewReaderControler = new ViewReaderControler();
+        loader.setController(viewReaderControler);
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+
+        Scene scene = new Scene(loader.load());
+        Stage stage = new Stage();
+
+        stage.setWidth(width);
+        stage.setHeight(height);
+
+        stage.setScene(scene);
+
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.initOwner(((Control) event.getSource()).getScene().getWindow());
+
+        viewReaderControler.setBooksBytes(book.getBookBinary());
+
+        stage.showAndWait();
+
+
+        /*Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });*/
+
     }
 
     private void getAllBookCard() throws SQLException, IOException {
@@ -517,6 +560,9 @@ public class BookControler implements Initializable {
         });
     }
 
-
+    private void setwidthBtn(TableColumn colBtn) {
+        colBtn.setMaxWidth(68);
+        colBtn.setMinWidth(68);
+    }
 
 }

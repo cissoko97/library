@@ -5,13 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Category;
 import org.ckCoder.service.BookService;
+import org.ckCoder.utils.UtilForArray;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -45,10 +49,11 @@ public class CategoryAndBookController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                Set<Book> bookSet = null;
+
                 try {
-                    bookSet = bookService.findBookByCategory(category.getId());
+                    Set<Book> bookSet = bookService.findBookByCategory(category.getId());
                     observableList.addAll(bookSet);
+                    categorieName_text.setText(category.getFlag());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -90,8 +95,39 @@ public class CategoryAndBookController implements Initializable {
         availabilityCol.setText("availability");
 
 
+        TableColumn<Book, Void> btnCol = new TableColumn<>("");
+        UtilForArray.setwidthBtn(btnCol);
+
+        Callback<TableColumn<Book, Void>, TableCell<Book, Void>> cellData = new Callback<TableColumn<Book, Void>, TableCell<Book, Void>>() {
+            @Override
+            public TableCell<Book, Void> call(TableColumn<Book, Void> param) {
+                final TableCell<Book, Void> cell = new TableCell<Book, Void>(){
+                    final Button btn = new Button("View");
+                    {
+                        btn.getStyleClass().add("round-red");
+                        btn.setOnAction(e->{
+                            currentBook = getTableView().getItems().get(getIndex());
+                            this.btn.getScene().getWindow().hide();
+                        });
+                    }
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+        btnCol.setCellFactory(cellData);
+
         bookTableView.getColumns().addAll(idBookCol, titleCol,  typeCol, priceCol, availabilityCol, editionYearCol,
-                nbreVueCol);
+                nbreVueCol, btnCol);
     }
 
     public Book getCurrentBook() {

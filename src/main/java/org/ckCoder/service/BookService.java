@@ -1,5 +1,6 @@
 package org.ckCoder.service;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.ckCoder.utils.hygratation.BookHydratation;
 import org.ckCoder.database.Connexion;
@@ -37,7 +38,8 @@ public class BookService implements IService<Book, Long> {
             stm.setString(8, book.getType());
             stm.setString(9, book.getImgfile().getName());
             stm.setLong(10, book.getId());
-            stm.setBytes(11, IOUtils.toByteArray(stream));
+          //  stm.setBytes(11, IOUtils.toByteArray(stream));
+            stm.setBytes(11, FileUtils.readFileToByteArray(book.getBookfile()));
             stm.setBytes(12, IOUtils.toByteArray(streamImg));
         } else {
             stm = Connexion.getConnection().
