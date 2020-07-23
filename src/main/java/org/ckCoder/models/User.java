@@ -9,7 +9,7 @@ public class User extends AbstractEntity implements Serializable {
     private String email;
     private String password;
     private Boolean isLocked;
-    private Person person;
+    private Person person = new Person();
     private Set<Book> books = new HashSet<>();
     private Set<Critique> critiques = new HashSet<>();
     private Set<Profil> profils = new HashSet<>();

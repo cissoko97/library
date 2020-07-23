@@ -16,26 +16,37 @@ import java.util.Set;
 
 public class UserService extends Service implements IService<User, Long> {
 
-    public User create(User user, Profil profil) {
+    @Override
+    public User create(User user) {
         User r_user = null;
         try {
             // HashPasword
             String password = HashWordUtils.hashWord(user.getPassword());
-            CallableStatement statement = this.connection.prepareCall("CALL save_user(?,?,?,?,?)");
+            CallableStatement statement = this.connection.prepareCall("CALL save_user(?,?,?,?)");
             statement.setString(1, user.getPerson().getName());
             statement.setString(2, user.getPerson().getSurname());
             statement.setString(3, user.getEmail());
             statement.setString(4, password);
-            statement.setInt(4, (int) profil.getId());
+
+            boolean status = statement.execute();
+            if (status) {
+                ResultSet set = statement.getResultSet();
+                while (set.next()) {
+                    if (r_user == null) {
+                        r_user = getUserFromResultset(set);
+                    }
+
+                    Profil profil = new Profil();
+                    profil.setId(set.getInt("p2.id"));
+                    profil.setLabel(set.getString("label"));
+                    profil.setDescription(set.getString("description"));
+                    r_user.getProfils().add(profil);
+                }
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return r_user;
-    }
-
-    @Override
-    public User create(User user) {
-        return null;
     }
 
     @Override
@@ -48,6 +59,15 @@ public class UserService extends Service implements IService<User, Long> {
             statement.setInt(1, (int) user.getId());
             statement.setString(2, user.getEmail());
             statement.setString(3, password);
+
+            boolean result = statement.execute();
+
+            if (result) {
+                ResultSet set = statement.getResultSet();
+                while (set.next()) {
+                    r_user.setEmail(set.getString("email"));
+                }
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -155,8 +175,6 @@ public class UserService extends Service implements IService<User, Long> {
         person.setId(set.getInt("id"));
         person.setName(set.getString("name"));
         person.setSurname(set.getString("surname"));
-        /*person.setCreatedAt(DateConverted.sqlDateToUtilDate(set.getDate("created_at")));
-        person.setUpdatedAt(DateConverted.sqlDateToUtilDate(set.getDate("updated_at")));*/
         person.setCreatedAt(set.getTimestamp("created_at").toLocalDateTime());
         person.setUpdatedAt(set.getTimestamp("updated_at").toLocalDateTime());
         user.setId(set.getInt("U_id"));
