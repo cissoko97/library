@@ -1,5 +1,6 @@
 package org.ckCoder.controller.user;
 
+import com.sun.istack.internal.NotNull;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import org.ckCoder.MainApp;
 import org.ckCoder.controller.partial.UserModalController;
 import org.ckCoder.controller.utils.BottonComponent;
@@ -35,6 +37,8 @@ import java.util.Set;
 
 public class UserControler implements Initializable {
 
+    //Logger devlaration
+    Logger logger = Logger.getLogger(this.getClass());
     public ListView<User> userListView;
     // field binding
     public Text userId;
@@ -134,6 +138,11 @@ public class UserControler implements Initializable {
             hydratBottomField((Profil) newSelection);
             profilInstance = (Profil) newSelection;
         });
+
+        bottonComponentController.reset_btn.setOnAction(event -> {
+            clearBottomField();
+            profilInstance = null;
+        });
     }
 
     private void initBUttonComponent() {
@@ -141,11 +150,13 @@ public class UserControler implements Initializable {
         //init label
         controlBtnController.getAdd_btn().setText("New User");
         controlBtnController.getDelete_btn().setText("Update User");
+        controlBtnController.getDelete_btn().setDisable(true);
         controlBtnController.getUpdate_btn3().setVisible(Boolean.FALSE);
         controlBtnController.getLoad_btn().setVisible(Boolean.FALSE);
         controlBtnController.getAddCaddyBtn().setVisible(Boolean.FALSE);
         controlBtnController.getAddFavory_btn().setVisible(Boolean.FALSE);
         controlBtnController.getLockUser_btn().setText("Lock User");
+        controlBtnController.getLockUser_btn().setDisable(true);
 
         controlBtnController.getAdd_btn().setOnAction(event -> {
             Stage stage = new Stage();
@@ -153,10 +164,7 @@ public class UserControler implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainApp.class.getResource("/view/partial/form_add_user.fxml"));
-                BorderPane page = (BorderPane) loader.load();
-
-                UserModalController userModalController = loader.getController();
-                userModalController.setUser(null);
+                BorderPane page = loader.load();
 
                 //do this for get current stage
                 stage.initModality(Modality.WINDOW_MODAL);
@@ -166,14 +174,26 @@ public class UserControler implements Initializable {
                 stage.setScene(scene);
                 stage.setTitle("Save user Form");
 
+                UserModalController userModalController = loader.getController();
+                selectedUser = null;
+                userModalController.setUser(selectedUser);
+                userModalController.setDialogStage(stage);
                 stage.showAndWait();
+
+                boolean operation = userModalController.getFlag();
+                boolean hasSave = userModalController.getIsOkClicked();
+                selectedUser = userModalController.getUser();
+
+                if (hasSave && operation) {
+                    logger.warn(selectedUser);
+                    User saveUser = userService.create(selectedUser);
+                    if (saveUser != null) {
+                        userListView.getItems().add(saveUser);
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
-
-        controlBtnController.getLockUser_btn().setOnAction(event -> {
-
         });
 
         controlBtnController.getDelete_btn().setOnAction(event -> {
@@ -182,10 +202,7 @@ public class UserControler implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainApp.class.getResource("/view/partial/form_add_user.fxml"));
-                BorderPane page = (BorderPane) loader.load();
-
-                UserModalController userModalController = loader.getController();
-                userModalController.setUser(selectedUser);
+                BorderPane page = loader.load();
 
                 //do this for get current stage
                 stage.initModality(Modality.WINDOW_MODAL);
@@ -194,10 +211,32 @@ public class UserControler implements Initializable {
                 scene = new Scene(page);
                 stage.setScene(scene);
                 stage.setTitle("Update User");
-
+                // Initialize Modal controller
+                UserModalController userModalController = loader.getController();
+                userModalController.setUser(selectedUser);
+                userModalController.setDialogStage(stage);
                 stage.showAndWait();
+
+                boolean hasSave = userModalController.getIsOkClicked();
+                boolean operation = userModalController.getFlag();
+
+                if (hasSave && !operation) {
+                    logger.debug("update existing user!!");
+                    User updatedUser = userService.update(selectedUser);
+                    if (updatedUser != null) {
+                        int index = userListView.getItems().indexOf(updatedUser);
+                        userListView.getItems().set(index, updatedUser);
+                    }
+                }
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        });
+
+        controlBtnController.getLockUser_btn().setOnAction(event -> {
+            boolean result = userService.setStatus(selectedUser);
+            if (result) {
+                selectedUser.setLocked(!selectedUser.getLocked());
             }
         });
     }
@@ -219,18 +258,20 @@ public class UserControler implements Initializable {
         System.out.println(users);
         userListView.setItems(observableListView);
         userListView.setCellFactory(studentListView -> new ListCellUser());
-        userListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("Element selectionné");
-                User selectedItem = userListView.getSelectionModel().getSelectedItem();
+        userListView.setOnMouseClicked(event -> {
+            User selectedItem = userListView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
                 selectedUser = selectedItem;
-                System.out.println(selectedUser.toString());
+                controlBtnController.getDelete_btn().setDisable(false);
+                controlBtnController.getLockUser_btn().setDisable(false);
                 showUserDetail(selectedItem);
+                setLabelOnLockButton(selectedItem);
+            } else {
+                controlBtnController.getDelete_btn().setDisable(true);
+                controlBtnController.getLockUser_btn().setDisable(true);
             }
         });
     }
-
 
     private void showUserDetail(User user) {
         if (user == null) {
@@ -253,8 +294,14 @@ public class UserControler implements Initializable {
             userName.setText(user.getPerson().getName());
             personUpdatedAt.setText(DateConverted.formatDateToString(user.getPerson().getUpdatedAt()));
             personCreatedAt.setText(DateConverted.formatDateToString(user.getPerson().getCreatedAt()));
+        }
+    }
 
-
+    private void setLabelOnLockButton(@NotNull User user) {
+        if (user.getLocked()) {
+            controlBtnController.getLockUser_btn().setText("Un Lock");
+        } else {
+            controlBtnController.getLockUser_btn().setText("lock");
         }
     }
 }

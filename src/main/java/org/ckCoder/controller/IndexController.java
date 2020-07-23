@@ -37,6 +37,7 @@ public class IndexController implements Initializable {
     @FXML
     public ComboBox profil_combobox;
 
+    String flag = "BOOK";
 
     public void initialize(URL location, ResourceBundle resources) {
         initialiseMenu();
@@ -65,43 +66,37 @@ public class IndexController implements Initializable {
     private void initialiseMenu() {
         prefenre_combobox.getItems().addAll("Caddy", "favorie");
         langue_combobox.getItems().addAll("Français", "Anglais");
-        book_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                principal_pane.getChildren().removeAll();
-                principal_pane.getChildren().clear();
-                try {
-                    principal_pane.setCenter(loadFXML("/view/book/book_principal_stage"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        book_btn.setOnAction(event -> {
+
+            try {
+                loadFxmlFile("BOOK", "/view/book/book_principal_stage");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        order_btn.setOnAction(event -> {
+            try {
+                loadFxmlFile("COMMAND", "/view/order/oder_view");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
-        order_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                principal_pane.getChildren().removeAll();
-                principal_pane.getChildren().clear();
-                try {
-                    principal_pane.setCenter(loadFXML("/view/order/oder_view"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        user_btn.setOnAction(event -> {
+            try {
+                loadFxmlFile("USER", "/view/user/user_view");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
+    }
 
-        user_btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                principal_pane.getChildren().clear();
-                principal_pane.getChildren().clear();
-                try {
-                    principal_pane.setCenter(loadFXML("/view/user/user_view"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    private void loadFxmlFile(String flag, String fileName) throws IOException {
+        if (!this.flag.equalsIgnoreCase(flag)) {
+            this.flag = flag;
+            principal_pane.setCenter(loadFXML(fileName));
+        }
     }
 }
