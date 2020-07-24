@@ -7,16 +7,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -41,12 +40,17 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class BookControler implements Initializable {
     /*@FXML
     public Text idBook;*/
+    SessionManager manager = SessionManager.getInstance();
+
+    @FXML
+    public Text idBook;
+
     @FXML
     public Text updateDate;
     @FXML
@@ -102,7 +106,7 @@ public class BookControler implements Initializable {
 
     private ObservableList<Book> observableListBook;
 
-    private final SessionManager manager = SessionManager.getInstance();
+
     private final User user = manager.getUser();
 
     @Override
@@ -153,12 +157,16 @@ public class BookControler implements Initializable {
             }
         });
 
-        btn_controlController.getLoad_btn().setOnAction(event-> {
+        btn_controlController.getLoad_btn().setOnAction(event -> {
             try {
                 openPDF(event);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
+
+        btn_controlController.getAddCaddyBtn().setOnAction(event -> {
+            this.addBooktoCart(this.book);
         });
     }
 
@@ -176,6 +184,8 @@ public class BookControler implements Initializable {
         btn_controlController.getLockUser_btn().getStyleClass().add("rich-blue");
         btn_controlController.getAddFavory_btn().getStyleClass().add("rich-blue");
         btn_controlController.getAddCaddyBtn().getStyleClass().add("rich-blue");
+        btn_controlController.getAddCaddyBtn().setText("Dans le panier");
+
 
         TableColumn<Category, String> idCatColumn = new TableColumn<>();
         idCatColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -199,7 +209,7 @@ public class BookControler implements Initializable {
 
         bottonComponentController.tableView.setItems(observableList);
 
-       // addDeleteButtonToTable();
+        // addDeleteButtonToTable();
         addUpDateButtonToTable();
         addSeeBookForCategoryButtonToTable();
         bottonComponentController.submitOrUpdude_btn.getStyleClass().add("dark-blue");
@@ -259,12 +269,13 @@ public class BookControler implements Initializable {
     private void addDeleteButtonToTable() {
         TableColumn<Category, Void> colBtn = new TableColumn<>("");
         setwidthBtn(colBtn);
-        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellDetele= new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
+        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellDetele = new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
 
             @Override
             public TableCell<Category, Void> call(TableColumn<Category, Void> param) {
-                final TableCell<Category, Void> cell = new TableCell<Category, Void>(){
+                final TableCell<Category, Void> cell = new TableCell<Category, Void>() {
                     final Button btn = new Button("supp");
+
                     {
                         btn.getStyleClass().add("round-red");
                         btn.setOnAction(event -> {
@@ -285,6 +296,7 @@ public class BookControler implements Initializable {
                             }
                         });
                     }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -309,12 +321,13 @@ public class BookControler implements Initializable {
         TableColumn<Category, Void> colBtn = new TableColumn<>("");
         setwidthBtn(colBtn);
 
-        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellDetele= new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
+        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellDetele = new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
 
             @Override
             public TableCell<Category, Void> call(TableColumn<Category, Void> param) {
-                final TableCell<Category, Void> cell = new TableCell<Category, Void>(){
+                final TableCell<Category, Void> cell = new TableCell<Category, Void>() {
                     final Button btn = new Button("up");
+
                     {
                         btn.getStyleClass().add("round-blue");
                         btn.setOnAction(event -> {
@@ -324,6 +337,7 @@ public class BookControler implements Initializable {
 
                         });
                     }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -348,12 +362,13 @@ public class BookControler implements Initializable {
         TableColumn<Category, Void> colBtn = new TableColumn<>("");
         setwidthBtn(colBtn);
 
-        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellGet= new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
+        Callback<TableColumn<Category, Void>, TableCell<Category, Void>> cellGet = new Callback<TableColumn<Category, Void>, TableCell<Category, Void>>() {
 
             @Override
             public TableCell<Category, Void> call(TableColumn<Category, Void> param) {
-                final TableCell<Category, Void> cell = new TableCell<Category, Void>(){
+                final TableCell<Category, Void> cell = new TableCell<Category, Void>() {
                     final Button btn = new Button("see");
+
                     {
                         btn.getStyleClass().add("round-red");
                         btn.setOnAction(event -> {
@@ -376,10 +391,10 @@ public class BookControler implements Initializable {
 
 
                             try {
-                               Scene scene = new Scene(loader.load());
-                               scene.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
-                               stage.setScene(scene);
-                               stage.showAndWait();
+                                Scene scene = new Scene(loader.load());
+                                scene.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
+                                stage.setScene(scene);
+                                stage.showAndWait();
 
                                 if (categoryAndBookController.getCurrentBook() != null) {
                                     book = categoryAndBookController.getCurrentBook();
@@ -393,6 +408,7 @@ public class BookControler implements Initializable {
 
                         });
                     }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -440,7 +456,7 @@ public class BookControler implements Initializable {
 
         saveBookControler.setBook(book);
         stage.showAndWait();
-        if(saveBookControler.getIsNewBook())
+        if (saveBookControler.getIsNewBook())
             observableListBook.add(saveBookControler.getBook());
         else {
             int index = observableListBook.indexOf(saveBookControler.getBook());
@@ -505,7 +521,7 @@ public class BookControler implements Initializable {
 
         observableListBook = FXCollections.observableArrayList(books);
         cardPaneBook_listview.setItems(observableListBook);
-        cardPaneBook_listview.setCellFactory(book-> new CardEntityComtroller());
+        cardPaneBook_listview.setCellFactory(book -> new CardEntityComtroller());
 
         cardPaneBook_listview.setOnMouseClicked(event -> {
             if (cardPaneBook_listview.getSelectionModel().getSelectedItem() != null) {
@@ -544,11 +560,11 @@ public class BookControler implements Initializable {
     private void loadBook(Book book) {
         //idBook.setText(book.getId() +"");
         titleBook.setText(book.getTitle());
-        availabilityBook.setText(book.getAvailability() +"");
+        availabilityBook.setText(book.getAvailability() + "");
         editionYearBook.setText(book.getEditionYear() + "");
-        nominalValueBook.setText(book.getValeurNominal()+"");
-        critiqueValueBook.setText(book.getValeurCritique()+"");
-        pricebook.setText(book.getPrice()+"");
+        nominalValueBook.setText(book.getValeurNominal() + "");
+        critiqueValueBook.setText(book.getValeurCritique() + "");
+        pricebook.setText(book.getPrice() + "");
         typeBook.setText(book.getType());
         creatrionDate.setText(book.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
         updateDate.setText(book.getUpdatedAt().format(DateTimeFormatter.ISO_DATE));
@@ -571,7 +587,7 @@ public class BookControler implements Initializable {
         int lengthAuthor = book.getAuthors().size();
 
         Text line1;
-        if(lengthAuthor == 0)
+        if (lengthAuthor == 0)
             line1 = new Text("this book has " + lengthAuthor
                     + " Author \n");
         else
@@ -579,7 +595,7 @@ public class BookControler implements Initializable {
                     + " Authors \n");
 
         aboutAuthor_textFlow.getChildren().add(line1);
-        book.getAuthors().forEach(aut-> {
+        book.getAuthors().forEach(aut -> {
             Text line2 = new Text("name author : " + aut.getPerson().getName() + aut.getPerson().getSurname());
             Text line3 = new Text(aut.getBibliography());
 
@@ -597,4 +613,9 @@ public class BookControler implements Initializable {
         colBtn.setMinWidth(68);
     }
 
+    private void addBooktoCart(Book book) {
+        manager.getBookSet().add(book);
+
+        System.out.println(manager.getBookSet());
+    }
 }

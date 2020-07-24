@@ -66,7 +66,6 @@
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="nominal value" GridPane.rowIndex="4" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="edition_year" GridPane.rowIndex="3" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="availability" GridPane.rowIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" GridPane.rowIndex="1" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="title" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="type of book" GridPane.rowIndex="7" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="update date" GridPane.rowIndex="9" />
@@ -84,7 +83,7 @@
                         <Text fx:id="editionYearBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Text fx:id="availabilityBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Text fx:id="nbre_vue" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Text fx:id="titleBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />
+                        <Text fx:id="titleBook" strikethrough="true" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="5.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of seen" GridPane.rowIndex="1" />
                         <Text fx:id="originalNameText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Text fx:id="updateDate" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
