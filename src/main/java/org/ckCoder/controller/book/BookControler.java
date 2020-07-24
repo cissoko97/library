@@ -46,7 +46,7 @@ import java.util.*;
 public class BookControler implements Initializable {
     /*@FXML
     public Text idBook;*/
-    SessionManager manager = SessionManager.getInstance();
+    SessionManager manager  = SessionManager.getInstance();
 
     @FXML
     public Text idBook;
