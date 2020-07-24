@@ -37,7 +37,7 @@
             <Label text="note" />
             <Label text="comment" GridPane.rowIndex="1" />
             <ComboBox fx:id="note_combobox" prefHeight="26.0" prefWidth="340.0" promptText="give note" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
-            <TextArea fx:id="comment_textArray" prefHeight="113.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+            <TextArea fx:id="comment_textArray" prefHeight="113.0" prefWidth="232.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.vgrow="ALWAYS" />
          </children>
          <padding>
             <Insets bottom="8.0" left="10.0" right="10.0" />

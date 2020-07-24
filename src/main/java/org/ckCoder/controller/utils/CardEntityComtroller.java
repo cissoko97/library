@@ -73,8 +73,5 @@ public class CardEntityComtroller extends ListCell<Book> implements Initializabl
             setGraphic(principalPanelGrildPane);
         }
 
-
-
-
     }
 }

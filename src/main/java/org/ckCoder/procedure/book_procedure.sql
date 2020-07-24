@@ -148,12 +148,12 @@ drop procedure if exists get_critique |
 
 create procedure get_critique(IN p_book_id bigint)
 begin
-    select critiques.note as critique_note, critiques.comment as critique_comment,
+    select critiques.note as critique_note, critiques.comment as critique_comment,critiques.id as critique_id,
            critiques.created_at as critique_created_at, critiques.updated_at as critique_updaated_at,
            users.email as user_email
     from critiques
-             inner join users on critiques.user_id = users.id
-             left join person on users.person_id = person.id
+             left join users on critiques.user_id = users.id
+             inner join person on users.person_id = person.id
     where critiques.book_id = p_book_id;
 end |
 

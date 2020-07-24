@@ -1,6 +1,5 @@
 package org.ckCoder.controller.book;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,9 +9,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -21,15 +22,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import org.ckCoder.controller.readpdf.ViewReaderControler;
+import org.ckCoder.controller.book.readpdf.ViewReaderControler;
 import org.ckCoder.controller.utils.BottonComponent;
 import org.ckCoder.controller.utils.CardEntityComtroller;
 import org.ckCoder.controller.utils.ControlBtn;
-import org.ckCoder.models.Book;
-import org.ckCoder.models.Category;
+import org.ckCoder.models.*;
 import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
+import org.ckCoder.service.CritiqueService;
 import org.ckCoder.service.contract.IService;
+import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
 import java.awt.*;
@@ -43,8 +45,8 @@ import java.util.*;
 import java.util.List;
 
 public class BookControler implements Initializable {
-    @FXML
-    public Text idBook;
+    /*@FXML
+    public Text idBook;*/
     @FXML
     public Text updateDate;
     @FXML
@@ -65,8 +67,7 @@ public class BookControler implements Initializable {
     public Text nbre_vue;
     @FXML
     public Text titleBook;
-    @FXML
-    public TextFlow descriptionField;
+
     @FXML
     public VBox imageBox;
     @FXML
@@ -74,7 +75,9 @@ public class BookControler implements Initializable {
 
     @FXML
     public ControlBtn btn_controlController;
-    public TextFlow seecriptionBook_TextFlow;
+
+    @FXML
+    public TextArea descriptionBook_TextFlow;
     @FXML
     public VBox panelCommentVbox;
     @FXML
@@ -83,6 +86,8 @@ public class BookControler implements Initializable {
     public ImageView imageView;
     @FXML
     public ListView<Book> cardPaneBook_listview;
+
+    public ListView<Critique> critique_listView;
     @FXML
     private BottonComponent bottonComponentController;
 
@@ -92,12 +97,31 @@ public class BookControler implements Initializable {
     private Category category = new Category();
     private Book book = new Book();
     private Set<Book> books = new HashSet<>();
-    private BookService bookService = new BookService();
+    private final BookService bookService = new BookService();
+    private final CritiqueService critiqueService = new CritiqueService();
 
     private ObservableList<Book> observableListBook;
 
+    private final SessionManager manager = SessionManager.getInstance();
+    private final User user = manager.getUser();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        boolean isAdmin = false;
+        for (Profil p : user.getProfils()) {
+            if (p.getLabel().toLowerCase().equals("admin")) {
+                isAdmin = true;
+                break;
+            }
+        }
+        if(!isAdmin){
+            btn_controlController.gridPaneRoot.getChildren()
+                    .removeAll(btn_controlController.getAdd_btn(), btn_controlController.getUpdate_btn3(),
+                            btn_controlController.getLockUser_btn());
+        }
+
+        btn_controlController.getLoad_btn().setDisable(true);
+        btn_controlController.gridPaneRoot.getChildren().remove(btn_controlController.getDelete_btn());
         try {
             init();
         } catch (SQLException throwables) {
@@ -447,13 +471,25 @@ public class BookControler implements Initializable {
         stage.setScene(scene);
 
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.DECORATED);
+        stage.initStyle(StageStyle.TRANSPARENT);
         stage.initOwner(((Control) event.getSource()).getScene().getWindow());
 
-        viewReaderControler.setBooksBytes(book.getBookBinary());
+        viewReaderControler.setBook(book);
+
+        scene.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ESCAPE)) {
+                stage.hide();
+            }
+        });
 
         stage.showAndWait();
 
+
+        /*
+         *si une critique a été ajouté on recharge la page
+         */
+        if(viewReaderControler.isGood())
+            getCritiqueCard();
 
         /*Platform.runLater(new Runnable() {
             @Override
@@ -477,45 +513,36 @@ public class BookControler implements Initializable {
                     this.book = bookService.findAllBookAndtherElement(cardPaneBook_listview.getSelectionModel().getSelectedItem().getId());
                     loadBook(this.book);
 
+
                 } catch (SQLException | IOException throwables) {
                     throwables.printStackTrace();
                 }
             }
         });
 
-        /*for (Book b : books) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/utils/card_entity.fxml"));
-            CardEntityComtroller cardEntityComtroller = new CardEntityComtroller();
-            loader.setController(cardEntityComtroller);
-            HBox cardBook = loader.load();
+    }
 
-            cardEntityComtroller.nameBook_text.setText(b.getTitle());
-            cardEntityComtroller.noteTextField.setText((b.getValeurNominal() + b.getValeurCritique())+"");
-            cardEntityComtroller.typeTextFied.setText(b.getType());
-            if(b.getPrice() > 0.0)
-                cardEntityComtroller.priceTextField.setText(b.getPrice()+" XAF");
-            else
-                cardEntityComtroller.priceTextField.setText("");
+    private void getCritiqueCard() {
+        Set<Critique> critiques = critiqueService.findAllCritiqueByIdBook(book.getId());
+        ObservableList<Critique> critiqueObservableList = FXCollections.observableArrayList(critiques);
+        critique_listView.setItems(critiqueObservableList);
+        critique_listView.setCellFactory(critique-> new CardCritiqueController());
 
-            InputStream file = new ByteArrayInputStream(b.getImgBinary());
-            Image image = new Image(file);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(100);
-            imageView.setPreserveRatio(true);
-            imageView.setSmooth(true);
-            imageView.setCache(true);
+        /*critique_listView.setOnMouseClicked(event -> {
+            if (critique_listView.getSelectionModel().getSelectedItem() != null) {
+                try {
+                    this.book = bookService.findAllBookAndtherElement(cardPaneBook_listview.getSelectionModel().getSelectedItem().getId());
+                    loadBook(this.book);
 
-            cardEntityComtroller.paneImg_vbox.getChildren().add(imageView);
-
-            cardBook.setOnMouseClicked(event -> {
-
-            });
-
-        }*/
+                } catch (SQLException | IOException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });*/
     }
 
     private void loadBook(Book book) {
-        idBook.setText(book.getId() +"");
+        //idBook.setText(book.getId() +"");
         titleBook.setText(book.getTitle());
         availabilityBook.setText(book.getAvailability() +"");
         editionYearBook.setText(book.getEditionYear() + "");
@@ -525,11 +552,11 @@ public class BookControler implements Initializable {
         typeBook.setText(book.getType());
         creatrionDate.setText(book.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
         updateDate.setText(book.getUpdatedAt().format(DateTimeFormatter.ISO_DATE));
-        descriptionField.setTextAlignment(TextAlignment.JUSTIFY);
-        descriptionField.setLineSpacing(4.0);
 
-        descriptionField.getChildren().clear();
-        descriptionField.getChildren().add(new Text(book.getDescription()));
+        descriptionBook_TextFlow.getStyleClass().clear();
+        descriptionBook_TextFlow.setText(book.getDescription());
+        descriptionBook_TextFlow.setStyle("-fx-border-width: 0");
+        descriptionBook_TextFlow.setStyle("-fx-border-color:white");
 
         InputStream file = new ByteArrayInputStream(book.getImgBinary());
         Image image = new Image(file);
@@ -558,6 +585,11 @@ public class BookControler implements Initializable {
 
             aboutAuthor_textFlow.getChildren().addAll(line2, line3);
         });
+
+        // on charge les critiques sur le livre
+
+        getCritiqueCard();
+        btn_controlController.getLoad_btn().setDisable(false);
     }
 
     private void setwidthBtn(TableColumn colBtn) {

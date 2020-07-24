@@ -87,7 +87,7 @@ public class BookService implements IService<Book, Long> {
         if (stm.execute()) {
             ResultSet res = stm.getResultSet();
             while (res.next()) {
-                books.add(BookHydratation.hydrateBookHelper(res));
+                books.add(BookHydratation.hydrateBookHelperNoFileBite(res));
             }
         }
         return books;
@@ -131,7 +131,7 @@ public class BookService implements IService<Book, Long> {
         if (stm.execute()) {
             ResultSet res = stm.getResultSet();
             while (res.next()) {
-                books.add(BookHydratation.hydrateBookHelper(res));
+                books.add(BookHydratation.hydrateBookHelperNoFileBite(res));
             }
         }
 

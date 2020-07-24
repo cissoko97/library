@@ -73,6 +73,26 @@ public class BookHydratation {
         return book;
     }
 
+    public static Book hydrateBookHelperNoFileBite(ResultSet res) throws SQLException {
+        Book book = new Book();
+        book.setId(res.getLong("book_id"));
+        book.setTitle(res.getString("title"));
+        book.setDescription(res.getString("description"));
+        book.setFileName(res.getString("file_name"));
+        book.setNbVue(res.getInt("nb_vue"));
+        book.setAvailability(res.getBoolean("availability"));
+        book.setEditionYear(res.getInt("edition_year"));
+        book.setValeurNominal(res.getInt("valeur_nominal"));
+        book.setValeurCritique(res.getInt("valeur_critique"));
+        book.setPrice(res.getDouble("price"));
+        book.setType(res.getString("type"));
+        book.setImgName(res.getString("img_name"));
+        book.setCreatedAt(res.getTimestamp("book_created_at").toLocalDateTime());
+        book.setUpdatedAt(res.getTimestamp("book_updated_at").toLocalDateTime());
+        book.setImgBinary(res.getBytes("imgByte"));
+        return book;
+    }
+
     public static Critique critiqueHydrateHelper(ResultSet res) throws SQLException {
         Critique critique = new Critique();
         if(res.getTimestamp("critique_created_at") != null)
@@ -80,6 +100,14 @@ public class BookHydratation {
         critique.setNote(res.getInt("critique_note"));
         critique.setComment(res.getString("critique_comment"));
         critique.setId(res.getLong("critique_id"));
+        return critique;
+    }
+
+    public static Critique critique_userHydrateHelper(ResultSet resultSet) throws SQLException {
+        Critique critique = critiqueHydrateHelper(resultSet);
+        User user = new User();
+        user.setEmail(resultSet.getString("user_email"));
+        critique.setUser(user);
         return critique;
     }
 

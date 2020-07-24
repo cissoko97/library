@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.ckCoder.controller.IndexController;
 
@@ -16,6 +17,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ControlBtn implements Initializable {
+    @FXML
+    public GridPane gridPaneRoot;
     @FXML
     private Button add_btn;
     @FXML

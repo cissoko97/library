@@ -1,17 +1,26 @@
-package org.ckCoder.controller.readpdf;
+package org.ckCoder.controller.book.readpdf;
 
 import javafx.concurrent.Worker;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.commons.io.FileUtils;
+import org.ckCoder.controller.book.CritiqueController;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Critique;
 import org.ckCoder.models.User;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
 import java.util.ResourceBundle;
@@ -26,7 +35,9 @@ public class ViewReaderControler implements Initializable {
     @FXML
     public Button saveBtn;
 
-    private byte[] booksBytes = new byte[0];
+    private Book book;
+    private boolean isGood;
+
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         engine = web.getEngine();
@@ -41,10 +52,8 @@ public class ViewReaderControler implements Initializable {
 
         commentBtn.setOnAction(event ->{
             try {
-                byte[] data = FileUtils.readFileToByteArray(new File("/home/lerenard/Téléchargements/10601-apprenez-a-programmer-en-java.pdf"));
-                String base64 = Base64.getEncoder().encodeToString(data);
-                engine.executeScript("openFileFromBase64('" + base64 + "')");
-            } catch (Exception e) {
+                openCritiqueDialog(event);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
@@ -75,7 +84,7 @@ public class ViewReaderControler implements Initializable {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }*/
-                        String base64 = Base64.getEncoder().encodeToString(booksBytes);
+                        String base64 = Base64.getEncoder().encodeToString(book.getBookBinary());
                         // call JS fuction from java code
                         engine.executeScript("openFileFromBase64('" + base64 + "')");
                     }
@@ -96,9 +105,30 @@ public class ViewReaderControler implements Initializable {
         return null;
     }
 
+    private void openCritiqueDialog(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/book/critique.fxml"));
+        CritiqueController critiqueController = new CritiqueController();
+        loader.setController(critiqueController);
+
+        Scene scene = new Scene(loader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.initOwner(((Control) event.getSource()).getScene().getWindow());
+        critiqueController.setBook(book);
+        stage.showAndWait();
+        isGood = critiqueController.isGood();
+    }
 
 
-    public void setBooksBytes(byte[] booksBytes) {
-        this.booksBytes = booksBytes;
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public boolean isGood() {
+        return isGood;
     }
 }
