@@ -1,6 +1,10 @@
 package org.ckCoder.utils;
 
+import org.ckCoder.models.Book;
 import org.ckCoder.models.User;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SessionManager {
 
@@ -14,6 +18,15 @@ public class SessionManager {
 
     private User user = null;
 
+    public Set<Book> getBookSet() {
+        return bookSet;
+    }
+
+    public void setBookSet(Set<Book> bookSet) {
+        this.bookSet = bookSet;
+    }
+
+    private Set<Book> bookSet = new HashSet<>();
     private static SessionManager INSTANCE = null;
 
     private SessionManager() {

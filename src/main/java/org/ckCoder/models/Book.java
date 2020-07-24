@@ -174,4 +174,15 @@ public class Book extends AbstractEntity {
     public void setCritiques(Set<Critique> critiques) {
         this.critiques = critiques;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", category=" + category +
+                ", price=" + price +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
