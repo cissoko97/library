@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.web.WebEngine;
@@ -18,6 +19,8 @@ import org.ckCoder.controller.book.CritiqueController;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Critique;
 import org.ckCoder.models.User;
+import org.ckCoder.utils.SessionManager;
+import org.ckCoder.utils.Verification;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +40,7 @@ public class ViewReaderControler implements Initializable {
 
     private Book book;
     private boolean isGood;
+    private final SessionManager manager = SessionManager.getInstance();
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
@@ -59,7 +63,8 @@ public class ViewReaderControler implements Initializable {
         });
 
         saveBtn.setOnAction(event -> {
-
+            manager.getBookSet().add(book);
+            Verification.alertMessage("this book has add to your caddy", Alert.AlertType.INFORMATION);
         });
 
 

@@ -615,7 +615,5 @@ public class BookControler implements Initializable {
 
     private void addBooktoCart(Book book) {
         manager.getBookSet().add(book);
-
-        System.out.println(manager.getBookSet());
     }
 }

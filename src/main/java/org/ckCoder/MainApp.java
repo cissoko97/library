@@ -85,12 +85,6 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(grid, 500, 500);
 
-        /*GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        int width = gd.getDisplayMode().getWidth();
-        int height = gd.getDisplayMode().getHeight();
-        Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
-        scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");*/
-
         pwBox.setOnKeyPressed(e-> {
             if (e.getCode().equals(KeyCode.ENTER)) {
                 if (validationForm(userTextField, pwBox, grid)) {
@@ -103,25 +97,6 @@ public class MainApp extends Application {
             //primaryStage.setScene(scene1);
             if (validationForm(userTextField, pwBox, grid)) {
                 //loadUser(userTextField,pwBox,userService,primaryStage,manager);
-                /*String userEmail = userTextField.getText();
-
-                String userPassword = pwBox.getText();
-                User user = userService.findByEmailAndPassword(userEmail, userPassword);
-                if (user != null && user.getEmail() != null) {
-                    manager.setUser(user);
-                    try {
-                        Scene scene1  = new Scene(loadFXML("/view/index"), width, height);
-                        scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
-                        primaryStage.setScene(scene1);
-                        primaryStage.setScene(scene1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    List<String> message = new ArrayList<>();
-                    message.add("bad credentiel");
-                    Verification.alertMessage(message, Alert.AlertType.ERROR);
-                }*/
 
                 valideCredentiel(userTextField, pwBox, primaryStage);
             }

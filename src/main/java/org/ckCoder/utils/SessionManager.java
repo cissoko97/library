@@ -8,6 +8,10 @@ import java.util.Set;
 
 public class SessionManager {
 
+    private Set<Book> bookSet = new HashSet<>();
+    private static SessionManager INSTANCE = null;
+    private User user = null;
+
     public User getUser() {
         return user;
     }
@@ -16,7 +20,6 @@ public class SessionManager {
         this.user = user;
     }
 
-    private User user = null;
 
     public Set<Book> getBookSet() {
         return bookSet;
@@ -26,8 +29,6 @@ public class SessionManager {
         this.bookSet = bookSet;
     }
 
-    private Set<Book> bookSet = new HashSet<>();
-    private static SessionManager INSTANCE = null;
 
     private SessionManager() {
 

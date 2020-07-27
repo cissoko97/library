@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class Command extends AbstractEntity {
 
-    private Double TotalPrice;
+    private Double totalPrice;
     private User user;
     private Boolean accepted;
     private Set<Line> lines;
@@ -14,11 +14,11 @@ public class Command extends AbstractEntity {
     }
 
     public Double getTotalPrice() {
-        return TotalPrice;
+        return totalPrice;
     }
 
     public void setTotalPrice(Double totalPrice) {
-        TotalPrice = totalPrice;
+        this.totalPrice = totalPrice;
     }
 
     public User getUser() {
