@@ -3,6 +3,7 @@ package org.ckCoder.service;
 import org.ckCoder.database.Connexion;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Command;
+import org.ckCoder.models.Line;
 import org.ckCoder.service.contract.IService;
 import org.ckCoder.utils.hygratation.CommandHydratation;
 import org.ckCoder.utils.pagination.Pagination;
@@ -110,5 +111,26 @@ public class OrderService implements IService<Command, Long> {
 
         }
         return commands;
+    }
+
+    public List<Line> findOrderAndLineOrder(long idCommande) throws SQLException {
+        List<Line> lines = new ArrayList<>();
+        CallableStatement stm = Connexion.getConnection().prepareCall("call find_command_and_lineItem(?)");
+        stm.setLong(1, idCommande);
+
+        if (stm.execute()) {
+            ResultSet res = stm.getResultSet();
+            while (res.next()) {
+                lines.add(CommandHydratation.lineHelperHydratation(res));
+            }
+        }
+
+        return lines;
+    }
+
+    public boolean change_status_command(long id_order) throws SQLException {
+        CallableStatement stm = Connexion.getConnection().prepareCall("call change_status_command(?)");
+        stm.setLong(1, id_order);
+        return stm.execute();
     }
 }

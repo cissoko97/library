@@ -6,21 +6,26 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import org.ckCoder.models.Book;
 import org.ckCoder.models.Command;
 import org.ckCoder.service.OrderService;
 import org.ckCoder.utils.UtilForArray;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class OrderControler implements Initializable {
@@ -85,7 +90,7 @@ public class OrderControler implements Initializable {
         priceCol.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
 
         TableColumn<Command, Double> acceptedCol = new TableColumn<>();
-        acceptedCol.setText("isValid");
+        acceptedCol.setText("accepted");
         acceptedCol.setCellValueFactory(new PropertyValueFactory<>("accepted"));
 
         TableColumn<Command, String> nameCol = new TableColumn<>();
@@ -103,44 +108,6 @@ public class OrderControler implements Initializable {
         TableColumn<Command, String> surnameCol = new TableColumn<>();
         surnameCol.setText("surname");
         surnameCol.setCellValueFactory(item -> new ReadOnlyObjectWrapper<>(item.getValue().getUser().getPerson().getSurname()));
-/*
-        TableColumn<Command, Void> btnCol = new TableColumn<>("");
-        UtilForArray.setwidthBtn(btnCol);
-
-        Callback<TableColumn<Command, Void>, TableCell<Command, Void>> cellData = new Callback<TableColumn<Command, Void>, TableCell<Command, Void>>() {
-            @Override
-            public TableCell<Command, Void> call(TableColumn<Command, Void> param) {
-                final TableCell<Command, Void> cell = new TableCell<Command, Void>(){
-                    final Button btn = new Button();
-                    {
-                        if(getTableView().getItems().get(getIndex()).getAccepted()){
-                            btn.setText("V");
-                            btn.setDisable(true);
-                        }
-                        else {
-                            btn.setText("X");
-                            btn.setOnAction(e->{
-
-                            });
-                        }
-                        btn.getStyleClass().add("round-blue");
-
-                    }
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };*/
-
-       // btnCol.setCellFactory(cellData);
 
 
         TableColumn<Command, Void> btnCol2 = new TableColumn<>("");
@@ -153,8 +120,13 @@ public class OrderControler implements Initializable {
                     final Button btn = new Button("View");
                     {
                         btn.getStyleClass().add("round-red");
+                        btn.setCursor(Cursor.HAND);
                         btn.setOnAction(e->{
-                            //
+                            try {
+                                opendetailOrderTemplate(e, getTableView().getItems().get(getIndex()));
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
                         });
                     }
                     @Override
@@ -239,6 +211,24 @@ public class OrderControler implements Initializable {
             paginate.setPageCount(1);
             paginate.setCurrentPageIndex(0);
         }
+    }
+
+
+    private void opendetailOrderTemplate(ActionEvent e, Command cmd) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/order/order_view_detail.fxml"));
+        OrderViewDetail orderViewDetail = new OrderViewDetail(cmd);
+        loader.setController(orderViewDetail);
+
+        Scene scene = new Scene(loader.load());
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.initOwner(((Control) e.getSource()).getScene().getWindow());
+
+        stage.setScene(scene);
+        stage.showAndWait();
+        if(orderViewDetail.getCommand().getAccepted() != cmd.getAccepted())
+            observableList.set(observableList.indexOf(cmd), orderViewDetail.getCommand());
     }
 
 
