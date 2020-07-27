@@ -87,5 +87,20 @@ begin
     where p_begin <= command.created_at and  command.created_at  <= p_end order by command_id desc;
 end |
 
+drop procedure if exists find_command_and_lineItem;
+create procedure find_command_and_lineItem(IN p_id_order bigint)
+begin
+    select book.created_at as book_created_at, book.updated_at as book_update_at,
+           book.price as book_price, book.title book_title
+    from book
+    inner join line l on book.id = l.book_id
+    where l.command_id = p_id_order;
 
+end |
+
+drop procedure if exists change_status_command;
+create procedure change_status_command(IN p_id_order bigint)
+begin
+    update command set accepted = true where id = p_id_order;
+end |
 delimiter ;

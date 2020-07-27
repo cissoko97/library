@@ -1,8 +1,6 @@
 package org.ckCoder.utils.hygratation;
 
-import org.ckCoder.models.Command;
-import org.ckCoder.models.Person;
-import org.ckCoder.models.User;
+import org.ckCoder.models.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,5 +23,18 @@ public class CommandHydratation {
         user.setPerson(person);
         command.setUser(user);
         return command;
+    }
+
+    public static Line lineHelperHydratation(ResultSet res) throws SQLException {
+        Line line = new Line();
+        Book book = new Book();
+
+        book.setPrice(res.getDouble("book_price"));
+        book.setCreatedAt(res.getTimestamp("book_created_at").toLocalDateTime());
+        book.setUpdatedAt(res.getTimestamp("book_update_at").toLocalDateTime());
+        book.setTitle(res.getString("book_title"));
+
+        line.setBook(book);
+        return line;
     }
 }

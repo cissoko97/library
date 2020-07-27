@@ -383,6 +383,7 @@ public class BookControler implements Initializable {
                             Stage stage = new Stage();
                             stage.initModality(Modality.APPLICATION_MODAL);
                             stage.initStyle(StageStyle.UTILITY);
+                            stage.initOwner(((Control) event.getSource()).getScene().getWindow());
 
                             bottonComponentController.titleTextFied.setText(category.getFlag());
                             bottonComponentController.descriptionTextArray.setText(category.getDescription());
