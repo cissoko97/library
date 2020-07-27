@@ -3,7 +3,9 @@ package org.ckCoder.controller.book;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -11,22 +13,38 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
 import org.ckCoder.models.Book;
+import org.ckCoder.service.OrderService;
 import org.ckCoder.utils.SessionManager;
+import org.ckCoder.utils.Verification;
 
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class PanierController implements Initializable {
-    public Text total_value;
-    SessionManager manager = SessionManager.getInstance();
-    Logger logger = Logger.getLogger(this.getClass());
+    private SessionManager manager = SessionManager.getInstance();
+    private Logger logger = Logger.getLogger(this.getClass());
+
+    private OrderService orderService = new OrderService();
 
 
-    public TableView tableBook;
-    public Text total_labet;
-    public Text totalLabelContent;
-    public Button commander_btn;
+    @FXML
+    private Text total_value;
 
+    @FXML
+    private TableView tableBook;
+
+    @FXML
+    private Text total_labet;
+
+    @FXML
+    private Text totalLabelContent;
+
+    @FXML
+    private Button commander_btn;
+    private Set<Long> listId = new HashSet<>();
     private ObservableList<Book> observableListBook;
 
     @Override
@@ -36,7 +54,12 @@ public class PanierController implements Initializable {
         initDataInTable();
     }
 
-    public void onOrder(ActionEvent actionEvent) {
+    public void onOrder(ActionEvent actionEvent) throws SQLException {
+        if (manager.getBookSet().size() != 0) {
+            orderService.created(this.listId, manager.getUser().getId());
+        } else {
+            Verification.alertMessage("Pas de livres dans votre panier", Alert.AlertType.INFORMATION);
+        }
     }
 
     private void initTableColumn() {
@@ -61,6 +84,12 @@ public class PanierController implements Initializable {
         tableBook.setItems(observableListBook);
 
         double totalPrice = manager.getBookSet().stream().mapToDouble(value -> value.getPrice()).sum();
+
+        manager.getBookSet().stream().forEach(book -> listId.add(book.getId()));
+        logger.info("List des id dans le panier");
+        logger.info(listId);
         total_value.setText(String.valueOf(totalPrice));
+
+
     }
 }

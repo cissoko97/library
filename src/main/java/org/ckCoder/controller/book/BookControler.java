@@ -46,7 +46,7 @@ import java.util.*;
 public class BookControler implements Initializable {
     /*@FXML
     public Text idBook;*/
-    SessionManager manager  = SessionManager.getInstance();
+    SessionManager manager = SessionManager.getInstance();
 
     @FXML
     public Text idBook;
@@ -118,7 +118,7 @@ public class BookControler implements Initializable {
                 break;
             }
         }
-        if(!isAdmin){
+        if (!isAdmin) {
             btn_controlController.gridPaneRoot.getChildren()
                     .removeAll(btn_controlController.getAdd_btn(), btn_controlController.getUpdate_btn3(),
                             btn_controlController.getLockUser_btn());
@@ -182,8 +182,11 @@ public class BookControler implements Initializable {
         btn_controlController.getUpdate_btn3().getStyleClass().add("rich-blue");
         btn_controlController.getLoad_btn().getStyleClass().add("rich-blue");
         btn_controlController.getLockUser_btn().getStyleClass().add("rich-blue");
+        btn_controlController.getLockUser_btn().setVisible(false);
         btn_controlController.getAddFavory_btn().getStyleClass().add("rich-blue");
+        btn_controlController.getAddFavory_btn().setVisible(false);
         btn_controlController.getAddCaddyBtn().getStyleClass().add("rich-blue");
+        btn_controlController.getAddCaddyBtn().setDisable(true);
         btn_controlController.getAddCaddyBtn().setText("Dans le panier");
 
 
@@ -505,7 +508,7 @@ public class BookControler implements Initializable {
         /*
          *si une critique a été ajouté on recharge la page
          */
-        if(viewReaderControler.isGood())
+        if (viewReaderControler.isGood())
             getCritiqueCard();
 
         /*Platform.runLater(new Runnable() {
@@ -529,6 +532,7 @@ public class BookControler implements Initializable {
                 try {
                     this.book = bookService.findAllBookAndtherElement(cardPaneBook_listview.getSelectionModel().getSelectedItem().getId());
                     loadBook(this.book);
+                    btn_controlController.getAddCaddyBtn().setDisable(false);
 
 
                 } catch (SQLException | IOException throwables) {
@@ -543,7 +547,7 @@ public class BookControler implements Initializable {
         Set<Critique> critiques = critiqueService.findAllCritiqueByIdBook(book.getId());
         ObservableList<Critique> critiqueObservableList = FXCollections.observableArrayList(critiques);
         critique_listView.setItems(critiqueObservableList);
-        critique_listView.setCellFactory(critique-> new CardCritiqueController());
+        critique_listView.setCellFactory(critique -> new CardCritiqueController());
 
         /*critique_listView.setOnMouseClicked(event -> {
             if (critique_listView.getSelectionModel().getSelectedItem() != null) {
