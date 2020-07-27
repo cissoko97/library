@@ -6,11 +6,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.apache.log4j.Logger;
+import org.ckCoder.MainApp;
+import org.ckCoder.controller.book.CategoryAndBookController;
 import org.ckCoder.models.Profil;
 import org.ckCoder.models.User;
 import org.ckCoder.utils.SessionManager;
@@ -45,6 +51,7 @@ public class IndexController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         initialiseMenu();
         manageMenu();
+        initComboxSelect();
     }
 
     public static Parent loadFXML(String fxml) throws IOException {
@@ -66,7 +73,7 @@ public class IndexController implements Initializable {
     }
 
     private void initialiseMenu() {
-        prefenre_combobox.getItems().addAll("Caddy", "favorie");
+        prefenre_combobox.getItems().addAll("Caddy", "fa");
         langue_combobox.getItems().addAll("Français", "Anglais");
         book_btn.setOnAction(event -> {
 
@@ -100,5 +107,37 @@ public class IndexController implements Initializable {
             this.flag = flag;
             principal_pane.setCenter(loadFXML(fileName));
         }
+    }
+
+    private void initComboxSelect() {
+        prefenre_combobox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equalsIgnoreCase("caddy")) {
+
+                try {
+                    Stage stage = new Stage();
+                    Scene scene;
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(MainApp.class.getResource("/view/panier/caddy_view.fxml"));
+                    CategoryAndBookController panierController = new CategoryAndBookController();
+//                    panierController.
+                    BorderPane page = loader.load();
+                    stage.setResizable(false);
+                    stage.setMinWidth(600);
+                    stage.setMinHeight(400);
+                    stage.initModality(Modality.WINDOW_MODAL);
+                    stage.initOwner(prefenre_combobox.getScene().getWindow());
+
+                    scene = new Scene(page);
+                    stage.setScene(scene);
+                    stage.setTitle("Command View");
+                    stage.showAndWait();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                //do this for get current stage
+
+            }
+        });
     }
 }

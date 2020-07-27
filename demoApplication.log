@@ -96,3 +96,30 @@ User{id='113'email='steve@gmail.com', password='null', isLocked=false, person=Ab
 Log user
 User{id='111'email='boriscissoko@gmail.com', password='null', isLocked=false, person=AbstractEntity{id=111, createdAt=2020-07-16T12:24:02, updatedAt=2020-07-16T12:24:02} Person{name='boris', surname='cissoko'}}
 User{id='0'email='davidluiz.matjaba@gmail.com', password='123456', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='matjaba', surname='david'}}
+
+Caddy
+Caddy
+
+fa
+
+Caddy
+fa
+fa
+Caddy
+Caddy
+fa
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[]
+[Book{title='grand all 2', description='description', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=1000.0, type='public'}, Book{title='how totalk', description='qfjoqis qshjkqsf qshjkfhefhoqjsd qfjqhjhqfjkhqs', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='privé'}, Book{title='isabel', description='this book talk about isabel', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='public'}]
+[]
+[Book{title='grand all 2', description='description', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=1000.0, type='public'}, Book{title='the book', description='zhef azehdfhazuir zgaefiufopeugzrkog zefgzegjhbzef', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=0.0, type='public'}, Book{title='book test', description='azehfkzeh eazhfhazyfguefh ahfuazhfuiazf', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=0.0, type='public'}, Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=2500.0, type='privé'}]
+[Book{title='grand all 2', description='description', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=1000.0, type='public'}, Book{title='how totalk', description='qfjoqis qshjkqsf qshjkfhefhoqjsd qfjqhjhqfjkhqs', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='privé'}, Book{title='isabel', description='this book talk about isabel', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='public'}]
+[Book{title='how totalk', description='qfjoqis qshjkqsf qshjkfhefhoqjsd qfjqhjhqfjkhqs', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='privé'}, Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=2500.0, type='privé'}]
