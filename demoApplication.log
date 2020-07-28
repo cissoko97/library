@@ -232,3 +232,7 @@ List des id dans le panier
 User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='test', surname='testtest'}}
 User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='test', surname='testtest'}}
 User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='test', surname='testtest'}}
+[Book{title='how totalk', description='qfjoqis qshjkqsf qshjkfhefhoqjsd qfjqhjhqfjkhqs', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='privé'}, Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=2500.0, type='privé'}]
+List des id dans le panier
+[103, 108]
+send email to : boris@gmail.com

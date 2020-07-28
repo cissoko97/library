@@ -83,7 +83,7 @@ public class OrderControler implements Initializable {
 
     private void initPage() throws SQLException {
         resiCombobox.getItems().addAll(10, 25, 50, 100, 150, 200);
-        resiCombobox.setValue(10);
+        resiCombobox.setValue(25);
 
         TableColumn<Command, Double> priceCol = new TableColumn<>();
         priceCol.setText("total");
@@ -196,6 +196,22 @@ public class OrderControler implements Initializable {
                     paginate.setCurrentPageIndex((int) newValue);
                     observableList.addAll(commandPagination.getRessource().resource);
                     tableCmd_tableView.getSelectionModel().clearSelection();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
+
+        resiCombobox.valueProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observableValue, Integer integer, Integer t1) {
+                try {
+                    commandPagination = orderService.findAll(paginate.getCurrentPageIndex(), resiCombobox.getValue());
+                    //observableList.clear();
+                    observableList.setAll(commandPagination.getRessource().resource);
+                    tableCmd_tableView.getSelectionModel().clearSelection();
+                    paginate.setPageCount(commandPagination.getRessource().info.totalPage);
+                    paginate.setCurrentPageIndex(0);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

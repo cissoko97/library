@@ -1,5 +1,6 @@
 package org.ckCoder.controller.book.readpdf;
 
+import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
+import javafx.scene.layout.HBox;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Modality;
@@ -38,12 +40,18 @@ public class ViewReaderControler implements Initializable {
     @FXML
     public Button saveBtn;
 
+    @FXML
+    private Button whshList_btn;
+    @FXML
+    private HBox panel_btn_hbox;
+
     private Book book;
     private boolean isGood;
     private final SessionManager manager = SessionManager.getInstance();
 
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
+        panel_btn_hbox.getChildren().remove(whshList_btn);
         engine = web.getEngine();
         String url = getClass().getResource("/js/web/viewer.html").toExternalForm();
 
@@ -130,6 +138,13 @@ public class ViewReaderControler implements Initializable {
 
 
     public void setBook(Book book) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(book.getType().equalsIgnoreCase("privé"))
+                    saveBtn.setDisable(true);
+            }
+        });
         this.book = book;
     }
 
