@@ -38,7 +38,7 @@ begin
     insert into user_profil(user_id, profil_id)
     values (new_id, @id_profil);
 
-    select *
+    select P.*
     from users U
              inner join person P
                         on U.person_id = P.id

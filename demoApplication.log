@@ -229,3 +229,6 @@ List des id dans le panier
 []
 List des id dans le panier
 []
+User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='test', surname='testtest'}}
+User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='test', surname='testtest'}}
+User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='test', surname='testtest'}}

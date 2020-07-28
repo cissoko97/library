@@ -85,7 +85,7 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(grid, 500, 500);
 
-        pwBox.setOnKeyPressed(e-> {
+        pwBox.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ENTER)) {
                 if (validationForm(userTextField, pwBox, grid)) {
                     valideCredentiel(userTextField, pwBox, primaryStage);
@@ -153,9 +153,14 @@ public class MainApp extends Application {
         String userPassword = pwBox.getText();
         User user = userService.findByEmailAndPassword(userEmail, userPassword);
         if (user != null && user.getEmail() != null) {
+
+            if (user.getLocked()) {
+                Verification.alertMessage("Unauthorized", Alert.AlertType.WARNING);
+                return;
+            }
             manager.setUser(user);
             try {
-                Scene scene1  = new Scene(loadFXML("/view/index"), width, height);
+                Scene scene1 = new Scene(loadFXML("/view/index"), width, height);
                 scene1.getStylesheets().addAll("/css/stylesheet.css", "/css/buttonStyle.css");
                 primaryStage.setScene(scene1);
                 primaryStage.setScene(scene1);
