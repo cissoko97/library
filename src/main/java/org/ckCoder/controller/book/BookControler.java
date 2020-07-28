@@ -187,7 +187,7 @@ public class BookControler implements Initializable {
         btn_controlController.getAddFavory_btn().setVisible(false);
         btn_controlController.getAddCaddyBtn().getStyleClass().add("rich-blue");
         btn_controlController.getAddCaddyBtn().setDisable(true);
-        btn_controlController.getAddCaddyBtn().setText("Dans le panier");
+        btn_controlController.getAddCaddyBtn().setText("Card");
 
 
         TableColumn<Category, String> idCatColumn = new TableColumn<>();
@@ -580,7 +580,7 @@ public class BookControler implements Initializable {
         descriptionBook_TextFlow.setStyle("-fx-border-color:white");
 
         InputStream file = new ByteArrayInputStream(book.getImgBinary());
-        Image image = new Image(file);
+        Image image = new Image(file, 100, 100 , false , false);
         imageView.setImage(image);
 
         originalNameText.setText(book.getImgName());

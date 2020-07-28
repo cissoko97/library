@@ -35,6 +35,8 @@ public class MailGateway {
         message.setSubject("Hi, everyone");
         message.setText("Hi, This mail is to inform you...");
 
+//        message.setContent();
+
         Transport.send(message);
 
     }
