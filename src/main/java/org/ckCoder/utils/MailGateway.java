@@ -81,8 +81,6 @@ public class MailGateway {
                     }
                 }
             }
-
-
             // message.setText("Hi, This mail is to inform you...");
 
             message.setContent(multipart);
