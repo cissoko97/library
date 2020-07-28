@@ -146,3 +146,9 @@ List des id dans le panier
 [Book{title='grand all 2', description='description', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=1000.0, type='public'}, Book{title='how totalk', description='qfjoqis qshjkqsf qshjkfhefhoqjsd qfjqhjhqfjkhqs', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='privé'}, Book{title='isabel', description='this book talk about isabel', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='public'}]
 List des id dans le panier
 [102, 103, 104]
+[Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=2500.0, type='privé'}, Book{title='trois prétendant un mari', description='zazefnazhf azhduazhdfyazfagzhrbjzghfa', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=0.0, type='public'}]
+List des id dans le panier
+[108, 109]
+[Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=2500.0, type='privé'}, Book{title='trois prétendant un mari', description='zazefnazhf azhduazhdfyazfagzhrbjzghfa', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=0.0, type='public'}]
+List des id dans le panier
+[108, 109]

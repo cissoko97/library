@@ -46,8 +46,11 @@ begin
 
     select command.id as command_id, command.total_price as command_total_price,
            command.updated_at as command_update_at, command.created_at as command_created_at,
-           command.accepted as command_accept
-    from command where command.id = _idCommand;
+           command.accepted as command_accept,
+           p.name as person_name, p.surname as person_surname
+    from command
+             inner join users as us on command.user_id = us.id
+             left join person p on us.person_id = p.id;
 
     commit;
 end |

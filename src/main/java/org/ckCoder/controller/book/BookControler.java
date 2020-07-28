@@ -33,6 +33,7 @@ import org.ckCoder.service.contract.IService;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
+import javax.management.Notification;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -167,6 +168,7 @@ public class BookControler implements Initializable {
 
         btn_controlController.getAddCaddyBtn().setOnAction(event -> {
             this.addBooktoCart(this.book);
+
         });
     }
 
@@ -532,8 +534,7 @@ public class BookControler implements Initializable {
                 try {
                     this.book = bookService.findAllBookAndtherElement(cardPaneBook_listview.getSelectionModel().getSelectedItem().getId());
                     loadBook(this.book);
-                    btn_controlController.getAddCaddyBtn().setDisable(false);
-
+                    btn_controlController.getAddCaddyBtn().setDisable(book.getType().equalsIgnoreCase("public"));
 
                 } catch (SQLException | IOException throwables) {
                     throwables.printStackTrace();

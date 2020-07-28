@@ -52,6 +52,9 @@ public class IndexController implements Initializable {
         initialiseMenu();
         manageMenu();
         initComboxSelect();
+
+        langue_combobox.setVisible(false);
+        profil_combobox.setVisible(false);
     }
 
     public static Parent loadFXML(String fxml) throws IOException {
@@ -131,6 +134,7 @@ public class IndexController implements Initializable {
                     stage.setScene(scene);
                     stage.setTitle("Command View");
                     stage.showAndWait();
+                    prefenre_combobox.setValue("");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
