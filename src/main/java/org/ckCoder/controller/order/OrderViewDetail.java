@@ -11,8 +11,10 @@ import javafx.scene.text.Text;
 import org.ckCoder.models.Command;
 import org.ckCoder.models.Line;
 import org.ckCoder.service.OrderService;
+import org.ckCoder.utils.MailGateway;
 import org.ckCoder.utils.Verification;
 
+import javax.mail.MessagingException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -31,7 +33,6 @@ public class OrderViewDetail implements Initializable {
 
     private final OrderService orderService = new OrderService();
 
-
     public OrderViewDetail(Command cmd) {
         this.command = cmd;
     }
@@ -49,6 +50,7 @@ public class OrderViewDetail implements Initializable {
 
 
     private void setDataTable() throws SQLException {
+        ObservableList<Line> observableList = FXCollections.observableArrayList(orderService.findOrderAndLineOrder(command.getId()));
         title_text.setText("ORDER : " + this.command.getId());
         acceptOrder_btn.setText("Accept order");
         if(command.getAccepted())
@@ -62,11 +64,12 @@ public class OrderViewDetail implements Initializable {
 
                 if (option.get() == ButtonType.OK) {
                     try {
-                        if (orderService.change_status_command(command.getId())) {
+                        if (!orderService.change_status_command(command.getId())) {
                             command.setAccepted(true);
                             Verification.alertMessage("you have just validated this order", Alert.AlertType.INFORMATION);
+                            MailGateway.instanciate(command.getUser(), observableList);
                         }
-                    } catch (SQLException throwables) {
+                    } catch (SQLException | MessagingException throwables) {
                         throwables.printStackTrace();
                     }
                 }
@@ -88,8 +91,6 @@ public class OrderViewDetail implements Initializable {
         TableColumn<Line, LocalDateTime> updateCol = new TableColumn<>();
         updateCol.setText("last update");
         updateCol.setCellValueFactory(item -> new ReadOnlyObjectWrapper<>(item.getValue().getBook().getUpdatedAt()));
-
-        ObservableList<Line> observableList = FXCollections.observableArrayList(orderService.findOrderAndLineOrder(command.getId()));
 
         tableView.setItems(observableList);
         tableView.getColumns().addAll(titreCol, priceCol, createdCol, updateCol);

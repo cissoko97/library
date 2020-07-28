@@ -65,7 +65,6 @@ public class Verification {
     public static void alertMessage(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
-
         alert.showAndWait();
 
     }

@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
@@ -54,9 +51,15 @@ public class PanierController implements Initializable {
         initDataInTable();
     }
 
-    public void onOrder(ActionEvent actionEvent) throws SQLException {
+    public void onOrder(ActionEvent event) throws SQLException {
         if (manager.getBookSet().size() != 0) {
             orderService.created(this.listId, manager.getUser().getId());
+            manager.getBookSet().clear();
+            this.listId.clear();
+            this.observableListBook.clear();
+           // this.tableBook.getSelectionModel().clearSelection();
+            Verification.alertMessage("your order is loading", Alert.AlertType.INFORMATION);
+            ((Control) event.getSource()).getScene().getWindow().hide();
         } else {
             Verification.alertMessage("Pas de livres dans votre panier", Alert.AlertType.INFORMATION);
         }

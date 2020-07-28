@@ -76,7 +76,7 @@ public class IndexController implements Initializable {
     }
 
     private void initialiseMenu() {
-        prefenre_combobox.getItems().addAll("Caddy", "fa");
+        prefenre_combobox.getItems().addAll("Caddy","favoriy");
         langue_combobox.getItems().addAll("Français", "Anglais");
         book_btn.setOnAction(event -> {
 
@@ -134,7 +134,6 @@ public class IndexController implements Initializable {
                     stage.setScene(scene);
                     stage.setTitle("Command View");
                     stage.showAndWait();
-                    prefenre_combobox.setValue("");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

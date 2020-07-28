@@ -47,6 +47,7 @@ begin
     select command.id as command_id, command.total_price as command_total_price,
            command.updated_at as command_update_at, command.created_at as command_created_at,
            command.accepted as command_accept,
+           us.email as user_email, us.id as user_id,
            p.name as person_name, p.surname as person_surname
     from command
              inner join users as us on command.user_id = us.id
@@ -68,6 +69,7 @@ begin
     select command.id as command_id, command.total_price as command_total_price,
            command.updated_at as command_update_at, command.created_at as command_created_at,
            command.accepted as command_accept,
+           us.email as user_email, us.id as user_id,
            p.name as person_name, p.surname as person_surname
     from command
     inner join users as us on command.user_id = us.id
@@ -83,6 +85,7 @@ begin
     select command.id as command_id, command.total_price as command_total_price,
            command.updated_at as command_update_at, command.created_at as command_created_at,
            command.accepted as command_accept,
+           us.email as user_email, us.id as user_id,
            p.name as person_name, p.surname as person_surname
     from command
     inner join users as us on command.user_id = us.id
@@ -94,7 +97,7 @@ drop procedure if exists find_command_and_lineItem;
 create procedure find_command_and_lineItem(IN p_id_order bigint)
 begin
     select book.created_at as book_created_at, book.updated_at as book_update_at,
-           book.price as book_price, book.title book_title
+           book.price as book_price, book.title book_title, book.fileByte as book_file_bytes
     from book
     inner join line l on book.id = l.book_id
     where l.command_id = p_id_order;

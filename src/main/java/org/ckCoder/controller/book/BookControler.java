@@ -620,6 +620,9 @@ public class BookControler implements Initializable {
     }
 
     private void addBooktoCart(Book book) {
-        manager.getBookSet().add(book);
+        if (!manager.getBookSet().contains(book)) {
+            manager.getBookSet().add(book);
+            Verification.alertMessage("this book has add in your caddy", Alert.AlertType.INFORMATION);
+        }
     }
 }

@@ -11,6 +11,8 @@ public class CommandHydratation {
         Command command = new Command();
         Person person = new Person();
         User user = new User();
+        user.setEmail(res.getString("user_email"));
+        user.setId(res.getLong("user_id"));
         person.setName(res.getString("person_name"));
         person.setSurname(res.getString("person_surname"));
 
@@ -33,6 +35,7 @@ public class CommandHydratation {
         book.setCreatedAt(res.getTimestamp("book_created_at").toLocalDateTime());
         book.setUpdatedAt(res.getTimestamp("book_update_at").toLocalDateTime());
         book.setTitle(res.getString("book_title"));
+        book.setBookBinary(res.getBytes("book_file_bytes"));
 
         line.setBook(book);
         return line;
