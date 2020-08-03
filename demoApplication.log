@@ -236,3 +236,26 @@ User{id='0'email='boriscissoko@gmail.com', password='password', isLocked=null, p
 List des id dans le panier
 [103, 108]
 send email to : boris@gmail.com
+[]
+List des id dans le panier
+[]
+[]
+List des id dans le panier
+[]
+[Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=2500.0, type='privé'}]
+List des id dans le panier
+[108]
+send email to : davidluiz.matjaba@gmail.com
+email send succesfully
+User{id='0'email='franc@ivan,com', password='toltec', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='franc', surname='ivan'}}
+[Book{title='how totalk', description='qfjoqis qshjkqsf qshjkfhefhoqjsd qfjqhjhqfjkhqs', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=15000.0, type='privé'}, Book{title='good book', description='azhjkazhdazu azhdfuazdihazudh', category=AbstractEntity{id=101, createdAt=null, updatedAt=null}, price=3000.0, type='privé'}]
+List des id dans le panier
+[103, 108]
+send email to : nwansi@toltec-consulting.com
+email send succesfully
+[]
+List des id dans le panier
+[]
+[]
+List des id dans le panier
+[]
