@@ -9,14 +9,12 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 public class SelectedLanguage {
-    public static Properties getInstace(LanguageEmun lang) throws IOException {
+    public static Properties getInstace() throws IOException {
         InputStream inputStream =  null;
         if (readtoFile().equals(LanguageEmun.en.name())) {
             inputStream = SelectedLanguage.class.getResourceAsStream("/properties/lang.en.properties");
         } else if(readtoFile().equals(LanguageEmun.fr.name()))
             inputStream = SelectedLanguage.class.getResourceAsStream("/properties/lang.fr.properties");
-        else if (lang.compareTo(LanguageEmun.AUCUN) != 0)
-            inputStream = SelectedLanguage.class.getResourceAsStream("/properties/lang."+lang.name()+".properties");
         else
             inputStream = SelectedLanguage.class.getResourceAsStream("/properties/lang.en.properties");
 

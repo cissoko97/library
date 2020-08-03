@@ -7,9 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -26,6 +24,7 @@ import org.ckCoder.utils.SessionManager;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -52,9 +51,9 @@ public class IndexController implements Initializable {
     @FXML
     public ComboBox profil_combobox;
 
-    private PrimaryScene primaryScene = new PrimaryScene();
+    private final PrimaryScene primaryScene = new PrimaryScene();
 
-    Properties properties = SelectedLanguage.getInstace(LanguageEmun.AUCUN);
+    Properties properties = SelectedLanguage.getInstace();
     String flag = "BOOK";
 
     public IndexController() throws IOException {
@@ -65,7 +64,6 @@ public class IndexController implements Initializable {
         initialiseMenu();
         manageMenu();
         initComboxSelect();
-
        // langue_combobox.setVisible(false);
         profil_combobox.setVisible(false);
 
@@ -73,9 +71,9 @@ public class IndexController implements Initializable {
             manager.setUser(null);
             manager.getBookSet().clear();
             Stage stage = (Stage) ((Control) event.getSource()).getScene().getWindow();
-            primaryScene.constructPrimaryStage(stage);
             stage.setHeight(500);
             stage.setWidth(500);
+            primaryScene.constructPrimaryStage(stage);
         });
     }
 
@@ -98,10 +96,19 @@ public class IndexController implements Initializable {
     }
 
     private void initialiseMenu() {
+        book_btn.setText(properties.getProperty("BOOK_MENU_BTN_INDEX"));
+        order_btn.setText(properties.getProperty("COMMANDE_MENU_BTN_INDEX"));
+        user_btn.setText(properties.getProperty("USER_MENU_BTN_INDEX"));
+        prefenre_combobox.setPromptText(properties.getProperty("PREFERENCE_MENU_COMBOX_INDEX"));
+        prefenre_combobox.getItems().addAll(properties.getProperty("CADDY_ITEMS_OF_PREFERENCE_MENU_COMBOX_INDEX"),
+                properties.getProperty("FAVORY_ITEMS_OF_PREFERENCE_MENU_COMBOX_INDEX"));
+
+        langue_combobox.setPromptText(properties.getProperty("LANGUAGE_MENU_COMBOX_INDEX"));
         langue_combobox.getItems().addAll(new Langage(properties.getProperty("EN_ITEMS_LANGUAGE_INDEX"), LanguageEmun.en),
                 new Langage(properties.getProperty("FR_ITEMS_LANGUAGE_INDEX"), LanguageEmun.fr));
-        langue_combobox.setPromptText(properties.getProperty("LANGUAGE_MENU_COMBOX_INDEX"));
-        prefenre_combobox.getItems().addAll("Caddy","favoriy");
+
+        logoutBTN.setText(properties.getProperty("LOGOUT_MENU_BTN_INDEX"));
+
         book_btn.setOnAction(event -> {
             try {
                 loadFxmlFile("BOOK", "/view/book/book_principal_stage");
@@ -111,10 +118,24 @@ public class IndexController implements Initializable {
 
         });
 
+
         langue_combobox.valueProperty().addListener((observableValue, langage, t1) -> {
+            /*
+            on recharge la page
+            si l'ancienne langue et la nouvelle sont différentes
+             */
             try {
-                SelectedLanguage.writeToFile(t1.getValue());
-                SelectedLanguage.getInstace(t1.getValue());
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(properties.getProperty("TITLE_RELOAD_APPLICATION_MESSAGE_ALERT"));
+                alert.setContentText(properties.getProperty("TEXTCONTENT_RELOAD_APPLICATION_MESSAGE_ALERT"));
+                Optional<ButtonType> option = alert.showAndWait();
+                if (option.get() == ButtonType.OK) {
+                    SelectedLanguage.writeToFile(t1.getValue());
+                    Stage stage = (Stage) langue_combobox.getScene().getWindow();
+                    stage.setHeight(500);
+                    stage.setWidth(500);
+                    primaryScene.constructPrimaryStage(stage);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
