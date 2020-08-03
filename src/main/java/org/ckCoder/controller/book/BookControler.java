@@ -175,6 +175,7 @@ public class BookControler implements Initializable {
     private void init() throws SQLException {
         bottonComponentController.tableView.getColumns().clear();
         observableList.addAll(categoryService.findAll(new Category()));
+        // LanguageUtil = getistance('')
         bottonComponentController.title_labe.setText("title");
         bottonComponentController.decription_label.setText("description");
         bottonComponentController.submitOrUpdude_btn.setText("valider");
