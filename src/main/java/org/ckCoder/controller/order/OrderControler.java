@@ -14,18 +14,21 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.ckCoder.models.Command;
 import org.ckCoder.service.OrderService;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.UtilForArray;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalTime;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class OrderControler implements Initializable {
@@ -45,10 +48,23 @@ public class OrderControler implements Initializable {
     public DatePicker dateEnd;
     @FXML
     public Button reload_table_btn;
+    @FXML
+    public Text titleView_label;
+    @FXML
+    public Label begin_label;
+    @FXML
+    public Label end_label;
+    @FXML
+    public Text size_label;
 
     private ObservableList<Command> observableList;
     private org.ckCoder.utils.pagination.Pagination<Command> commandPagination;
     private final OrderService orderService = new OrderService();
+    private Properties properties = SelectedLanguage.getInstace();
+
+    public OrderControler() throws IOException {
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
@@ -56,8 +72,12 @@ public class OrderControler implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-        submitDateBtn.setText("search");
+        titleView_label.setText(properties.getProperty("TITLE_LABEL_ORDERPAGE").toUpperCase());
+        begin_label.setText(properties.getProperty("BEGINDATE_LABEL_ORDERPAGE"));
+        end_label.setText(properties.getProperty("ENDDATE_LABEL_ORDERPAGE"));
+        size_label.setText(properties.getProperty("SIZE_LABEL_ORDERPAGE"));
+        searchTextField.setPromptText(properties.getProperty("SEARCH_PLACEHOLDER_ORDERPAGE"));
+        submitDateBtn.setText(properties.getProperty("SEARCH_BTN_ORDERPAGE"));
         submitDateBtn.setOnAction(event -> {
             try {
                 findOrderBetweenTwoDate();
@@ -66,7 +86,7 @@ public class OrderControler implements Initializable {
             }
         });
 
-        reload_table_btn.setText("reload");
+        reload_table_btn.setText(properties.getProperty("RELOAD_BTN_ORDERPAGE"));
         reload_table_btn.setOnAction(event -> {
             try {
                 commandPagination = orderService.findAll(0, 25);
@@ -86,27 +106,27 @@ public class OrderControler implements Initializable {
         resiCombobox.setValue(25);
 
         TableColumn<Command, Double> priceCol = new TableColumn<>();
-        priceCol.setText("total");
+        priceCol.setText(properties.getProperty("TOTAL_COLTABLE_ORDERPAGE"));
         priceCol.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
 
         TableColumn<Command, Double> acceptedCol = new TableColumn<>();
-        acceptedCol.setText("accepted");
+        acceptedCol.setText(properties.getProperty("STATUT_COLTABLE_ORDERPAGE"));
         acceptedCol.setCellValueFactory(new PropertyValueFactory<>("accepted"));
 
         TableColumn<Command, String> nameCol = new TableColumn<>();
-        nameCol.setText("name");
+        nameCol.setText(properties.getProperty("NAME_COLTABLE_ORDERPAGE"));
         nameCol.setCellValueFactory(item -> new ReadOnlyObjectWrapper<>(item.getValue().getUser().getPerson().getName()));
 
         TableColumn<Command, Double> created_at = new TableColumn<>();
-        created_at.setText("date creation");
+        created_at.setText(properties.getProperty("DATECREATION_COLTABLE_ORDERPAGE"));
         created_at.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
         TableColumn<Command, Double> lastupdate = new TableColumn<>();
-        lastupdate.setText("last update");
+        lastupdate.setText(properties.getProperty("LASTUP_COLTABLE_ORDERPAGE"));
         lastupdate.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<Command, String> surnameCol = new TableColumn<>();
-        surnameCol.setText("surname");
+        surnameCol.setText(properties.getProperty("SURNAME_COLTABLE_ORDERPAGE"));
         surnameCol.setCellValueFactory(item -> new ReadOnlyObjectWrapper<>(item.getValue().getUser().getPerson().getSurname()));
 
 
@@ -117,7 +137,7 @@ public class OrderControler implements Initializable {
             @Override
             public TableCell<Command, Void> call(TableColumn<Command, Void> param) {
                 final TableCell<Command, Void> cell = new TableCell<Command, Void>(){
-                    final Button btn = new Button("View");
+                    final Button btn = new Button(properties.getProperty("VIEW_COL_BTN"));
                     {
                         btn.getStyleClass().add("round-red");
                         btn.setCursor(Cursor.HAND);
@@ -243,6 +263,7 @@ public class OrderControler implements Initializable {
 
         stage.setScene(scene);
         stage.showAndWait();
+        stage.setTitle(properties.getProperty("ORDERDETAIL_TITLE_WINDOW"));
         if(orderViewDetail.getCommand().getAccepted() != cmd.getAccepted())
             observableList.set(observableList.indexOf(cmd), orderViewDetail.getCommand());
     }

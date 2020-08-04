@@ -4,17 +4,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Text;
 import javafx.stage.Window;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Critique;
 import org.ckCoder.models.User;
 import org.ckCoder.service.CritiqueService;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class CritiqueController implements Initializable {
@@ -28,6 +32,13 @@ public class CritiqueController implements Initializable {
 
     @FXML
     private Button saveBotton;
+
+    @FXML
+    private Label note_label;
+    @FXML
+    private Label comment_label;
+    @FXML
+    private Text title_view_label;
 
     private Book book;
 
@@ -58,6 +69,11 @@ public class CritiqueController implements Initializable {
                 ((Control) e.getSource()).getScene().getWindow().hide();
             }
         });
+        try {
+            internationnalisation();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -96,5 +112,14 @@ public class CritiqueController implements Initializable {
 
     public boolean isGood() {
         return isGood;
+    }
+
+    private void internationnalisation() throws IOException {
+        Properties properties = SelectedLanguage.getInstace();
+        title_view_label.setText(properties.getProperty("TITLE_CRITIQUEPAGE"));
+        note_combobox.setPromptText(properties.getProperty("NOTE_LABEL_CRITIQUEPAGE"));
+        comment_label.setText(properties.getProperty("COMMENT_LABEL_CRITIQUEPAGE"));
+        saveBotton.setText(properties.getProperty("SAVE_BTN_CRITIQUEPAGE"));
+        note_label.setText(properties.getProperty("NOTE_LABEL_CRITIQUEPAGE"));
     }
 }

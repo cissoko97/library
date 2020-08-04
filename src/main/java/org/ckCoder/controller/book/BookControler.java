@@ -30,6 +30,7 @@ import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
 import org.ckCoder.service.CritiqueService;
 import org.ckCoder.service.contract.IService;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
@@ -45,8 +46,34 @@ import java.util.List;
 import java.util.*;
 
 public class BookControler implements Initializable {
+    @FXML
+    public Text book_title_label;
+    @FXML
+    public Text price_label;
+    @FXML
+    public Text critiqueValue_label;
+    @FXML
+    public Text nominalvalue_label;
+    @FXML
+    public Text edition_label;
+    @FXML
+    public Text availability;
+    @FXML
+    public Text title_label;
+    @FXML
+    public Text type_book;
+    @FXML
+    public Text updateDate_label;
+    @FXML
+    public Text createdDate_label;
+    @FXML
+    public Text description_label;
+    @FXML
+    public Text see_label;
+    @FXML
+    public Text about_autor_label;
     /*@FXML
-    public Text idBook;*/
+        public Text idBook;*/
     SessionManager manager = SessionManager.getInstance();
 
     @FXML
@@ -110,6 +137,11 @@ public class BookControler implements Initializable {
 
     private final User user = manager.getUser();
 
+    private final Properties properties = SelectedLanguage.getInstace();
+
+    public BookControler() throws IOException {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         boolean isAdmin = false;
@@ -126,6 +158,7 @@ public class BookControler implements Initializable {
         }
 
         btn_controlController.getLoad_btn().setDisable(true);
+        btn_controlController.getUpdate_btn3().setDisable(true);
         btn_controlController.gridPaneRoot.getChildren().remove(btn_controlController.getDelete_btn());
         try {
             init();
@@ -195,18 +228,18 @@ public class BookControler implements Initializable {
 
         TableColumn<Category, String> idCatColumn = new TableColumn<>();
         idCatColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idCatColumn.setText("Id");
+        idCatColumn.setText(properties.getProperty("ID_COL_TABLEVIEW_BOOTONCOMP"));
         idCatColumn.setMaxWidth(200);
         idCatColumn.setMinWidth(50);
 
         TableColumn<Category, String> titleCatColumn = new TableColumn<>();
-        titleCatColumn.setText("Flat");
+        titleCatColumn.setText(properties.getProperty("FLAG_COL_TABLEVIEW_BOTTONCOMP"));
         titleCatColumn.setCellValueFactory(new PropertyValueFactory<>("flag"));
         titleCatColumn.setMaxWidth(300);
         titleCatColumn.setMinWidth(200);
 
         TableColumn<Category, String> descriptionCatColumn = new TableColumn<>();
-        descriptionCatColumn.setText("Description");
+        descriptionCatColumn.setText(properties.getProperty("DESCRIPTION_COL_TABLEVIEWCOMP"));
         descriptionCatColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
         bottonComponentController.tableView.getColumns().add(idCatColumn);
@@ -246,6 +279,9 @@ public class BookControler implements Initializable {
             bottonComponentController.titleTextFied.setText("");
             bottonComponentController.descriptionTextArray.setText("");
         });
+
+        //internalisation label
+        nameLabel();
     }
 
     private boolean controlForm() {
@@ -332,7 +368,7 @@ public class BookControler implements Initializable {
             @Override
             public TableCell<Category, Void> call(TableColumn<Category, Void> param) {
                 final TableCell<Category, Void> cell = new TableCell<Category, Void>() {
-                    final Button btn = new Button("up");
+                    final Button btn = new Button(properties.getProperty("UPDATE_COL_BTN"));
 
                     {
                         btn.getStyleClass().add("round-blue");
@@ -373,12 +409,17 @@ public class BookControler implements Initializable {
             @Override
             public TableCell<Category, Void> call(TableColumn<Category, Void> param) {
                 final TableCell<Category, Void> cell = new TableCell<Category, Void>() {
-                    final Button btn = new Button("see");
+                    final Button btn = new Button(properties.getProperty("VIEW_COL_BTN"));
 
                     {
                         btn.getStyleClass().add("round-red");
                         btn.setOnAction(event -> {
-                            CategoryAndBookController categoryAndBookController = new CategoryAndBookController();
+                            CategoryAndBookController categoryAndBookController = null;
+                            try {
+                                categoryAndBookController = new CategoryAndBookController();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             category = getTableView().getItems().get(getIndex());
 
                             //loading of category in controller
@@ -454,10 +495,8 @@ public class BookControler implements Initializable {
         //do this for get current stage
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UTILITY);
+        stage.setTitle(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE"));
         stage.initOwner(((Control) event.getSource()).getScene().getWindow());
-            /*stage.setOnCloseRequest(event1 -> {
-
-            });*/
         // or do this
         //stage.initOwner(this.btn.getScene().getWindows());
 
@@ -550,18 +589,6 @@ public class BookControler implements Initializable {
         ObservableList<Critique> critiqueObservableList = FXCollections.observableArrayList(critiques);
         critique_listView.setItems(critiqueObservableList);
         critique_listView.setCellFactory(critique -> new CardCritiqueController());
-
-        /*critique_listView.setOnMouseClicked(event -> {
-            if (critique_listView.getSelectionModel().getSelectedItem() != null) {
-                try {
-                    this.book = bookService.findAllBookAndtherElement(cardPaneBook_listview.getSelectionModel().getSelectedItem().getId());
-                    loadBook(this.book);
-
-                } catch (SQLException | IOException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-        });*/
     }
 
     private void loadBook(Book book) {
@@ -613,6 +640,7 @@ public class BookControler implements Initializable {
 
         getCritiqueCard();
         btn_controlController.getLoad_btn().setDisable(false);
+        btn_controlController.getUpdate_btn3().setDisable(false);
     }
 
     private void setwidthBtn(TableColumn colBtn) {
@@ -623,7 +651,39 @@ public class BookControler implements Initializable {
     private void addBooktoCart(Book book) {
         if (!manager.getBookSet().contains(book)) {
             manager.getBookSet().add(book);
-            Verification.alertMessage("this book has add in your caddy", Alert.AlertType.INFORMATION);
+            Verification.alertMessage(properties.getProperty("READBOOKPAGE_ADD_CADDY_MESSAGE"), Alert.AlertType.INFORMATION);
         }
+    }
+
+
+    private void nameLabel() {
+        book_title_label.setText(properties.getProperty("TITLE_VIEW_BOOKPAGE"));
+        title_label.setText(properties.getProperty("TITLE_LABEL_BOOKPAGE"));
+         see_label.setText(properties.getProperty("NUMSEE_BOOK_LABEL_BOOKPAGE"));
+        availability.setText(properties.getProperty("AVAILABILITY_BOOK_LABEL_BOOKPAGE"));
+        edition_label.setText(properties.getProperty("EDITIONYEAR_BOOK_LABEL_BOOKPAGE"));
+        nominalvalue_label.setText(properties.getProperty("NOMINALVALUE_BOOK_LABEL_BOOKPAGE"));
+        critiqueValue_label.setText(properties.getProperty("CRITIQUE_BOOK_LABEL_BOOKPAGE"));
+        price_label.setText(properties.getProperty("PRICE_BOOK_LABEL_BOOKPAGE"));
+        type_book.setText(properties.getProperty("TYPE_BOOK_LABEL_BOOKPAGE"));
+        createdDate_label.setText(properties.getProperty("CREATION_BOOK_LABEL_BOOKPAGE"));
+        updateDate.setText(properties.getProperty("UPDATE_BOOK_LABEL_BOOKPAGE"));
+        description_label.setText(properties.getProperty("DESCRIPTION_BOOK_LABEL_BOOKPAGE"));
+        about_autor_label.setText(properties.getProperty("ABOUTAUTHOR_BOOK_LABEL_BOOKPAGE"));
+
+        //botton component
+        bottonComponentController.title_labe.setText(properties.getProperty("TITLE_LABEL_BOTTONCOMP"));
+        bottonComponentController.decription_label.setText(properties.getProperty("DESCRIPTION_LABEL_BOTTONCOMP"));
+        bottonComponentController.submitOrUpdude_btn.setText(properties.getProperty("SUBMIT_BTN_BOTTON"));
+        bottonComponentController.reset_btn.setText(properties.getProperty("RESET_BTN_BOTTN"));
+
+        //button control
+        btn_controlController.getAdd_btn().setText(properties.getProperty("FIRST_BTN"));
+        btn_controlController.getDelete_btn().setText(properties.getProperty("SECOND_BTN"));
+        btn_controlController.getUpdate_btn3().setText(properties.getProperty("THIRTH_BTN"));
+        btn_controlController.getLoad_btn().setText(properties.getProperty("FOUR_BTN"));
+        btn_controlController.getAddCaddyBtn().setText(properties.getProperty("FIVE_BTN"));
+        btn_controlController.getAddFavory_btn().setText(properties.getProperty("SIX_BTN"));
+        btn_controlController.getLockUser_btn().setText(properties.getProperty("SEVEN_BTN"));
     }
 }

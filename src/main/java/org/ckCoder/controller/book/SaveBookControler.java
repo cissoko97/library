@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.ckCoder.models.Author;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Category;
@@ -15,6 +16,7 @@ import org.ckCoder.service.AuthorService;
 import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
 import org.ckCoder.service.contract.IService;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.Verification;
 
 import java.io.File;
@@ -80,6 +82,12 @@ public class SaveBookControler implements Initializable {
     private final IService<Author, Long> authorService = new AuthorService();
     private final BookService bookService = new BookService();
     private boolean isNewBook = true;
+
+    private Properties properties = SelectedLanguage.getInstace();
+
+    public SaveBookControler() throws IOException {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -102,6 +110,7 @@ public class SaveBookControler implements Initializable {
 
         valeurNominal_textField.getItems().addAll(10,25,50,75,100);
         valeurNominal_textField.setValue(10);
+        internalisationNameOfField();
     }
 
     @FXML
@@ -165,13 +174,6 @@ public class SaveBookControler implements Initializable {
             Verification.dangerField(anneeEditionTextField);
         }
 
-        /*if(valeurNominal_textField.getText().equals("")){
-            Verification.dangerField(valeurNominal_textField);
-            errorList.add("what is à nominal value of book?");
-        } else if (!Verification.numeric(valeurNominal_textField.getText())) {
-            errorList.add("the nominal value must be a number");
-            Verification.dangerField(valeurNominal_textField);
-        }*/
         if(type_textField.getValue() == null){
             Verification.dangerField(type_textField);
         }
@@ -329,5 +331,23 @@ public class SaveBookControler implements Initializable {
 
     public boolean getIsNewBook() {
         return isNewBook;
+    }
+
+    private void internalisationNameOfField() {
+        title_label.setText(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE").toUpperCase());
+        authorLabel.setText(properties.getProperty("AUTHOR_LABEL_CREATEBOOKPAGE"));
+        category_label.setText(properties.getProperty("CATEGORY_LABEL_CREATEBOOKPAGE"));
+        title_label.setText(properties.getProperty("TITLE_LABEL_CREATEDBOOKPAGE"));
+        anneeEdition_label.setText(properties.getProperty("YEAR_LABEL_CREATEBOOKPAGE"));
+        valeurNominal_label.setText(properties.getProperty("NOMINALVALUE_LABEL_CREATEBOOKPAGE"));
+        type_label.setText(properties.getProperty("TYPE_LABEL_CREATEBOOKPAGE"));
+        price_label.setText(properties.getProperty("PRICE_LABEL_CREATEBOOKPAGE"));
+        fileName_label.setText(properties.getProperty("FILENAME_LABEL_CREATEBOOKPAGE"));
+        fileName_btn.setText(properties.getProperty("BOOKPAGE_FILE_BTN"));
+        uploadImgName_btn.setText(properties.getProperty("BOOKPAGE_IMG_BTN"));
+        imgName_label.setText(properties.getProperty("IMGNAME_LABEL_CREATEBOOKPAGE"));
+        description_label.setText(properties.getProperty("DESCRIPTION_LABEL_CREATEBOOKPAGE"));
+        saveBtn.setText(properties.getProperty("SAVE_BTN_CREATEBOOKPAGE"));
+        resetBtn.setText(properties.getProperty("RESET_BTN_CREATEBOOKPAGE"));
     }
 }

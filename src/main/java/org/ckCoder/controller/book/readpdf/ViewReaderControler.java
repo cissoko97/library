@@ -21,6 +21,7 @@ import org.ckCoder.controller.book.CritiqueController;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Critique;
 import org.ckCoder.models.User;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
@@ -28,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class ViewReaderControler implements Initializable {
@@ -72,14 +74,12 @@ public class ViewReaderControler implements Initializable {
 
         saveBtn.setOnAction(event -> {
             manager.getBookSet().add(book);
-            Verification.alertMessage("this book has add to your caddy", Alert.AlertType.INFORMATION);
+            try {
+                Verification.alertMessage(SelectedLanguage.getInstace().getProperty("READBOOKPAGE_ADD_CADDY_MESSAGE"), Alert.AlertType.INFORMATION);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
-
-
-        /*String base64 = Base64.getEncoder().encodeToString(data);
-        // call JS fuction from java code
-        engine.executeScript("openFileFromBase64('" + base64 + "')");*/
-
 
 
 
@@ -103,7 +103,11 @@ public class ViewReaderControler implements Initializable {
                     }
                 });
 
-
+        try {
+            internationalisationLabel();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -131,6 +135,7 @@ public class ViewReaderControler implements Initializable {
         stage.initStyle(StageStyle.UTILITY);
         stage.initOwner(((Control) event.getSource()).getScene().getWindow());
         critiqueController.setBook(book);
+        stage.setTitle(SelectedLanguage.getInstace().getProperty("CRITIQUEPAGE_TITLE_WINDOW"));
         stage.showAndWait();
         isGood = critiqueController.isGood();
     }
@@ -150,5 +155,11 @@ public class ViewReaderControler implements Initializable {
 
     public boolean isGood() {
         return isGood;
+    }
+
+    private void internationalisationLabel() throws IOException {
+        Properties properties = SelectedLanguage.getInstace();
+        commentBtn.setText(properties.getProperty("COMMENTS_BTN_READBOOKPAGE"));
+        saveBtn.setText(properties.getProperty("CADDY_BTN_READBOOKPAGE"));
     }
 }

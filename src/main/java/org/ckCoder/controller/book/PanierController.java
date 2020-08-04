@@ -11,12 +11,15 @@ import javafx.scene.text.Text;
 import org.apache.log4j.Logger;
 import org.ckCoder.models.Book;
 import org.ckCoder.service.OrderService;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -25,7 +28,7 @@ public class PanierController implements Initializable {
     private Logger logger = Logger.getLogger(this.getClass());
 
     private OrderService orderService = new OrderService();
-
+    private Properties properties = SelectedLanguage.getInstace();
 
     @FXML
     private Text total_value;
@@ -44,11 +47,16 @@ public class PanierController implements Initializable {
     private Set<Long> listId = new HashSet<>();
     private ObservableList<Book> observableListBook;
 
+    public PanierController() throws IOException {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         logger.info(manager.getBookSet());
         initTableColumn();
         initDataInTable();
+        total_labet.setText(properties.getProperty("TOTAL_LABEL_CADDYPAGE"));
+        commander_btn.setText(properties.getProperty("VALIDCMD_LABEL_CADDYPAGE"));
     }
 
     public void onOrder(ActionEvent event) throws SQLException {
@@ -70,9 +78,9 @@ public class PanierController implements Initializable {
         TableColumn<Book, String> columnName = new TableColumn<>();
         TableColumn<Book, String> columnPrice = new TableColumn<>();
 
-        columnId.setText("Id");
-        columnName.setText("Title");
-        columnPrice.setText("Price");
+        columnId.setText(properties.getProperty("ID_BOOK_COL_TABLEVIEW"));
+        columnName.setText(properties.getProperty("TITLE_BOOK_COL_TABLEVIEW"));
+        columnPrice.setText(properties.getProperty("PRICE_BOOK_COL_TABLEVIEW"));
 
         columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
         columnName.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -91,8 +99,6 @@ public class PanierController implements Initializable {
         manager.getBookSet().stream().forEach(book -> listId.add(book.getId()));
         logger.info("List des id dans le panier");
         logger.info(listId);
-        total_value.setText(String.valueOf(totalPrice));
-
-
+        total_value.setText(String.valueOf(totalPrice) + " XAF");
     }
 }
