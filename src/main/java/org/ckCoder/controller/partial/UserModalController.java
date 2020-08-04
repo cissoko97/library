@@ -4,15 +4,33 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.ckCoder.models.User;
+import org.ckCoder.utils.SelectedLanguage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class UserModalController implements Initializable {
 
+    @FXML
+    private Text title_user_form;
+    @FXML
+    private Label label_user_name;
+    @FXML
+    private Label label_user_surname;
+    @FXML
+    private Label label_u_email;
+    @FXML
+    private Label label_u_password;
+    @FXML
+    private Label label_u_password_conf;
+
+    Properties properties = SelectedLanguage.getInstace();
     Logger logger = Logger.getLogger(this.getClass());
     private User user;
     private Stage dialogStage;
@@ -44,8 +62,9 @@ public class UserModalController implements Initializable {
     private TextField userEmail;
 
     @FXML
-    private TextField userPassword;
-
+    private PasswordField userPassword;
+    @FXML
+    private PasswordField userPasswordConfirm;
     @FXML
     public Tab emptyUser;
 
@@ -55,8 +74,12 @@ public class UserModalController implements Initializable {
     @FXML
     public TabPane modalUserTab;
 
+    public UserModalController() throws IOException {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.initLabel();
         this.initButton();
     }
 
@@ -77,7 +100,7 @@ public class UserModalController implements Initializable {
             userSurname.setText(user.getPerson().getSurname());
             userEmail.setText(user.getEmail());
             userName.setText(user.getPerson().getName());
-        }else{
+        } else {
             userEmail.setEditable(true);
         }
     }
@@ -127,5 +150,15 @@ public class UserModalController implements Initializable {
 
     public User getUser() {
         return user;
+    }
+
+    private void initLabel() {
+        label_user_name.setText(properties.getProperty("NAME_LABEL_USERFORM"));
+        label_user_surname.setText(properties.getProperty("SURNAME_LABEL_USERFORM"));
+        label_u_email.setText(properties.getProperty("EMAIL_LABEL_USERFORM"));
+        label_u_password.setText(properties.getProperty("PASSWORD_LABEL_USERFORM"));
+        label_u_password_conf.setText(properties.getProperty("PASSWORD_CONF_USERFORM"));
+        update_btn.setText(properties.getProperty("REGISTER_BTN_USERFORM"));
+        title_user_form.setText(properties.getProperty("TITLE_LABEL_USERFORM"));
     }
 }

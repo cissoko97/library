@@ -15,84 +15,84 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="638.0" prefWidth="1320.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.user.UserControler">
-   <center>
-      <HBox BorderPane.alignment="CENTER">
-         <children>
-            <VBox>
-               <children>
-                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;">
-                     <children>
-                        <TextField layoutX="14.0" layoutY="8.0" prefHeight="29.0" prefWidth="216.0" promptText="bonjour" />
-                        <ComboBox layoutX="240.0" layoutY="9.0" maxWidth="100.0" minWidth="100.0" promptText="trie" />
-                     </children>
-                  </AnchorPane>
-                  <ListView fx:id="userListView" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-            <BorderPane>
-               <center>
-                  <VBox alignment="CENTER" AnchorPane.bottomAnchor="88.0" AnchorPane.topAnchor="20.0" BorderPane.alignment="TOP_LEFT">
-                     <children>
-                        <GridPane style="-fx-border-color: #8A8B8F; -fx-border-width: 3;" VBox.vgrow="ALWAYS">
-                          <columnConstraints>
-                            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="428.0" minWidth="10.0" prefWidth="268.0" />
-                            <ColumnConstraints hgrow="ALWAYS" maxWidth="637.0" minWidth="10.0" prefWidth="286.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id user" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User Created at" GridPane.rowIndex="7" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="is_locked" GridPane.rowIndex="6" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="email" GridPane.rowIndex="5" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Person last updated at" GridPane.rowIndex="4" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Person created at" GridPane.rowIndex="3" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="surname" GridPane.rowIndex="2" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.rowIndex="1" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="User last Updated at" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
-                              <Text fx:id="userId" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
-                              <Text fx:id="userUpdateddAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                              <Text fx:id="userCreatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                              <Text fx:id="userIsLocked" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                              <Text fx:id="userEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <Text fx:id="personUpdatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <Text fx:id="personCreatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Text fx:id="userSurname" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                           </children>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </GridPane>
-                           <fx:include fx:id="controlBtn" source="../utils/control_btn.fxml" />
-                     </children>
-                  </VBox>
-               </center>
-            </BorderPane>
-         </children>
-      </HBox>
-   </center>
-   <bottom>
-      <BorderPane BorderPane.alignment="CENTER">
-          <center>
-              <fx:include fx:id="bottonComponent" source="../utils/botton_component.fxml" />
-          </center>
-      </BorderPane>
-   </bottom>
-   <top>
-      <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="User Panel" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="34.0" />
-         </font>
-      </Text>
-   </top>
+    <center>
+        <HBox BorderPane.alignment="CENTER">
+            <children>
+                <VBox>
+                    <children>
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #8A8B8F; -fx-border-width: 3;">
+                            <children>
+                                <TextField layoutX="14.0" layoutY="8.0" prefHeight="29.0" prefWidth="216.0" promptText="bonjour" />
+                                <ComboBox layoutX="240.0" layoutY="9.0" maxWidth="100.0" minWidth="100.0" promptText="trie" />
+                            </children>
+                        </AnchorPane>
+                        <ListView fx:id="userListView" VBox.vgrow="ALWAYS" />
+                    </children>
+                </VBox>
+                <BorderPane>
+                    <center>
+                        <VBox alignment="CENTER" AnchorPane.bottomAnchor="88.0" AnchorPane.topAnchor="20.0" BorderPane.alignment="TOP_LEFT">
+                            <children>
+                                <GridPane style="-fx-border-color: #8A8B8F; -fx-border-width: 3;" VBox.vgrow="ALWAYS">
+                                    <columnConstraints>
+                                        <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="428.0" minWidth="10.0" prefWidth="268.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="637.0" minWidth="10.0" prefWidth="286.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="20.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <Text fx:id="label_id" strokeType="OUTSIDE" strokeWidth="0.0" text="Id user" />
+                                        <Text fx:id="label_u_created" strokeType="OUTSIDE" strokeWidth="0.0" text="User Created at" GridPane.rowIndex="7" />
+                                        <Text fx:id="label_islock" strokeType="OUTSIDE" strokeWidth="0.0" text="is_locked" GridPane.rowIndex="6" />
+                                        <Text fx:id="label_email" strokeType="OUTSIDE" strokeWidth="0.0" text="email" GridPane.rowIndex="5" />
+                                        <Text fx:id="label_p_update" strokeType="OUTSIDE" strokeWidth="0.0" text="Person last updated at" GridPane.rowIndex="4" />
+                                        <Text fx:id="label_p_created" strokeType="OUTSIDE" strokeWidth="0.0" text="Person created at" GridPane.rowIndex="3" />
+                                        <Text fx:id="label_surname" strokeType="OUTSIDE" strokeWidth="0.0" text="surname" GridPane.rowIndex="2" />
+                                        <Text fx:id="label_name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.rowIndex="1" />
+                                        <Text fx:id="label_u_update" strokeType="OUTSIDE" strokeWidth="0.0" text="User last Updated at" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
+                                        <Text fx:id="userId" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" />
+                                        <Text fx:id="userUpdateddAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                        <Text fx:id="userCreatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                        <Text fx:id="userIsLocked" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                        <Text fx:id="userEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                        <Text fx:id="personUpdatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <Text fx:id="personCreatedAt" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <Text fx:id="userSurname" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    </children>
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </GridPane>
+                                <fx:include fx:id="controlBtn" source="../utils/control_btn.fxml" />
+                            </children>
+                        </VBox>
+                    </center>
+                </BorderPane>
+            </children>
+        </HBox>
+    </center>
+    <bottom>
+        <BorderPane BorderPane.alignment="CENTER">
+            <center>
+                <fx:include fx:id="bottonComponent" source="../utils/botton_component.fxml" />
+            </center>
+        </BorderPane>
+    </bottom>
+    <top>
+        <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="User Panel" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="34.0" />
+            </font>
+        </Text>
+    </top>
 </BorderPane>

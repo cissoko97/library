@@ -3,7 +3,6 @@ package org.ckCoder.controller.user;
 import com.sun.istack.internal.NotNull;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,7 +11,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -28,15 +26,27 @@ import org.ckCoder.models.User;
 import org.ckCoder.service.ProfilService;
 import org.ckCoder.service.UserService;
 import org.ckCoder.utils.DateConverted;
+import org.ckCoder.utils.SelectedLanguage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 public class UserControler implements Initializable {
 
+    Properties language = SelectedLanguage.getInstace();
+    public Text label_id;
+    public Text label_u_created;
+    public Text label_islock;
+    public Text label_email;
+    public Text label_p_update;
+    public Text label_p_created;
+    public Text label_surname;
+    public Text label_name;
+    public Text label_u_update;
     //Logger devlaration
     Logger logger = Logger.getLogger(this.getClass());
     public ListView<User> userListView;
@@ -72,13 +82,16 @@ public class UserControler implements Initializable {
     @FXML
     private BottonComponent bottonComponentController;
 
+    public UserControler() throws IOException {
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         showUserDetail(null);
         initBottomComponent();
         initBUttonComponent();
-
+        initLabelText();
         initListViewUser();
     }
 
@@ -90,9 +103,9 @@ public class UserControler implements Initializable {
         //Init table view for Profils Items
 
         bottonComponentController.tableView.getColumns().clear();
-        fieldId.setText("id");
-        fieldLabel.setText("Label");
-        fieldDescription.setText("Description");
+        fieldId.setText(language.getProperty("ID_COL_TABLEVIEW_BOOTONCOMP"));
+        fieldLabel.setText(language.getProperty("TITLE_LABEL_BOTTONCOMP"));
+        fieldDescription.setText(language.getProperty("DESCRIPTION_LABEL_BOTTONCOMP"));
 
         fieldId.setCellValueFactory(new PropertyValueFactory<>("id"));
         fieldLabel.setCellValueFactory(new PropertyValueFactory<>("label"));
@@ -103,10 +116,10 @@ public class UserControler implements Initializable {
         bottonComponentController.tableView.getColumns().addAll(fieldId, fieldLabel, fieldDescription);
 
         bottonComponentController.tableView.setItems(observableListTable);
-        this.bottonComponentController.submitOrUpdude_btn.setText("Save");
-        this.bottonComponentController.title_labe.setText("title");
-        this.bottonComponentController.decription_label.setText("Description");
-
+        this.bottonComponentController.submitOrUpdude_btn.setText(language.getProperty("SUBMIT_BTN_BOTTON"));
+        this.bottonComponentController.title_labe.setText(language.getProperty("TITLE_LABEL_BOTTONCOMP"));
+        this.bottonComponentController.decription_label.setText(language.getProperty("DESCRIPTION_LABEL_BOTTONCOMP"));
+        this.bottonComponentController.reset_btn.setText(language.getProperty("RESET_BTN_BOTTON"));
         bottonComponentController.submitOrUpdude_btn.setOnAction(event -> {
             String label = this.bottonComponentController.titleTextFied.getText();
             String description = this.bottonComponentController.descriptionTextArray.getText();
@@ -148,14 +161,14 @@ public class UserControler implements Initializable {
     private void initBUttonComponent() {
 
         //init label
-        controlBtnController.getAdd_btn().setText("New User");
-        controlBtnController.getDelete_btn().setText("Update User");
+        controlBtnController.getAdd_btn().setText(language.getProperty("FIRST_BTN"));
+        controlBtnController.getDelete_btn().setText(language.getProperty("THIRTH_BTN"));
         controlBtnController.getDelete_btn().setDisable(true);
         controlBtnController.getUpdate_btn3().setVisible(Boolean.FALSE);
         controlBtnController.getLoad_btn().setVisible(Boolean.FALSE);
         controlBtnController.getAddCaddyBtn().setVisible(Boolean.FALSE);
         controlBtnController.getAddFavory_btn().setVisible(Boolean.FALSE);
-        controlBtnController.getLockUser_btn().setText("Lock User");
+        controlBtnController.getLockUser_btn().setText(language.getProperty("SEVEN_BTN"));
         controlBtnController.getLockUser_btn().setDisable(true);
 
         controlBtnController.getAdd_btn().setOnAction(event -> {
@@ -172,7 +185,7 @@ public class UserControler implements Initializable {
 
                 scene = new Scene(page);
                 stage.setScene(scene);
-                stage.setTitle("Save user Form");
+                stage.setTitle(language.getProperty("TITLE_LABEL_USERFORM"));
 
                 UserModalController userModalController = loader.getController();
                 selectedUser = null;
@@ -303,5 +316,17 @@ public class UserControler implements Initializable {
         } else {
             controlBtnController.getLockUser_btn().setText("lock");
         }
+    }
+
+    private void initLabelText() {
+        label_id.setText(language.getProperty("IDUSER_LABEL_USERPAGE"));
+        label_u_created.setText(language.getProperty("USER_CRAT_LABEL_USERPAGE"));
+        label_islock.setText(language.getProperty("ISLOCKED_LABEL_USERPAGE"));
+        label_email.setText(language.getProperty("EMAIL_LABEL_USERPAGE"));
+        label_p_update.setText(language.getProperty("PERSON_UPDATE_LABEL_USERPAGE"));
+        label_p_created.setText(language.getProperty("PERSON_CREAT_LABEL_USERPAGE"));
+        label_surname.setText(language.getProperty("SURNAME_LABEL_USERPAGE"));
+        label_name.setText(language.getProperty("NAME_LABEL_USERPAGE"));
+        label_u_update.setText(language.getProperty("USER_UPDATE_LABEL_USERPAGE"));
     }
 }
