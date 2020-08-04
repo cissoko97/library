@@ -58,19 +58,20 @@
                         <RowConstraints maxHeight="106.0" minHeight="20.0" prefHeight="29.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="107.0" minHeight="11.0" prefHeight="29.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="190.0" minHeight="19.0" prefHeight="31.0" valignment="TOP" vgrow="SOMETIMES" />
+                        <RowConstraints />
                     </rowConstraints>
                      <children>
                         <!--<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />-->
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="price" GridPane.rowIndex="6" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="critique value" GridPane.rowIndex="5" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="nominal value" GridPane.rowIndex="4" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="edition_year" GridPane.rowIndex="3" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="availability" GridPane.rowIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="title" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="type of book" GridPane.rowIndex="7" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="update date" GridPane.rowIndex="9" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="création date" GridPane.rowIndex="8" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="10">
+                        <Text fx:id="price_label" strokeType="OUTSIDE" strokeWidth="0.0" text="price" GridPane.rowIndex="6" />
+                        <Text fx:id="critiqueValue_label" strokeType="OUTSIDE" strokeWidth="0.0" text="critique value" GridPane.rowIndex="5" />
+                        <Text fx:id="nominalvalue_label" strokeType="OUTSIDE" strokeWidth="0.0" text="nominal value" GridPane.rowIndex="4" />
+                        <Text fx:id="edition_label" strokeType="OUTSIDE" strokeWidth="0.0" text="edition_year" GridPane.rowIndex="3" />
+                        <Text fx:id="availability" strokeType="OUTSIDE" strokeWidth="0.0" text="availability" GridPane.rowIndex="2" />
+                        <Text fx:id="title_label" strokeType="OUTSIDE" strokeWidth="0.0" text="title" />
+                        <Text fx:id="type_book" strokeType="OUTSIDE" strokeWidth="0.0" text="type of book" GridPane.rowIndex="7" />
+                        <Text fx:id="updateDate_label" strokeType="OUTSIDE" strokeWidth="0.0" text="update date" GridPane.rowIndex="9" />
+                        <Text fx:id="createdDate_label" strokeType="OUTSIDE" strokeWidth="0.0" text="création date" GridPane.rowIndex="8" />
+                        <Text fx:id="description_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="10">
                            <GridPane.margin>
                               <Insets top="6.0" />
                            </GridPane.margin></Text>
@@ -84,10 +85,10 @@
                         <Text fx:id="availabilityBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Text fx:id="nbre_vue" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Text fx:id="titleBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of seen" GridPane.rowIndex="1" />
+                        <Text fx:id="see_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of seen" GridPane.rowIndex="1" />
                         <Text fx:id="originalNameText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Text fx:id="updateDate" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="About author" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                        <Text fx:id="about_autor_label" strokeType="OUTSIDE" strokeWidth="0.0" text="About author" GridPane.columnIndex="2" GridPane.rowIndex="6">
                            <font>
                               <Font name="DejaVu Sans Bold" size="13.0" />
                            </font>
@@ -103,8 +104,11 @@
                   </GridPane>
                   <HBox layoutY="404.0" prefHeight="50.0" prefWidth="489.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                       <children>
-                          <fx:include fx:id="btn_control" source="../utils/control_btn.fxml" HBox.hgrow="ALWAYS" />
+                          <fx:include fx:id="btn_control" source="../utils/control_btn.fxml"/>
                       </children>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
                   </HBox>
                </children>
             </AnchorPane>
@@ -125,7 +129,7 @@
       </BorderPane>
    </bottom>
    <top>
-      <Text fill="#171717" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOK PANEL" BorderPane.alignment="CENTER">
+      <Text fx:id="book_title_label" fill="#171717" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOK PANEL" BorderPane.alignment="CENTER">
          <font>
             <Font size="34.0" />
          </font>

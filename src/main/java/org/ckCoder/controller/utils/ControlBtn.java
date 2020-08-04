@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.ckCoder.controller.IndexController;
 
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 
 public class ControlBtn implements Initializable {
     @FXML
-    public GridPane gridPaneRoot;
+    public HBox gridPaneRoot;
     @FXML
     private Button add_btn;
     @FXML
@@ -35,49 +36,11 @@ public class ControlBtn implements Initializable {
     private Button addCaddyBtn;
 
 
-    private int numForm = 1;
-
     @FXML
     public void onSave(ActionEvent actionEvent) throws IOException {
-//        Stage dialogStage = new Stage();
-//        dialogStage.setTitle("Edit Person");
-//        dialogStage.initModality(Modality.WINDOW_MODAL);
-//        dialogStage.initOwner(primaryStage);
-//        Scene scene = new Scene(page);
-//        dialogStage.setScene(scene);
 
-        Stage stage = new Stage();
-        if (numForm == 1) {
-
-        }
     }
 
-    @FXML
-    public void onDelete(ActionEvent actionEvent) {
-    }
-    @FXML
-    public void onUpdate(ActionEvent actionEvent) {
-    }
-
-    @FXML
-    public void onRefresh(ActionEvent actionEvent) {
-    }
-
-    @FXML
-    public void onLockUser(ActionEvent actionEvent) {
-    }
-
-    @FXML
-    public void onAddFavory(ActionEvent actionEvent) {
-    }
-
-    @FXML
-    public void onAddCaddy(ActionEvent actionEvent) {
-    }
-
-    public void setNumForm(int numForm) {
-        this.numForm = numForm;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,6 +74,14 @@ public class ControlBtn implements Initializable {
 
     public Button getLoad_btn() {
         return load_btn;
+    }
+
+    public HBox getGridPaneRoot() {
+        return gridPaneRoot;
+    }
+
+    public void setGridPaneRoot(HBox gridPaneRoot) {
+        this.gridPaneRoot = gridPaneRoot;
     }
 
     public void setLoad_btn(Button load_btn) {

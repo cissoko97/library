@@ -17,11 +17,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.ckCoder.MainApp;
-import org.ckCoder.controller.user.UserControler;
 import org.ckCoder.models.User;
 import org.ckCoder.service.UserService;
-import org.ckCoder.utils.NotificationType;
-import org.ckCoder.utils.NotificationUtil;
+/*import org.ckCoder.utils.NotificationType;
+import org.ckCoder.utils.NotificationUtil;*/
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
@@ -78,7 +77,7 @@ public class PrimaryScene {
 
         btn.setOnAction(event -> {
             //primaryStage.setScene(scene1);
-            NotificationUtil.showNotiication(String.valueOf(NotificationType.ERROR), "bonjour", "vide");
+            //NotificationUtil.showNotiication(String.valueOf(NotificationType.ERROR), "bonjour", "vide");
             if (validationForm(userTextField, pwBox, grid)) {
                 //loadUser(userTextField,pwBox,userService,primaryStage,manager);
 

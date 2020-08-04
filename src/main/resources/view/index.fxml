@@ -55,7 +55,7 @@
                </cursor>
             </ComboBox>
             <Region prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="logoutBTN" mnemonicParsing="false" prefHeight="26.0" prefWidth="83.0" style="-fx-background-color: #958784;" text="logout" HBox.hgrow="ALWAYS">
+            <Button fx:id="logoutBTN" mnemonicParsing="false" prefHeight="26.0" prefWidth="182.0" style="-fx-background-color: #958784;" text="logout" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets right="7.0" />
                </HBox.margin>
