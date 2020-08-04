@@ -21,6 +21,7 @@ import org.ckCoder.models.User;
 import org.ckCoder.service.UserService;
 /*import org.ckCoder.utils.NotificationType;
 import org.ckCoder.utils.NotificationUtil;*/
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
 
@@ -28,11 +29,11 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class PrimaryScene {
     private final UserService userService = new UserService();
     SessionManager manager = SessionManager.getInstance();
-
     public void constructPrimaryStage(Stage stage) {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -84,6 +85,11 @@ public class PrimaryScene {
                 valideCredentiel(userTextField, pwBox, stage);
             }
         });
+        try {
+            stage.setTitle(SelectedLanguage.getInstace().getProperty("INDEX_TITLE_DIALOG"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         stage.setWidth(500);
         stage.setHeight(500);
         stage.setScene(scene);

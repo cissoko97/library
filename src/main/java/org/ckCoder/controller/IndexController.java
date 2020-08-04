@@ -167,15 +167,12 @@ public class IndexController implements Initializable {
 
     private void initComboxSelect() {
         prefenre_combobox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equalsIgnoreCase("caddy")) {
-
+            if (newValue.equalsIgnoreCase("caddy") || newValue.equalsIgnoreCase("panier")) {
                 try {
                     Stage stage = new Stage();
                     Scene scene;
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(MainApp.class.getResource("/view/panier/caddy_view.fxml"));
-                    CategoryAndBookController panierController = new CategoryAndBookController();
-//                    panierController.
                     BorderPane page = loader.load();
                     stage.setResizable(false);
                     stage.setMinWidth(600);
@@ -185,7 +182,7 @@ public class IndexController implements Initializable {
 
                     scene = new Scene(page);
                     stage.setScene(scene);
-                    stage.setTitle("Command View");
+                    stage.setTitle(properties.getProperty("CADDYPAGE_TITLE_VIEW"));
                     stage.showAndWait();
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -15,10 +15,13 @@ import javafx.util.Callback;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Category;
 import org.ckCoder.service.BookService;
+import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.UtilForArray;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -33,9 +36,13 @@ public class CategoryAndBookController implements Initializable {
 
     private Book currentBook;
 
+    private Properties properties = SelectedLanguage.getInstace();
     ObservableList<Book> observableList = FXCollections.observableArrayList();
 
     private final BookService bookService = new BookService();
+
+    public CategoryAndBookController() throws IOException {
+    }
 
 
     @Override
@@ -66,33 +73,33 @@ public class CategoryAndBookController implements Initializable {
         bookTableView.getColumns().clear();
         TableColumn<Book, Long> idBookCol = new TableColumn<>();
         idBookCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        idBookCol.setText("Id");
+        idBookCol.setText(properties.getProperty("ID_BOOK_COL_TABLEVIEW"));
         idBookCol.setMaxWidth(200);
         idBookCol.setMinWidth(50);
 
         TableColumn<Book, String> titleCol = new TableColumn<>();
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        titleCol.setText("Title");
+        titleCol.setText(properties.getProperty("TITLE_BOOK_COL_TABLEVIEW"));
 
         TableColumn<Book, Double> priceCol = new TableColumn<>();
         priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        priceCol.setText("Price");
+        priceCol.setText(properties.getProperty("TYPE_BOOK_COL_TABLEVIEW"));
 
         TableColumn<Book, String> typeCol = new TableColumn<>();
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        typeCol.setText("Type");
+        typeCol.setText(properties.getProperty("PRICE_BOOK_COL_TABLEVIEW"));
 
         TableColumn<Book, Integer> nbreVueCol = new TableColumn<>();
         nbreVueCol.setCellValueFactory(new PropertyValueFactory<>("nbVue"));
-        nbreVueCol.setText("Num Live");
+        nbreVueCol.setText(properties.getProperty("LIKE_BOOK_COL_TABLEVIEW"));
 
         TableColumn<Book, String> editionYearCol = new TableColumn<>();
         editionYearCol.setCellValueFactory(new PropertyValueFactory<>("editionYear"));
-        editionYearCol.setText("year edit");
+        editionYearCol.setText(properties.getProperty("YEAR_BOOK_COL_TABLEVIEW"));
 
         TableColumn<Book, String> availabilityCol = new TableColumn<>();
         availabilityCol.setCellValueFactory(new PropertyValueFactory<>("availability"));
-        availabilityCol.setText("availability");
+        availabilityCol.setText(properties.getProperty("AVAILABILITY_BOOK_COL_TABLEVIEW"));
 
 
         TableColumn<Book, Void> btnCol = new TableColumn<>("");

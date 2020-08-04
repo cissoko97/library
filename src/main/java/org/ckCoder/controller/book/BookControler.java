@@ -233,7 +233,7 @@ public class BookControler implements Initializable {
         idCatColumn.setMinWidth(50);
 
         TableColumn<Category, String> titleCatColumn = new TableColumn<>();
-        titleCatColumn.setText(properties.getProperty("FLAT_COL_TABLEVIEW_BOTTONCOMP"));
+        titleCatColumn.setText(properties.getProperty("FLAG_COL_TABLEVIEW_BOTTONCOMP"));
         titleCatColumn.setCellValueFactory(new PropertyValueFactory<>("flag"));
         titleCatColumn.setMaxWidth(300);
         titleCatColumn.setMinWidth(200);
@@ -414,7 +414,12 @@ public class BookControler implements Initializable {
                     {
                         btn.getStyleClass().add("round-red");
                         btn.setOnAction(event -> {
-                            CategoryAndBookController categoryAndBookController = new CategoryAndBookController();
+                            CategoryAndBookController categoryAndBookController = null;
+                            try {
+                                categoryAndBookController = new CategoryAndBookController();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             category = getTableView().getItems().get(getIndex());
 
                             //loading of category in controller
@@ -490,10 +495,8 @@ public class BookControler implements Initializable {
         //do this for get current stage
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UTILITY);
+        stage.setTitle(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE"));
         stage.initOwner(((Control) event.getSource()).getScene().getWindow());
-            /*stage.setOnCloseRequest(event1 -> {
-
-            });*/
         // or do this
         //stage.initOwner(this.btn.getScene().getWindows());
 
@@ -648,7 +651,7 @@ public class BookControler implements Initializable {
     private void addBooktoCart(Book book) {
         if (!manager.getBookSet().contains(book)) {
             manager.getBookSet().add(book);
-            Verification.alertMessage("this book has add in your caddy", Alert.AlertType.INFORMATION);
+            Verification.alertMessage(properties.getProperty("READBOOKPAGE_ADD_CADDY_MESSAGE"), Alert.AlertType.INFORMATION);
         }
     }
 

@@ -76,7 +76,7 @@ public class OrderControler implements Initializable {
         begin_label.setText(properties.getProperty("BEGINDATE_LABEL_ORDERPAGE"));
         end_label.setText(properties.getProperty("ENDDATE_LABEL_ORDERPAGE"));
         size_label.setText(properties.getProperty("SIZE_LABEL_ORDERPAGE"));
-
+        searchTextField.setPromptText(properties.getProperty("SEARCH_PLACEHOLDER_ORDERPAGE"));
         submitDateBtn.setText(properties.getProperty("SEARCH_BTN_ORDERPAGE"));
         submitDateBtn.setOnAction(event -> {
             try {
@@ -263,6 +263,7 @@ public class OrderControler implements Initializable {
 
         stage.setScene(scene);
         stage.showAndWait();
+        stage.setTitle(properties.getProperty("ORDERDETAIL_TITLE_WINDOW"));
         if(orderViewDetail.getCommand().getAccepted() != cmd.getAccepted())
             observableList.set(observableList.indexOf(cmd), orderViewDetail.getCommand());
     }

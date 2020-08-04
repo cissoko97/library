@@ -334,7 +334,6 @@ public class SaveBookControler implements Initializable {
     }
 
     private void internalisationNameOfField() {
-        ((Stage) authorLabel.getScene().getWindow()).setTitle(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE"));
         title_label.setText(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE").toUpperCase());
         authorLabel.setText(properties.getProperty("AUTHOR_LABEL_CREATEBOOKPAGE"));
         category_label.setText(properties.getProperty("CATEGORY_LABEL_CREATEBOOKPAGE"));
