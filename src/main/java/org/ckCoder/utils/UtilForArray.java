@@ -9,7 +9,10 @@ import javafx.util.Callback;
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class UtilForArray {
 
@@ -41,4 +44,7 @@ public class UtilForArray {
         return true;
     }
 
+    public static <K, V> List<V> createListFromMapEntries(Map<K, V> map){
+        return map.values().stream().collect(Collectors.toList());
+    }
 }

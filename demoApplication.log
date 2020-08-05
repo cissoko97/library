@@ -277,3 +277,4 @@ List des id dans le panier
 List des id dans le panier
 [103]
 >>>>>>> 3e75906860310790769c180e36f61249363020cf
+User{id='0'email='arthur@gmal.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='arhur', surname='le viber'}}

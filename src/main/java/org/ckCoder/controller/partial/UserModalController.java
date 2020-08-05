@@ -4,18 +4,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.ckCoder.models.User;
+import org.ckCoder.utils.NotificationType;
+import org.ckCoder.utils.NotificationUtil;
 import org.ckCoder.utils.SelectedLanguage;
+import org.ckCoder.utils.Verification;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
 public class UserModalController implements Initializable {
+
+    @FXML
+    private GridPane user_grid;
 
     @FXML
     private Text title_user_form;
@@ -90,7 +98,6 @@ public class UserModalController implements Initializable {
 
     public void onSave(ActionEvent actionEvent) {
 
-
     }
 
     private void initField() {
@@ -105,15 +112,52 @@ public class UserModalController implements Initializable {
         }
     }
 
-    private boolean validateField() {
-        return false;
+    private HashMap<String, String> validateField() {
+
+        HashMap<String, String> errors = new HashMap<>();
+
+        String username = userName.getText();
+        String usersurname = userSurname.getText();
+        String useremail = userEmail.getText();
+        String password = userPassword.getText();
+        String passwordConf = userPasswordConfirm.getText();
+
+        if (username.equalsIgnoreCase("") || username.length() < 4) {
+            Verification.dangerField(userName);
+            errors.put("name", properties.getProperty("NAME_CONSTRAINST"));
+        }
+
+        if (usersurname.equalsIgnoreCase("") || usersurname.length() < 4) {
+            errors.put("surname", properties.getProperty("SURNAME_CONSTRAINST"));
+            Verification.dangerField(userSurname);
+        }
+
+        if (useremail.equalsIgnoreCase("") || !Verification.emailVerificatio(useremail)) {
+            errors.put("email", properties.getProperty("EMAIL_CONSTRAINST"));
+            Verification.dangerField(userEmail);
+        }
+
+        if (!password.equalsIgnoreCase(passwordConf) || password.length() < 6) {
+            errors.put("password", properties.getProperty("PASSWORD_CONSTRAINT"));
+            Verification.dangerField(userPassword);
+            Verification.dangerField(userPasswordConfirm);
+        }
+
+        return errors;
     }
 
     private void initButton() {
         update_btn.setOnAction(event -> {
-            this.hydrateUserWithNewData();
-            okClicked = true;
-            this.dialogStage.close();
+            user_grid.getChildren().forEach(p -> Verification.remouveDangerClass(p));
+
+            boolean action = this.hydrateUserWithNewData();
+            if (action) {
+                okClicked = true;
+                this.dialogStage.close();
+                NotificationUtil.showNotiication(String.valueOf(NotificationType.SUCCES),
+                        properties.getProperty("NOTIFICATION_TITLE_USER"),
+                        properties.getProperty("NOTIFICATION_MESSAGE_USER"));
+            }
         });
 
         save_btn.setOnAction(event -> {
@@ -123,17 +167,26 @@ public class UserModalController implements Initializable {
         });
     }
 
-    private void hydrateUserWithNewData() {
+    private Boolean hydrateUserWithNewData() {
         //TODO:: make field validation before update user information
         // check if user are null and set new User instance()
-        if (user == null) {
-            flag = true;
-            user = new User();
+        HashMap<String, String> errors = validateField();
+        boolean decision = false;
+        if (errors.size() == 0) {
+            if (user == null) {
+                flag = true;
+                user = new User();
+            }
+            user.getPerson().setName(userName.getText());
+            user.getPerson().setSurname(userSurname.getText());
+            user.setEmail(userEmail.getText());
+            user.setPassword(userPassword.getText());
+            decision = true;
+        } else {
+            Verification.alertMessage(errors, Alert.AlertType.ERROR);
         }
-        user.getPerson().setName(userName.getText());
-        user.getPerson().setSurname(userSurname.getText());
-        user.setEmail(userEmail.getText());
-        user.setPassword(userPassword.getText());
+
+        return decision;
     }
 
     public void setDialogStage(Stage stage) {

@@ -116,6 +116,7 @@ public class UserControler implements Initializable {
         bottonComponentController.tableView.getColumns().addAll(fieldId, fieldLabel, fieldDescription);
 
         bottonComponentController.tableView.setItems(observableListTable);
+        this.bottonComponentController.titleTextFied.setEditable(false);
         this.bottonComponentController.submitOrUpdude_btn.setText(language.getProperty("SUBMIT_BTN_BOTTON"));
         this.bottonComponentController.title_labe.setText(language.getProperty("TITLE_LABEL_BOTTONCOMP"));
         this.bottonComponentController.decription_label.setText(language.getProperty("DESCRIPTION_LABEL_BOTTONCOMP"));
@@ -184,6 +185,7 @@ public class UserControler implements Initializable {
                 stage.initOwner(((Control) event.getSource()).getScene().getWindow());
 
                 scene = new Scene(page);
+                scene.getStylesheets().add("/css/stylesheet.css");
                 stage.setScene(scene);
                 stage.setTitle(language.getProperty("TITLE_LABEL_USERFORM"));
 

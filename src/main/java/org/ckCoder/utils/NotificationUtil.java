@@ -4,8 +4,6 @@ import javafx.geometry.Pos;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 
-import static org.ckCoder.utils.NotificationType.*;
-
 public class NotificationUtil {
 
     public static void showNotiication(String type, String title, String message) {
@@ -25,6 +23,7 @@ public class NotificationUtil {
                 break;
             case "SUCCES":
                 notification.showInformation();
+                break;
             default:
                 notification.showWarning();
                 break;
