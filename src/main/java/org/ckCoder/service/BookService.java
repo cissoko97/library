@@ -138,5 +138,15 @@ public class BookService implements IService<Book, Long> {
         return books;
     }
 
+    public boolean incrementNumberOfView(Long bookId, Long idUser) throws SQLException {
+        CallableStatement stm = Connexion.getConnection().prepareCall("call increment_number_of_views(?,?)");
+        stm.setLong(1, bookId);
+        stm.setLong(2, idUser);
+        System.out.println("book id = " + bookId + " user id = " + idUser);
+        return stm.execute();
+    }
+
+
+
 
 }

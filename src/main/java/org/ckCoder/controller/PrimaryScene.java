@@ -33,7 +33,12 @@ import java.util.Properties;
 
 public class PrimaryScene {
     private final UserService userService = new UserService();
-    SessionManager manager = SessionManager.getInstance();
+    private SessionManager manager = SessionManager.getInstance();
+    private Properties properties = SelectedLanguage.getInstace();
+
+    public PrimaryScene() throws IOException {
+    }
+
     public void constructPrimaryStage(Stage stage) {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -43,23 +48,23 @@ public class PrimaryScene {
         grid.setPrefHeight(500);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Text scenetitle = new Text("Welcome");
+        Text scenetitle = new Text(properties.getProperty("AUTHENTICATION_PAGE_WELCOME"));
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
-        Label userName = new Label("User Name:");
+        Label userName = new Label(properties.getProperty("AUTHENTICATION_PAGE_USERNAME"));
         grid.add(userName, 0, 1);
 
         TextField userTextField = new TextField();
         grid.add(userTextField, 1, 1);
 
-        Label pw = new Label("Password:");
+        Label pw = new Label(properties.getProperty("AUTHENTICATITION_PAGE_PASSWORD"));
         grid.add(pw, 0, 2);
 
         PasswordField pwBox = new PasswordField();
         grid.add(pwBox, 1, 2);
 
-        Button btn = new Button("Sign in");
+        Button btn = new Button(properties.getProperty("AUTHENTICATION_PAGE_BTN"));
         HBox hbBtn = new HBox(10);
 
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -97,23 +102,26 @@ public class PrimaryScene {
     }
 
     private static boolean validationForm(TextField userTextField, PasswordField pwField, GridPane pane) {
-        pane.getChildren().forEach(Verification::remouveDangerClass);
-        List<String> list = new ArrayList<>();
-        if (userTextField.getText().equals("") || pwField.getText().equals("")) {
-            list.add("please fill in all field");
-            Verification.dangerField(userTextField);
-            Verification.dangerField(pwField);
-            Verification.alertMessage(list, Alert.AlertType.ERROR);
-            return false;
-        } else {
-            if (!Verification.emailVerificatio(userTextField.getText())) {
-                list.add("this adresse is not valid pleace verify");
+        try {
+            Properties properties = SelectedLanguage.getInstace();
+            pane.getChildren().forEach(Verification::remouveDangerClass);
+            if (userTextField.getText().equals("") || pwField.getText().equals("")) {
+                Verification.dangerField(userTextField);
                 Verification.dangerField(pwField);
-                Verification.alertMessage(list, Alert.AlertType.ERROR);
+                Verification.alertMessage(properties.getProperty("AUTHENTICATION_FIELD_EMPTY"), Alert.AlertType.ERROR);
                 return false;
+            } else {
+                if (!Verification.emailVerificatio(userTextField.getText())) {
+                    Verification.dangerField(pwField);
+                    Verification.alertMessage(properties.getProperty("AUTHENTICATION_VALID_ADRESS"), Alert.AlertType.ERROR);
+                    return false;
+                }
             }
             return true;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     private void valideCredentiel(TextField userTextField, PasswordField pwBox, Stage primaryStage) {
@@ -143,7 +151,7 @@ public class PrimaryScene {
             }
         } else {
             List<String> message = new ArrayList<>();
-            message.add("bad credentiel");
+            message.add(properties.getProperty("AUTHENTICATION_BAD_CREDENTICIAL"));
             Verification.alertMessage(message, Alert.AlertType.ERROR);
         }
     }

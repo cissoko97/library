@@ -40,6 +40,9 @@ public class MainApp extends Application {
 
     private boolean isConnect = false;
 
+    public MainApp() throws IOException {
+    }
+
     public static void main(String[] args) {
         PropertyConfigurator.configure(MainApp.class.getResource("/properties/log4j.properties"));
         launch(args);

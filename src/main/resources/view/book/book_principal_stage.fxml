@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="694.0" prefWidth="1360.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.book.BookControler">
+<BorderPane prefHeight="694.0" prefWidth="1360.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ckCoder.controller.book.BookControler">
    <left>
       <VBox spacing="7.0" BorderPane.alignment="CENTER">
          <children>
@@ -26,8 +15,7 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <TextField prefHeight="29.0" prefWidth="216.0" />
-                  <ComboBox prefHeight="26.0" prefWidth="138.0" promptText="trie" />
+                  <TextField fx:id="searchBook_textField" prefHeight="26.0" prefWidth="249.0" />
                </children>
             </HBox>
             <ListView fx:id="cardPaneBook_listview" VBox.vgrow="ALWAYS" />
@@ -52,7 +40,6 @@
                         <RowConstraints maxHeight="70.0" minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="91.0" minHeight="0.0" prefHeight="7.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="89.0" minHeight="18.0" prefHeight="28.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="95.0" minHeight="14.0" prefHeight="26.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="92.0" minHeight="22.0" prefHeight="25.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="106.0" minHeight="20.0" prefHeight="29.0" vgrow="SOMETIMES" />
@@ -62,24 +49,22 @@
                     </rowConstraints>
                      <children>
                         <!--<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />-->
-                        <Text fx:id="price_label" strokeType="OUTSIDE" strokeWidth="0.0" text="price" GridPane.rowIndex="6" />
-                        <Text fx:id="critiqueValue_label" strokeType="OUTSIDE" strokeWidth="0.0" text="critique value" GridPane.rowIndex="5" />
-                        <Text fx:id="nominalvalue_label" strokeType="OUTSIDE" strokeWidth="0.0" text="nominal value" GridPane.rowIndex="4" />
+                        <Text fx:id="price_label" strokeType="OUTSIDE" strokeWidth="0.0" text="price" GridPane.rowIndex="5" />
+                        <Text fx:id="nominalvalue_label" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.rowIndex="4" />
                         <Text fx:id="edition_label" strokeType="OUTSIDE" strokeWidth="0.0" text="edition_year" GridPane.rowIndex="3" />
                         <Text fx:id="availability" strokeType="OUTSIDE" strokeWidth="0.0" text="availability" GridPane.rowIndex="2" />
                         <Text fx:id="title_label" strokeType="OUTSIDE" strokeWidth="0.0" text="title" />
-                        <Text fx:id="type_book" strokeType="OUTSIDE" strokeWidth="0.0" text="type of book" GridPane.rowIndex="7" />
-                        <Text fx:id="updateDate_label" strokeType="OUTSIDE" strokeWidth="0.0" text="update date" GridPane.rowIndex="9" />
-                        <Text fx:id="createdDate_label" strokeType="OUTSIDE" strokeWidth="0.0" text="création date" GridPane.rowIndex="8" />
-                        <Text fx:id="description_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="10">
+                        <Text fx:id="type_book" strokeType="OUTSIDE" strokeWidth="0.0" text="type of book" GridPane.rowIndex="6" />
+                        <Text fx:id="updateDate_label" strokeType="OUTSIDE" strokeWidth="0.0" text="update date" GridPane.rowIndex="8" />
+                        <Text fx:id="createdDate_label" strokeType="OUTSIDE" strokeWidth="0.0" text="création date" GridPane.rowIndex="7" />
+                        <Text fx:id="description_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets top="6.0" />
                            </GridPane.margin></Text>
                         <!--<Text fx:id="idBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" />-->
-                        <Text fx:id="creatrionDate" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Text fx:id="typeBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                        <Text fx:id="pricebook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <Text fx:id="critiqueValueBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Text fx:id="creatrionDate" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Text fx:id="typeBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Text fx:id="pricebook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Text fx:id="nominalValueBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Text fx:id="editionYearBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Text fx:id="availabilityBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -87,16 +72,16 @@
                         <Text fx:id="titleBook" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
                         <Text fx:id="see_label" strokeType="OUTSIDE" strokeWidth="0.0" text="Number of seen" GridPane.rowIndex="1" />
                         <Text fx:id="originalNameText" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Text fx:id="updateDate" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-                        <Text fx:id="about_autor_label" strokeType="OUTSIDE" strokeWidth="0.0" text="About author" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                        <Text fx:id="updateDate" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <Text fx:id="about_autor_label" strokeType="OUTSIDE" strokeWidth="0.0" text="About author" GridPane.columnIndex="2" GridPane.rowIndex="5">
                            <font>
                               <Font name="DejaVu Sans Bold" size="13.0" />
                            </font>
                         </Text>
-                        <TextFlow fx:id="aboutAuthor_textFlow" lineSpacing="2.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7" GridPane.rowSpan="4" />
+                        <TextFlow fx:id="aboutAuthor_textFlow" lineSpacing="2.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" GridPane.rowSpan="4" />
                         <ImageView fx:id="imageView" fitHeight="96.0" fitWidth="134.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowSpan="4" GridPane.valignment="TOP" />
                         <ListView fx:id="critique_listView" prefHeight="176.0" prefWidth="342.0" GridPane.columnIndex="3" GridPane.rowSpan="12" />
-                        <TextArea fx:id="descriptionBook_TextFlow" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                        <TextArea fx:id="descriptionBook_TextFlow" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                      </children>
                      <padding>
                         <Insets left="10.0" />
@@ -104,7 +89,7 @@
                   </GridPane>
                   <HBox layoutY="404.0" prefHeight="50.0" prefWidth="489.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                       <children>
-                          <fx:include fx:id="btn_control" source="../utils/control_btn.fxml"/>
+                          <fx:include fx:id="btn_control" source="../utils/control_btn.fxml" />
                       </children>
                      <padding>
                         <Insets top="20.0" />

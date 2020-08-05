@@ -17,10 +17,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.ckCoder.controller.book.CritiqueController;
 import org.ckCoder.models.Book;
 import org.ckCoder.models.Critique;
 import org.ckCoder.models.User;
+import org.ckCoder.service.BookService;
 import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.SessionManager;
 import org.ckCoder.utils.Verification;
@@ -28,6 +30,7 @@ import org.ckCoder.utils.Verification;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -50,7 +53,8 @@ public class ViewReaderControler implements Initializable {
     private Book book;
     private boolean isGood;
     private final SessionManager manager = SessionManager.getInstance();
-
+    private final BookService bookService = new BookService();
+    Logger logger = Logger.getLogger(ViewReaderControler.class);
     @Override
     public void initialize(URL location, ResourceBundle resourceBundle) {
         panel_btn_hbox.getChildren().remove(whshList_btn);
@@ -151,6 +155,17 @@ public class ViewReaderControler implements Initializable {
             }
         });
         this.book = book;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bookService.incrementNumberOfView(book.getId(), manager.getUser().getId());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }).start();
+        logger.info("le livre " + book.getTitle() + " donc l'identifiant est : " + book.getId() + " vient d'être lu");
     }
 
     public boolean isGood() {
