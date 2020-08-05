@@ -2,6 +2,7 @@ package org.ckCoder.utils;
 
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,7 @@ public class Verification {
     public static boolean numeric(String value) {
         Pattern pattern = Pattern.compile("[0-9]+");
         Matcher matcher = pattern.matcher(value);
-        System.out.println(matcher.matches());
-        return  matcher.matches();
+        return matcher.matches();
     }
 
     public static boolean emailVerificatio(String email) {
@@ -25,6 +25,7 @@ public class Verification {
     public static void dangerField(ComboBox comboBox) {
         comboBox.getStyleClass().add("form-input-error");
     }
+
     public static void dangerField(TextField comboBox) {
         comboBox.getStyleClass().add("form-input-error");
     }
@@ -37,6 +38,7 @@ public class Verification {
     public static void dangerField(Button comboBox) {
         comboBox.getStyleClass().add("form-input-error");
     }
+
     public static void dangerField(TextArea comboBox) {
         comboBox.getStyleClass().add("form-input-error");
     }
@@ -53,11 +55,27 @@ public class Verification {
         Alert alert = new Alert(alertType);
         StringBuilder text = new StringBuilder();
         for (int i = 0; i < message.size(); i++) {
-            text.append(i+1).append(".  ").append(message.get(i)).append(" \n");
+            text.append(i + 1).append(".  ").append(message.get(i)).append(" \n");
         }
 
         alert.setContentText(text.toString());
+        System.out.printf(text.toString());
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.showAndWait();
 
+    }
+
+    public static void alertMessage(Map<String, String> errors, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        StringBuilder text = new StringBuilder();
+
+        String[] keys = errors.keySet().toArray(new String[errors.size()]);
+        for (int i = 0; i < keys.length; i++) {
+            text.append(keys[i]).append(": ").append(errors.get(keys[i])).append(" \n");
+        }
+
+        alert.setContentText(text.toString());
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
 
     }

@@ -1,7 +1,5 @@
 package org.ckCoder.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +12,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.ckCoder.MainApp;
-import org.ckCoder.controller.book.CategoryAndBookController;
 import org.ckCoder.models.Langage;
 import org.ckCoder.models.LanguageEmun;
 import org.ckCoder.models.Profil;
@@ -64,7 +61,7 @@ public class IndexController implements Initializable {
         initialiseMenu();
         manageMenu();
         initComboxSelect();
-       // langue_combobox.setVisible(false);
+        // langue_combobox.setVisible(false);
         profil_combobox.setVisible(false);
 
         logoutBTN.setOnAction(event -> {
@@ -81,7 +78,6 @@ public class IndexController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(IndexController.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-
 
     private void manageMenu() {
         User user = manager.getUser();
