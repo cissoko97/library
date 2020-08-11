@@ -312,7 +312,7 @@ public class UserControler implements Initializable {
         }
     }
 
-    private void setLabelOnLockButton(@NotNull User user) {
+    private void setLabelOnLockButton(User user) {
         if (user.getLocked()) {
             controlBtnController.getLockUser_btn().setText("Un Lock");
         } else {
