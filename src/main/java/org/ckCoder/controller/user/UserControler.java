@@ -1,6 +1,5 @@
 package org.ckCoder.controller.user;
 
-import com.sun.istack.internal.NotNull;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -330,7 +329,7 @@ public class UserControler implements Initializable {
         }
     }
 
-    private void setLabelOnLockButton(@NotNull User user) {
+    private void setLabelOnLockButton(User user) {
         if (user.getLocked()) {
             controlBtnController.getLockUser_btn().setText("Un Lock");
         } else {

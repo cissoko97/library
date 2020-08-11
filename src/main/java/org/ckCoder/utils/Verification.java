@@ -80,10 +80,17 @@ public class Verification {
 
     }
 
-    public static void alertMessage(String message, Alert.AlertType alertType) {
+    public static Alert alertMessage(String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(message);
         alert.showAndWait();
+        return alert;
+    }
 
+    public static Alert alertMessage(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setContentText(message);
+        alert.setTitle(title);
+        return alert;
     }
 }

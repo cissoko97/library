@@ -90,11 +90,7 @@ public class PrimaryScene {
                 valideCredentiel(userTextField, pwBox, stage);
             }
         });
-        try {
-            stage.setTitle(SelectedLanguage.getInstace().getProperty("INDEX_TITLE_DIALOG"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        stage.setTitle(properties.getProperty("INDEX_TITLE_DIALOG"));
         stage.setWidth(500);
         stage.setHeight(500);
         stage.setScene(scene);

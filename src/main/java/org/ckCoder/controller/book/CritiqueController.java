@@ -10,9 +10,7 @@ import org.ckCoder.models.Book;
 import org.ckCoder.models.Critique;
 import org.ckCoder.models.User;
 import org.ckCoder.service.CritiqueService;
-import org.ckCoder.utils.SelectedLanguage;
-import org.ckCoder.utils.SessionManager;
-import org.ckCoder.utils.Verification;
+import org.ckCoder.utils.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,6 +43,10 @@ public class CritiqueController implements Initializable {
     private boolean isGood;
 
     private final CritiqueService critiqueService = new CritiqueService();
+    private Properties properties = SelectedLanguage.getInstace();
+
+    public CritiqueController() throws IOException {
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,12 +101,9 @@ public class CritiqueController implements Initializable {
             critique.setBook(book);
             //sauvegarde de la critique
             critiqueService.create(critique);
-
-            try {
-                Verification.alertMessage(SelectedLanguage.getInstace().getProperty("MESSAGE_SAVE_CRITIQUE"), Alert.AlertType.INFORMATION);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            NotificationUtil.showNotiication(NotificationType.SUCCES.toString(),
+                properties.getProperty("MESSAGE_SAVE_CRITIQUE_TITLE"),
+                properties.getProperty("MESSAGE_SAVE_CRITIQUE"));
             isGood = true;
             return true;
         }
