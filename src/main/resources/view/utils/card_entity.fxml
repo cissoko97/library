@@ -13,10 +13,10 @@
          </viewport></ImageView>
       <VBox fx:id="panel_content_attr" blendMode="MULTIPLY" spacing="10.0" HBox.hgrow="ALWAYS">
          <children>
-            <Text fx:id="noteTextField" strokeType="OUTSIDE" strokeWidth="0.0" text="Note : " />
-            <Text fx:id="typeTextFied" strokeType="OUTSIDE" strokeWidth="0.0" text="type" />
-            <Text fx:id="priceTextField" strokeType="OUTSIDE" strokeWidth="0.0" text="price" />
             <Text fx:id="nameBook_text" strokeType="OUTSIDE" strokeWidth="0.0" text="name or title" />
+            <Text fx:id="noteTextField" strokeType="OUTSIDE" strokeWidth="0.0" text="Note : " />
+            <Text fx:id="priceTextField" strokeType="OUTSIDE" strokeWidth="0.0" text="price" />
+            <Text fx:id="typeTextFied" strokeType="OUTSIDE" strokeWidth="0.0" text="type" />
          </children>
          <padding>
             <Insets left="5.0" />

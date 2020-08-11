@@ -2,6 +2,7 @@ package org.ckCoder.controller.book;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,9 +32,7 @@ import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
 import org.ckCoder.service.CritiqueService;
 import org.ckCoder.service.contract.IService;
-import org.ckCoder.utils.SelectedLanguage;
-import org.ckCoder.utils.SessionManager;
-import org.ckCoder.utils.Verification;
+import org.ckCoder.utils.*;
 
 import javax.management.Notification;
 import java.awt.*;
@@ -50,8 +50,6 @@ public class BookControler implements Initializable {
     public Text book_title_label;
     @FXML
     public Text price_label;
-    @FXML
-    public Text critiqueValue_label;
     @FXML
     public Text nominalvalue_label;
     @FXML
@@ -72,6 +70,8 @@ public class BookControler implements Initializable {
     public Text see_label;
     @FXML
     public Text about_autor_label;
+    @FXML
+    public TextField searchBook_textField;
     /*@FXML
         public Text idBook;*/
     SessionManager manager = SessionManager.getInstance();
@@ -87,8 +87,6 @@ public class BookControler implements Initializable {
     public Text typeBook;
     @FXML
     public Text pricebook;
-    @FXML
-    public Text critiqueValueBook;
     @FXML
     public Text nominalValueBook;
     @FXML
@@ -566,7 +564,17 @@ public class BookControler implements Initializable {
         books = bookService.findAll(new Book());
 
         observableListBook = FXCollections.observableArrayList(books);
-        cardPaneBook_listview.setItems(observableListBook);
+        FilteredList<Book> filteredList = new FilteredList<>(observableListBook, p->true);
+        searchBook_textField.textProperty().addListener((observableValue, s, t1) -> {
+            filteredList.setPredicate(p->{
+                if(t1 == null || t1.isEmpty())
+                    return true;
+                else if(p.getTitle().toLowerCase().contains(t1.toLowerCase()))
+                    return true;
+                else return p.getType().equalsIgnoreCase(t1.toLowerCase());
+            });
+        });
+        cardPaneBook_listview.setItems(filteredList);
         cardPaneBook_listview.setCellFactory(book -> new CardEntityComtroller());
 
         cardPaneBook_listview.setOnMouseClicked(event -> {
@@ -596,10 +604,10 @@ public class BookControler implements Initializable {
         titleBook.setText(book.getTitle());
         availabilityBook.setText(book.getAvailability() + "");
         editionYearBook.setText(book.getEditionYear() + "");
-        nominalValueBook.setText(book.getValeurNominal() + "");
-        critiqueValueBook.setText(book.getValeurCritique() + "");
+        nominalValueBook.setText((book.getValeurNominal() + book.getValeurCritique()) + "");
         pricebook.setText(book.getPrice() + "");
         typeBook.setText(book.getType());
+        nbre_vue.setText(book.getNbVue() + "");
         creatrionDate.setText(book.getCreatedAt().format(DateTimeFormatter.ISO_DATE));
         updateDate.setText(book.getUpdatedAt().format(DateTimeFormatter.ISO_DATE));
 
@@ -651,8 +659,13 @@ public class BookControler implements Initializable {
     private void addBooktoCart(Book book) {
         if (!manager.getBookSet().contains(book)) {
             manager.getBookSet().add(book);
-            Verification.alertMessage(properties.getProperty("READBOOKPAGE_ADD_CADDY_MESSAGE"), Alert.AlertType.INFORMATION);
-        }
+            NotificationUtil.showNotiication(String.valueOf(NotificationType.SUCCES),
+                    properties.getProperty("MESSAGE_ADD_CADDY_TITLE"),
+                    properties.getProperty("READBOOKPAGE_ADD_CADDY_MESSAGE"));
+        } else
+            NotificationUtil.showNotiication(String.valueOf(NotificationType.INFO),
+                    properties.getProperty("MESSAGE_ADD_CADDY_TITLE"),
+                    properties.getProperty("MESSAGE_ADD_CADDY_WAR"));
     }
 
 
@@ -663,7 +676,6 @@ public class BookControler implements Initializable {
         availability.setText(properties.getProperty("AVAILABILITY_BOOK_LABEL_BOOKPAGE"));
         edition_label.setText(properties.getProperty("EDITIONYEAR_BOOK_LABEL_BOOKPAGE"));
         nominalvalue_label.setText(properties.getProperty("NOMINALVALUE_BOOK_LABEL_BOOKPAGE"));
-        critiqueValue_label.setText(properties.getProperty("CRITIQUE_BOOK_LABEL_BOOKPAGE"));
         price_label.setText(properties.getProperty("PRICE_BOOK_LABEL_BOOKPAGE"));
         type_book.setText(properties.getProperty("TYPE_BOOK_LABEL_BOOKPAGE"));
         createdDate_label.setText(properties.getProperty("CREATION_BOOK_LABEL_BOOKPAGE"));
@@ -675,7 +687,7 @@ public class BookControler implements Initializable {
         bottonComponentController.title_labe.setText(properties.getProperty("TITLE_LABEL_BOTTONCOMP"));
         bottonComponentController.decription_label.setText(properties.getProperty("DESCRIPTION_LABEL_BOTTONCOMP"));
         bottonComponentController.submitOrUpdude_btn.setText(properties.getProperty("SUBMIT_BTN_BOTTON"));
-        bottonComponentController.reset_btn.setText(properties.getProperty("RESET_BTN_BOTTN"));
+        bottonComponentController.reset_btn.setText(properties.getProperty("RESET_BTN_BOTTON"));
 
         //button control
         btn_controlController.getAdd_btn().setText(properties.getProperty("FIRST_BTN"));

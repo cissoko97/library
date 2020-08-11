@@ -100,7 +100,11 @@ public class CritiqueController implements Initializable {
             //sauvegarde de la critique
             critiqueService.create(critique);
 
-            Verification.alertMessage("your critique is save. Take you for your participation", Alert.AlertType.INFORMATION);
+            try {
+                Verification.alertMessage(SelectedLanguage.getInstace().getProperty("MESSAGE_SAVE_CRITIQUE"), Alert.AlertType.INFORMATION);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             isGood = true;
             return true;
         }

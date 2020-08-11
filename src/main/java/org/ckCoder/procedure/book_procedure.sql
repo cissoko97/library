@@ -126,17 +126,21 @@ drop procedure if exists save_critique |
 create procedure save_critique(p_note int, p_comment text, p_fk_book_id BIGINT,
                                p_fk_user_id bigint(20))
 begin
-    declare current_value_nominal_for_book int(10);
+    declare current_value_critique_for_book int;
+
     start transaction;
 
     insert into critiques(book_id, user_id, note, comment, updated_at, created_at)
     values (p_fk_book_id, p_fk_user_id, p_note, p_comment, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-    select valeur_critique from book where id = p_fk_book_id into current_value_nominal_for_book;
+    select valeur_critique into current_value_critique_for_book from book where id = p_fk_book_id;
+    if current_value_critique_for_book is null then
+        set current_value_critique_for_book = 0;
+    end if;
+    set current_value_critique_for_book = current_value_critique_for_book + p_note - 2.5;
 
-    update book
-    set valeur_critique = current_value_nominal_for_book + p_note
-    where id = p_fk_book_id;
+    update book set valeur_critique = current_value_critique_for_book where id = p_fk_book_id;
+    select valeur_nominal, valeur_critique from book where id=p_fk_book_id;
     commit;
 end |
 
@@ -226,5 +230,16 @@ end |
 /*
  * delete book
  */
-
+drop procedure if exists increment_number_of_views;
+create procedure increment_number_of_views(IN p_id_book bigint, IN p_id_user BIGINT)
+begin
+    declare _id_verification bigint;
+    set _id_verification = null;
+    select book_id into _id_verification from view_user_book where user_id=p_id_user and book_id=p_id_book;
+    if _id_verification is null then
+        insert into view_user_book(user_id, book_id) VALUES (p_id_user, p_id_book);
+        select nb_vue into @v_nb_vu from book where book.id = p_id_book;
+        update book set nb_vue=(@v_nb_vu+1) where id = p_id_book;
+    end if ;
+end |
 DELIMITER ;

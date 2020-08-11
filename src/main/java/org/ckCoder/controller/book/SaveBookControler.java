@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.ckCoder.models.Author;
@@ -16,9 +17,12 @@ import org.ckCoder.service.AuthorService;
 import org.ckCoder.service.BookService;
 import org.ckCoder.service.CategoryService;
 import org.ckCoder.service.contract.IService;
+import org.ckCoder.utils.NotificationType;
+import org.ckCoder.utils.NotificationUtil;
 import org.ckCoder.utils.SelectedLanguage;
 import org.ckCoder.utils.Verification;
 
+import javax.management.Notification;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +30,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SaveBookControler implements Initializable {
+    @FXML
+    private Text tltle_view_bookPage;
     @FXML
     public Button resetBtn;
     @FXML
@@ -121,7 +127,8 @@ public class SaveBookControler implements Initializable {
                 "Text Files", "*.pdf"
         ));
          selectedFile = fileChooser.showOpenDialog(((Control) actionEvent.getSource()).getScene().getWindow());
-         fileName_btn.setText(selectedFile.getName());
+         if(selectedFile != null)
+            fileName_btn.setText(selectedFile.getName());
     }
 
     @FXML
@@ -132,7 +139,8 @@ public class SaveBookControler implements Initializable {
                 "Imge Files", "*.png", "*.jpg", "*.jpeg"
         ));
         selectedImg = fileChooser.showOpenDialog(((Control) actionEvent.getSource()).getScene().getWindow());
-        uploadImgName_btn.setText(selectedImg.getName());
+        if(selectedFile != null)
+            uploadImgName_btn.setText(selectedImg.getName());
     }
 
     @FXML
@@ -145,53 +153,48 @@ public class SaveBookControler implements Initializable {
 
         if(!price_textField.isDisable() && !Verification.numeric(price_textField.getText())){
             Verification.dangerField(price_textField);
-            errorList.add("the price value must be a number");
+            errorList.add(properties.getProperty("FORM_BOOK_PRICE"));
         }
 
         if (book.getId() == 0) {
             if(authorField.getItems().size() == 0){
                 Verification.dangerField(authorField);
-                errorList.add("please select at last one author");
+                errorList.add(properties.getProperty("FORM_BOOK_AUTHOR"));
             }
         }
 
         if(category_textField.getValue() == null){
            Verification.dangerField(category_textField);
-           errorList.add("please select a catégory");
+           errorList.add(properties.getProperty("FORM_BOOK_CATEGORY"));
         }
 
         if(title_textField.getText().equals("")){
             Verification.dangerField(title_textField);
-            errorList.add("the title field cannot be empty");
+            errorList.add(properties.getProperty("FORM_BBOK_TITLE"));
         }
 
         if(anneeEditionTextField.getText().equals("")){
             Verification.dangerField(anneeEditionTextField);
         } else if (!Verification.numeric(anneeEditionTextField.getText()) ||
                     anneeEditionTextField.getText().length() != 4) {
-                errorList.add("the value of field year is not correctly. " +
-                        "Please enter one numeric value and length of value is 4 characters");
+                errorList.add(properties.getProperty("FORM_BOOK_ANNEE_EDITION"));
             Verification.dangerField(anneeEditionTextField);
-        }
-
-        if(type_textField.getValue() == null){
-            Verification.dangerField(type_textField);
         }
 
         if (book.getId() == 0) {
             if(selectedFile == null){
                 Verification.dangerField(fileName_btn);
-                errorList.add("please select file book");
+                errorList.add(properties.getProperty("FROM_BOOK_FILE"));
             }
             if(selectedImg == null){
                 Verification.dangerField(uploadImgName_btn);
-                errorList.add("pleace select image book");
+                errorList.add(properties.getProperty("FORM_BOOK_IMG"));
             }
         }
 
         if(descriptiopn_text_array.getText() == null || descriptiopn_text_array.getText().equals("")){
             Verification.dangerField(descriptiopn_text_array);
-            errorList.add("pleace put a description for this book");
+            errorList.add(properties.getProperty("FORM_BOOK_DESCRIPTION"));
         }
 
         if (errorList.size() > 0) {
@@ -220,10 +223,9 @@ public class SaveBookControler implements Initializable {
             if(idAuthor.size() > 0)
                 bookService.createAndAffectAuthor_Categorie_AtBook(book.getId(), idAuthor);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("register book status");
-            alert.setContentText("this operation is succes");
-            alert.show();
+            NotificationUtil.showNotiication(String.valueOf(NotificationType.SUCCES),
+                    properties.getProperty("MESSAGE_SAVE_BOOK_TITLE"),
+                    properties.getProperty("MESSAGE_SAVE_BBOK_CONTENT"));
         }
 
     }
@@ -334,7 +336,7 @@ public class SaveBookControler implements Initializable {
     }
 
     private void internalisationNameOfField() {
-        title_label.setText(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE").toUpperCase());
+        tltle_view_bookPage.setText(properties.getProperty("TITLE_VIEW_CREATEBOOKPAGE").toUpperCase());
         authorLabel.setText(properties.getProperty("AUTHOR_LABEL_CREATEBOOKPAGE"));
         category_label.setText(properties.getProperty("CATEGORY_LABEL_CREATEBOOKPAGE"));
         title_label.setText(properties.getProperty("TITLE_LABEL_CREATEDBOOKPAGE"));

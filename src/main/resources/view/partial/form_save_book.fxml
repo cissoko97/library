@@ -72,7 +72,7 @@
       </VBox>
    </center>
    <top>
-      <Text fill="#0511e8" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 32;" text="title form" BorderPane.alignment="CENTER">
+      <Text fx:id="tltle_view_bookPage" fill="#0511e8" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 32;" text="title form" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="13.0" />
          </BorderPane.margin>

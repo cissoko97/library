@@ -3,6 +3,7 @@ package org.ckCoder.controller.user;
 import com.sun.istack.internal.NotNull;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Control;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -37,6 +39,8 @@ import java.util.Set;
 
 public class UserControler implements Initializable {
 
+    @FXML
+    public TextField searchUser_textfield;
     Properties language = SelectedLanguage.getInstace();
     public Text label_id;
     public Text label_u_created;
@@ -270,8 +274,22 @@ public class UserControler implements Initializable {
         Set<User> users = userService.findAll(null);
         observableListView = FXCollections.observableArrayList();
         observableListView.addAll(users);
-        System.out.println(users);
-        userListView.setItems(observableListView);
+        FilteredList<User> filteredList = new FilteredList<>(observableListView, u->true);
+
+        searchUser_textfield.textProperty().addListener((observableValue, s, t1) -> {
+            filteredList.setPredicate(u->{
+                if(t1 == null || t1.isEmpty())
+                    return true;
+                else if(u.getPerson().getName().toLowerCase().contains(t1.toLowerCase()))
+                    return true;
+                else if(u.getPerson().getSurname().toLowerCase().contains(t1.toLowerCase()))
+                    return true;
+
+                return false;
+            });
+        });
+
+        userListView.setItems(filteredList);
         userListView.setCellFactory(studentListView -> new ListCellUser());
         userListView.setOnMouseClicked(event -> {
             User selectedItem = userListView.getSelectionModel().getSelectedItem();

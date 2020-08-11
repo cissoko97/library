@@ -277,4 +277,39 @@ List des id dans le panier
 List des id dans le panier
 [103]
 >>>>>>> 3e75906860310790769c180e36f61249363020cf
+<<<<<<< HEAD
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+incrémentation du nombre de vu du livre : how totalk donc l'identifiant est : 103
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+incrémentation du nombre de vu du livre : how totalk donc l'identifiant est : 103
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+incrémentation du nombre de vu du livre : how totalk donc l'identifiant est : 103
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+incrémentation du nombre de vu du livre : how totalk donc l'identifiant est : 103
+le livre grand all 2 donc l'identifiant est : 102 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre grand all 2 donc l'identifiant est : 102 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre the book donc l'identifiant est : 105 vient d'être lu
+le livre the book donc l'identifiant est : 105 vient d'être lu
+le livre book test donc l'identifiant est : 106 vient d'être lu
+le livre book test donc l'identifiant est : 106 vient d'être lu
+le livre jdqsfjkdqsnhfjk donc l'identifiant est : 107 vient d'être lu
+le livre how totalk donc l'identifiant est : 103 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre book test donc l'identifiant est : 106 vient d'être lu
+le livre book test donc l'identifiant est : 106 vient d'être lu
+le livre book test donc l'identifiant est : 106 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+le livre book test donc l'identifiant est : 106 vient d'être lu
+le livre the book donc l'identifiant est : 105 vient d'être lu
+le livre isabel donc l'identifiant est : 104 vient d'être lu
+=======
 User{id='0'email='arthur@gmal.com', password='password', isLocked=null, person=AbstractEntity{id=0, createdAt=null, updatedAt=null} Person{name='arhur', surname='le viber'}}
+>>>>>>> f5ca5402538e76086ffdbe5afd9bc6108343615e
