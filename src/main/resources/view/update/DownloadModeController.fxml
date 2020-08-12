@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.RadialGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<fx:root style="-fx-background-color: #202020;" stylesheets="@../../css/application.css" type="BorderPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root style="-fx-background-color: #202020;" stylesheets="@../../css/application.css" type="BorderPane" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -31,22 +24,9 @@
                <children>
                   <ProgressIndicator fx:id="progressBar" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="127.0" prefWidth="171.0" progress="0.0" />
                   <Label fx:id="progressLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="404.0" prefHeight="26.0" prefWidth="404.0" style="-fx-background-color: #202020; -fx-border-color: transparent; -fx-text-fill: white; -fx-font-size: 15; -fx-font-weight: bold;" text="Update Screen" textAlignment="CENTER" />
-                  <TextFlow fx:id="flowUpdate" prefHeight="200.0" prefWidth="200.0" textAlignment="JUSTIFY" />
+                  <TextFlow fx:id="flowUpdate" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" textAlignment="JUSTIFY" />
                </children>
             </VBox>
-            <StackPane fx:id="failedStackPane" style="-fx-background-color: rgb(255,255,255,0.8);">
-               <children>
-                  <Button fx:id="tryAgainButton" mnemonicParsing="false" prefHeight="58.0" prefWidth="109.0" text="Try again" StackPane.alignment="CENTER">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #303030; -fx-font-weight: bold; -fx-font-size: 15; -fx-text-fill: white;" text="Hm something went wrong ..." StackPane.alignment="TOP_CENTER" />
-               </children>
-               <padding>
-                  <Insets bottom="3.0" top="3.0" />
-               </padding>
-            </StackPane>
          </children>
       </StackPane>
    </center>

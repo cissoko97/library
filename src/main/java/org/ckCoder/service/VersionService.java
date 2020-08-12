@@ -12,8 +12,9 @@ public class VersionService {
         double verion =0.0;
         if (stm.execute()) {
             ResultSet res = stm.getResultSet();
-            if(res.next())
+            if (res.next()) {
                 verion = res.getDouble(1);
+            }
         }
         return verion;
     }

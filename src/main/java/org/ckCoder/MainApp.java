@@ -21,17 +21,13 @@ import org.ckCoder.utils.ActionTool;
 import org.ckCoder.utils.InfoTool;
 import org.ckCoder.utils.NotificationType2;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Properties;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,7 +49,7 @@ public class MainApp extends Application {
 
     private double update;
 
-    public static final String APPLICATION_NAME ="book shore";
+    public static final String APPLICATION_NAME ="book_shore";
 
     //Create a change listener
     ChangeListener<? super Number> listener = (observable , oldValue , newValue) -> {
@@ -96,18 +92,28 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException, SQLException {
+        //prepare window
         window = primaryStage;
         window.setResizable(false);
         window.centerOnScreen();
-        window.getIcons().add(InfoTool.getImageFromResourcesFolder("home_icone.jpeg"));
 
-        InputStream inputStream = getClass().getResourceAsStream("/properties/config.properties");
-        Properties properties = new Properties();
-        properties.load(inputStream);
-        currentVersion = Double.parseDouble(properties.getProperty("version"));
+        // load icon
+        window.getIcons().add(InfoTool.getImageFromResourcesFolder("/img/home_icone.jpeg"));
+        Properties properties = SelectedLanguage.getInstace();
         update =versionService.checkVersion();
-        if (UtilForArray.isIntegr(properties.getProperty("version")) && update > currentVersion) {
 
+        // declare a propertie who content a current version for this application
+        Properties pr = new Properties();
+        InputStream stream = getClass().getResourceAsStream("/properties/config.properties");
+        pr.load(stream);
+
+        //chec current version
+        System.out.println(UtilForArray.isDouble(pr.getProperty("version")));
+        if (UtilForArray.isDouble(pr.getProperty("version"))) {
+            currentVersion = Double.parseDouble(pr.getProperty("version"));
+        } else
+            currentVersion = 1.0;
+        if (currentVersion < update) {
             Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
                     properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.CONFIRMATION).showAndWait();
             if(optional.get() == ButtonType.OK) {
@@ -145,16 +151,23 @@ public class MainApp extends Application {
         } else {
             primaryScene.constructPrimaryStage(primaryStage);
         }
+
+
     }
 
     private void prepareForUpdate() {
         window.setTitle(primaryScene.getEtatUpdateApp());
-        foldersNamePrefix = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME + "Update package"
+        foldersNamePrefix = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME + "_Update_package"
                 + currentVersion;
 
+        System.out.println("foldersNamePrefix " + foldersNamePrefix);
+        downloadMode.getFlowUpdate().getChildren().add(new Text(("foldersNamePrefix " + foldersNamePrefix + "\n")));
         if (checkPermissions()) {
             downloadMode.getProgressLabel().setText(properties.getProperty("MESSAGE_ALERT_PERMISSION"));
-            downloadUpdate("https://github.com/goxr3plus/XR3Player/releases/download/V3." + APPLICATION_NAME + "/XR3Player.Update." + update + ".zip");
+            //downloadUpdate("https://github.com/goxr3plus/XR3Player/releases/download/V3." + APPLICATION_NAME + "/XR3Player.Update." + update + ".zip");
+            downloadMode.getFlowUpdate().getChildren().add(new Text("\nDebbut du téléchargement\n"));
+            downloadUpdate("https://github.com/cissoko97/library/raw/master/firstApp-1.0-SNAPSHOT.jar");
+
         } else {
 
             //Update
@@ -205,16 +218,28 @@ public class MainApp extends Application {
                 //Add Bindings
                 downloadMode.getProgressBar().progressProperty().bind(downloadService.progressProperty());
                 downloadMode.getProgressLabel().textProperty().bind(downloadService.messageProperty());
+
+                /*System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
+                        downloadMode.getProgressBar().getProgress());
+
+                downloadMode.getFlowUpdate().getChildren().add(new Text("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
+                        downloadMode.getProgressBar().getProgress()));*/
+
                 downloadMode.getProgressLabel().textProperty().addListener((observable , oldValue , newValue) -> {
+
                     //Give try again option to the user
-                    if (newValue.toLowerCase().contains("failed"))
-                        downloadMode.getFailedStackPane().setVisible(true);
+                    /*if (newValue.toLowerCase().contains("failed")){
+                        downloadMode.getFailedStackPane().setVisible(true);*/
                 });
                 downloadMode.getProgressBar().progressProperty().addListener(listener);
                 window.setTitle(properties.getProperty("MESSAGE_ETAT_DOWNLOAD_APP") + " (" + this.APPLICATION_NAME + " )"
                         + properties.getProperty("MESSAGE_ETAT_UPDATE_APP") + " -> " + currentVersion);
 
                 //Start
+               /* System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
+                        downloadMode.getProgressBar().getProgress());*/
+                downloadMode.getFlowUpdate().getChildren().add(new Text(("\n debut téléchargement " + downloadMode.getProgressLabel().getText()) + " : " +
+                        downloadMode.getProgressBar().getProgress() + "\n"));
                 downloadService.startDownload(new URL(downloadURL), Paths.get(foldersNamePrefix + ".zip"));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -229,7 +254,7 @@ public class MainApp extends Application {
             deleteZipFolder();
 
             //Give try again option to the user
-            downloadMode.getFailedStackPane().setVisible(true);
+//            downloadMode.getFailedStackPane().setVisible(true);
         }
     }
 
@@ -315,6 +340,12 @@ public class MainApp extends Application {
         downloadMode.getProgressBar().progressProperty().addListener(listener2);
 
         //Start it
+
+        System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
+                downloadMode.getProgressBar().getProgress());
+        downloadMode.getFlowUpdate().getChildren().add(new Text("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
+                downloadMode.getProgressBar().getProgress()));
+
         exportZipService.exportZip(foldersNamePrefix + ".zip", updateFolder.getAbsolutePath());
 
     }
@@ -338,7 +369,8 @@ public class MainApp extends Application {
 
         //Delete the ZIP Folder
         deleteZipFolder();
-
+        System.out.println("redémarrage de l'application");
+        downloadMode.getFlowUpdate().getChildren().add(new Text("redémarrage de l'application"));
         //Start XR3Player
         restartApplication(APPLICATION_NAME);
 

@@ -28,16 +28,16 @@ public final class InfoTool {
 	public static final String TUTORIALS = "https://www.youtube.com/playlist?list=PL-xqaiRUr_iRKDkpFWPfSRFmJvHSr1VJI";
 	
 	/** The Constant images. */
-	public static final String IMAGES = "/image/";
+	//public static final String IMAGES = "/image/";
 	
 	/** The Constant styLes. */
-	public static final String STYLES = "/style/";
+	public static final String STYLES = "/css/";
 	
 	/** The Constant applicationCss. */
 	public static final String APPLICATIONCSS = "application.css";
 	
 	/** The Constant fxmls. */
-	public static final String FXMLS = "/fxml/";
+	public static final String FXMLS = "/view/update/";
 	
 	// --------------------------------------------------------------------------------------------------------------
 	
@@ -138,7 +138,7 @@ public final class InfoTool {
 	 *         the application
 	 */
 	public static Image getImageFromResourcesFolder(String imageName) {
-		return new Image(InfoTool.class.getResourceAsStream(IMAGES + imageName));
+		return new Image(InfoTool.class.getResourceAsStream(imageName));
 	}
 	
 	/**

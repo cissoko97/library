@@ -44,6 +44,18 @@ public class UtilForArray {
         return true;
     }
 
+    public static boolean isDouble(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     public static <K, V> List<V> createListFromMapEntries(Map<K, V> map){
         return map.values().stream().collect(Collectors.toList());
     }

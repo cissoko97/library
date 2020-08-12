@@ -30,11 +30,11 @@ public class DownloadModeController extends BorderPane {
     @FXML
     private Label progressLabel;
 
-    @FXML
-    private StackPane failedStackPane;
+//    @FXML
+//    private StackPane failedStackPane;
 
-    @FXML
-    private Button tryAgainButton;
+//    @FXML
+//    private Button tryAgainButton;
 
     @FXML
     private Button downloadManually;
@@ -73,16 +73,16 @@ public class DownloadModeController extends BorderPane {
     private void initialize() {
 
         //-- failedStackPane
-        failedStackPane.setVisible(false);
+//        failedStackPane.setVisible(false);
 
         //-- tryAgainButton
-        tryAgainButton.setOnAction(a -> {
-            MainApp.restartApplication(MainApp.APPLICATION_NAME);
-            tryAgainButton.setDisable(true);
-        });
+//        tryAgainButton.setOnAction(a -> {
+//            MainApp.restartApplication(MainApp.APPLICATION_NAME);
+//            tryAgainButton.setDisable(true);
+//        });
 
         //== Download Manually
-        downloadManually.setOnAction(a -> ActionTool.openWebSite("https://sourceforge.net/projects/xr3player/"));
+       // downloadManually.setOnAction(a -> ActionTool.openWebSite("https://sourceforge.net/projects/xr3player/"));
 
     }
 
@@ -97,9 +97,9 @@ public class DownloadModeController extends BorderPane {
     /**
      * @return the failedStackPane
      */
-    public StackPane getFailedStackPane() {
-        return failedStackPane;
-    }
+//    public StackPane getFailedStackPane() {
+//        return failedStackPane;
+//    }
 
     /**
      * @return the downloadManually

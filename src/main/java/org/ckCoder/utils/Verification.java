@@ -89,6 +89,8 @@ public class Verification {
 
     public static Alert alertMessage(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
+        alert.setWidth(500);
+        alert.setHeight(350);
         alert.setContentText(message);
         alert.setTitle(title);
         return alert;

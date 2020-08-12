@@ -6,9 +6,13 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +27,8 @@ public class DownloadService extends Service<Boolean> {
     private boolean succeeded;
     private volatile boolean stopThread;
 
+
+    private volatile FileChannel zip;
     private final ObjectProperty<URL> remoteResourceLocation = new SimpleObjectProperty<>();
     private final ObjectProperty<Path> pathToLocalResource = new SimpleObjectProperty<>();
 
@@ -85,23 +91,51 @@ public class DownloadService extends Service<Boolean> {
                 String failMessage;
 
                 try {
+                    // Open the Connection and get totalBytes
                     URLConnection connection = remoteResourceLocation.get().openConnection();
                     totalBytes = Long.parseLong(connection.getHeaderField("content-Length"));
 
+                    copyThread = new Thread(() -> {
+                        try {
+                            zip = FileChannel.open(pathToLocalResource.get(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+
+                            zip.transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
+                        } catch (Exception ex) {
+                            stopThread = true;
+                            logger.log(Level.WARNING, "DownloadService failed", ex);
+                        } finally {
+                            try {
+                                zip.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    //Set to Deamon
+                    copyThread.setDaemon(true);
+
+                    //Start the THread
+                    copyThread.start();
 
                 } catch (Exception ex) {
-
+                    succeeded = false;
+                    // Stop the External Thread which is updating the %100 progress
+                    stopThread = true;
+                    logger.log(Level.WARNING, "DownloadService failed", ex);
                 }
                 return succeeded;
             }
         };
     }
 
+
     /**
      * Start the Download Service [[SuppressWarningsSpartan]]
      */
     public void startDownload(URL remoteResourceLocation , Path pathToLocalResource) {
-
+        System.out.println(remoteResourceLocation.toExternalForm());
+        System.out.println(pathToLocalResource.toString());
     }
 
     //----------------------@Overrided methods--------------------------------------
