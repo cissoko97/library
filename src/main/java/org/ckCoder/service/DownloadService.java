@@ -112,7 +112,7 @@ public class DownloadService extends Service<Boolean> {
                     //actually it is millisecondsFailTime*50(cause Thread is sleeping for 50 milliseconds
                     int millisecondsFailTime = 40;
                     // While Loop
-                    while ( ( outPutFileLength = destinationFile.length() ) < totalBytes && !stopThread) {
+                    while ((outPutFileLength = destinationFile.length()) < totalBytes && !stopThread) {
 
                         // Check the previous length
                         if (previousLength != outPutFileLength) {
@@ -126,10 +126,10 @@ public class DownloadService extends Service<Boolean> {
                             break;
 
                         // Update Progress
-                        super.updateMessage("Downloading: [ " + InfoTool.getFileSizeEdited(totalBytes) + " ] Progress: [ " + ( outPutFileLength * 100 ) / totalBytes + " % ]");
-                        super.updateProgress( ( outPutFileLength * 100 ) / totalBytes, 100);
+                        super.updateMessage("Downloading: [ " + InfoTool.getFileSizeEdited(totalBytes) + " ] Progress: [ " + (outPutFileLength * 100) / totalBytes + " % ]");
+                        super.updateProgress((outPutFileLength * 100) / totalBytes, 100);
                         System.out.println(
-                                "Current Bytes:" + outPutFileLength + " ,|, TotalBytes:" + totalBytes + " ,|, Current Progress: " + ( outPutFileLength * 100 ) / totalBytes + " %");
+                                "Current Bytes:" + outPutFileLength + " ,|, TotalBytes:" + totalBytes + " ,|, Current Progress: " + (outPutFileLength * 100) / totalBytes + " %");
 
                         // Sleep
                         try {
@@ -140,10 +140,10 @@ public class DownloadService extends Service<Boolean> {
                     }
 
                     //Update to show 100%
-                    super.updateMessage("Downloading: [ " + InfoTool.getFileSizeEdited(totalBytes) + " ] Progress: [ " + ( outPutFileLength * 100 ) / totalBytes + " % ]");
-                    super.updateProgress( ( outPutFileLength * 100 ) / totalBytes, 100);
+                    super.updateMessage("Downloading: [ " + InfoTool.getFileSizeEdited(totalBytes) + " ] Progress: [ " + (outPutFileLength * 100) / totalBytes + " % ]");
+                    super.updateProgress((outPutFileLength * 100) / totalBytes, 100);
                     System.out.println(
-                            "Current Bytes:" + outPutFileLength + " ,|, TotalBytes:" + totalBytes + " ,|, Current Progress: " + ( outPutFileLength * 100 ) / totalBytes + " %");
+                            "Current Bytes:" + outPutFileLength + " ,|, TotalBytes:" + totalBytes + " ,|, Current Progress: " + (outPutFileLength * 100) / totalBytes + " %");
 
                     // 2 Seconds passed without response
                     if (millisecondsFailTime == 40)
@@ -157,5 +157,41 @@ public class DownloadService extends Service<Boolean> {
                 return succeeded;
             }
         };
+    }
+
+    public void startDownload(URL remoteResourceLocation, Path pathToLocalResource) {
+        if (!isRunning() && pathToLocalResource != null && remoteResourceLocation != null) {
+
+            //Set
+            this.setRemoteResourceLocation(remoteResourceLocation);
+            this.setPathToLocalResource(pathToLocalResource);
+
+            // setRemoteResourceLocation(new URL(java.net.URLDecoder.decode(remoteResourceLocation, "UTF-8")))
+
+            //TotalBytes
+            totalBytes = 0;
+
+            //Restart
+            restart();
+        } else
+            logger.log(Level.INFO, "Please specify [Remote Resource Location] and [ Path to Local Resource ]");
+    }
+
+    /**
+     * Set the remote resource location
+     *
+     * @param remoteResourceLocation
+     */
+    public final void setRemoteResourceLocation(URL remoteResourceLocation) {
+        this.remoteResourceLocation.set(remoteResourceLocation);
+    }
+
+    /**
+     * Set the path to the local resource
+     *
+     * @param pathToLocalResource
+     */
+    public final void setPathToLocalResource(Path pathToLocalResource) {
+        this.pathToLocalResource.set(pathToLocalResource);
     }
 }
