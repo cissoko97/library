@@ -3,11 +3,17 @@ package org.ckCoder;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.log4j.PropertyConfigurator;
 import org.ckCoder.controller.PrimaryScene;
 import org.ckCoder.database.Connexion;
+import org.ckCoder.service.DownloadService;
+import org.ckCoder.service.ExportZipService;
+import org.ckCoder.service.VersionService;
+import org.ckCoder.utils.*;
 import org.ckCoder.utils.ActionTool;
 import org.ckCoder.utils.InfoTool;
 import org.ckCoder.utils.NotificationType2;
@@ -15,8 +21,11 @@ import org.ckCoder.utils.NotificationType2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Optional;
+import java.util.Properties;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,9 +43,19 @@ public class MainApp extends Application {
     /**
      * Update to download
      */
-    private static int update;
+
+    private static double currentVersion;
+
+    //================Services================
+
+    DownloadService downloadService;
+    ExportZipService exportZipService;
+
+    //=============================================
 
     private boolean isConnect = false;
+    private VersionService versionService = new VersionService();
+    private static Stage window;
 
     public MainApp() throws IOException {
     }
@@ -48,6 +67,42 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException, SQLException {
+        window = primaryStage;
+        window.setResizable(false);
+        window.centerOnScreen();
+        window.getIcons().add(InfoTool.getImageFromResourcesFolder("home_icone.jpeg"));
+
+        InputStream inputStream = getClass().getResourceAsStream("/properties/config.properties");
+        Properties properties = new Properties();
+        properties.load(inputStream);
+        currentVersion = Double.parseDouble(properties.getProperty("version"));
+        if (UtilForArray.isIntegr(properties.getProperty("version")) && versionService.checkVersion() > currentVersion) {
+
+            Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
+                    properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.CONFIRMATION).showAndWait();
+            if(optional.get() == ButtonType.OK) {
+
+                window.setOnCloseRequest(exit -> {
+                    if(exportZipService != null && exportZipService.isRunning()) {
+                        ActionTool.showNotification(properties.getProperty("MESSAGE_NOTIFICATION_EXIT_TITLE"),
+                                properties.getProperty("MESSAGE_NOTIFICATION_EXIT_CONTENT"), Duration.seconds(5),
+                                NotificationType2.WARNING);
+                        exit.consume();
+                        return;
+                    }
+
+                    if (!ActionTool.doQuestion(properties.getProperty("MESSAGE_NOTIFICATION_EXIT_CONTENT"), window)) {
+                        exit.consume();
+                    } else {
+                        deleteZipFolder();
+                        System.exit(0);
+                    }
+                });
+            }
+
+
+
+        }
         primaryScene.constructPrimaryStage(primaryStage);
     }
 
@@ -84,7 +139,7 @@ public class MainApp extends Application {
                 System.out.println(appName + " Path is : " + applicationPath[0]);
 
                 //Create a process builder
-                ProcessBuilder builder = new ProcessBuilder("java", "-jar", applicationPath[0], !"XR3PlayerUpdater".equals(appName) ? "" : String.valueOf(update));
+                ProcessBuilder builder = new ProcessBuilder("java", "-jar", applicationPath[0], !"XR3PlayerUpdater".equals(appName) ? "" : String.valueOf(currentVersion));
                 builder.redirectErrorStream(true);
                 Process process = builder.start();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
