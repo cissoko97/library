@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import org.ckCoder.utils.InfoTool;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +106,48 @@ public class DownloadService extends Service<Boolean> {
                     //Start the THread
                     copyThread.start();
 
+                    // --------------------------------------------------Check the %100 Progress-------------------------------------------------------------
+                    long outPutFileLength;
+                    long previousLength = 0;
+                    //actually it is millisecondsFailTime*50(cause Thread is sleeping for 50 milliseconds
+                    int millisecondsFailTime = 40;
+                    // While Loop
+                    while ( ( outPutFileLength = destinationFile.length() ) < totalBytes && !stopThread) {
+
+                        // Check the previous length
+                        if (previousLength != outPutFileLength) {
+                            previousLength = outPutFileLength;
+                            millisecondsFailTime = 0;
+                        } else
+                            ++millisecondsFailTime;
+
+                        // 2 Seconds passed without response
+                        if (millisecondsFailTime == 40 || stopThread)
+                            break;
+
+                        // Update Progress
+                        super.updateMessage("Downloading: [ " + InfoTool.getFileSizeEdited(totalBytes) + " ] Progress: [ " + ( outPutFileLength * 100 ) / totalBytes + " % ]");
+                        super.updateProgress( ( outPutFileLength * 100 ) / totalBytes, 100);
+                        System.out.println(
+                                "Current Bytes:" + outPutFileLength + " ,|, TotalBytes:" + totalBytes + " ,|, Current Progress: " + ( outPutFileLength * 100 ) / totalBytes + " %");
+
+                        // Sleep
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException ex) {
+                            logger.log(Level.WARNING, "", ex);
+                        }
+                    }
+
+                    //Update to show 100%
+                    super.updateMessage("Downloading: [ " + InfoTool.getFileSizeEdited(totalBytes) + " ] Progress: [ " + ( outPutFileLength * 100 ) / totalBytes + " % ]");
+                    super.updateProgress( ( outPutFileLength * 100 ) / totalBytes, 100);
+                    System.out.println(
+                            "Current Bytes:" + outPutFileLength + " ,|, TotalBytes:" + totalBytes + " ,|, Current Progress: " + ( outPutFileLength * 100 ) / totalBytes + " %");
+
+                    // 2 Seconds passed without response
+                    if (millisecondsFailTime == 40)
+                        succeeded = false;
                 } catch (Exception ex) {
                     succeeded = false;
                     // Stop the External Thread which is updating the %100 progress
