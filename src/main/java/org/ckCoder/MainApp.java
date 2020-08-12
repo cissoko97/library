@@ -3,13 +3,17 @@ package org.ckCoder;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+<<<<<<< HEAD
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+=======
+>>>>>>> bdae03a788dc2793eca201ec60c5e6b7844d44ce
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.log4j.PropertyConfigurator;
 import org.ckCoder.controller.PrimaryScene;
 import org.ckCoder.database.Connexion;
+<<<<<<< HEAD
 /*<<<<<<< HEAD
 import org.ckCoder.models.User;
 import org.ckCoder.service.UserService;
@@ -21,15 +25,25 @@ import org.ckCoder.service.DownloadService;
 import org.ckCoder.service.ExportZipService;
 import org.ckCoder.service.VersionService;
 import org.ckCoder.utils.*;
+=======
+import org.ckCoder.utils.ActionTool;
+import org.ckCoder.utils.InfoTool;
+import org.ckCoder.utils.NotificationType2;
+>>>>>>> bdae03a788dc2793eca201ec60c5e6b7844d44ce
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+<<<<<<< HEAD
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Properties;
 import java.io.InputStreamReader;
+=======
+import java.io.InputStreamReader;
+import java.sql.SQLException;
+>>>>>>> bdae03a788dc2793eca201ec60c5e6b7844d44ce
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,6 +61,7 @@ public class MainApp extends Application {
     /**
      * Update to download
      */
+<<<<<<< HEAD
     private static double currentVersion;
 
     //================Services================
@@ -55,6 +70,9 @@ public class MainApp extends Application {
     ExportZipService exportZipService;
 
     //=============================================
+=======
+    private static int update;
+>>>>>>> bdae03a788dc2793eca201ec60c5e6b7844d44ce
 
     private boolean isConnect = false;
     private VersionService versionService = new VersionService();
@@ -142,7 +160,11 @@ public class MainApp extends Application {
                 System.out.println(appName + " Path is : " + applicationPath[0]);
 
                 //Create a process builder
+<<<<<<< HEAD
                 ProcessBuilder builder = new ProcessBuilder("java", "-jar", applicationPath[0], !"XR3PlayerUpdater".equals(appName) ? "" : String.valueOf(currentVersion));
+=======
+                ProcessBuilder builder = new ProcessBuilder("java", "-jar", applicationPath[0], !"XR3PlayerUpdater".equals(appName) ? "" : String.valueOf(update));
+>>>>>>> bdae03a788dc2793eca201ec60c5e6b7844d44ce
                 builder.redirectErrorStream(true);
                 Process process = builder.start();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
