@@ -35,7 +35,7 @@ public class PrimaryScene {
     private final UserService userService = new UserService();
     private SessionManager manager = SessionManager.getInstance();
     private Properties properties = SelectedLanguage.getInstace();
-
+    public final String applicationName = properties.getProperty("INDEX_TITLE_DIALOG");
     public PrimaryScene() throws IOException {
     }
 
@@ -155,5 +155,13 @@ public class PrimaryScene {
     public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
+    }
+
+    public String getApplicationName() {
+        return applicationName;
+    }
+
+    public String getEtatUpdateApp() {
+        return applicationName + properties.getProperty("MESSAGE_ETAT_UPDATE_APP");
     }
 }

@@ -9,6 +9,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Path;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DownloadService extends Service<Boolean> {
@@ -42,6 +43,19 @@ public class DownloadService extends Service<Boolean> {
             System.out.println("Cancelled with value: " + super.getValue() + " , Copy Thread is Alive? " + copyThread.isAlive());
             done();
         });
+    }
+
+    public final void setRemoteResourceLocation(URL remoteResourceLocation) {
+        this.remoteResourceLocation.set(remoteResourceLocation);
+    }
+
+    /**
+     * Set the path to the local resource
+     *
+     * @param pathToLocalResource
+     */
+    public final void setPathToLocalResource(Path pathToLocalResource) {
+        this.pathToLocalResource.set(pathToLocalResource);
     }
 
     /**
@@ -82,6 +96,15 @@ public class DownloadService extends Service<Boolean> {
             }
         };
     }
+
+    /**
+     * Start the Download Service [[SuppressWarningsSpartan]]
+     */
+    public void startDownload(URL remoteResourceLocation , Path pathToLocalResource) {
+
+    }
+
+    //----------------------@Overrided methods--------------------------------------
 
     @Override
     protected void succeeded() {

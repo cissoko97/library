@@ -8,6 +8,7 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.TextFlow;
 import org.ckCoder.MainApp;
 import org.ckCoder.utils.ActionTool;
 import org.ckCoder.utils.InfoTool;
@@ -37,6 +38,8 @@ public class DownloadModeController extends BorderPane {
 
     @FXML
     private Button downloadManually;
+    @FXML
+    private TextFlow flowUpdate;
 
     // -------------------------------------------------------------
 
@@ -74,7 +77,7 @@ public class DownloadModeController extends BorderPane {
 
         //-- tryAgainButton
         tryAgainButton.setOnAction(a -> {
-            MainApp.restartApplication("XR3PlayerUpdater");
+            MainApp.restartApplication(MainApp.APPLICATION_NAME);
             tryAgainButton.setDisable(true);
         });
 
@@ -105,4 +108,7 @@ public class DownloadModeController extends BorderPane {
         return downloadManually;
     }
 
+    public TextFlow getFlowUpdate() {
+        return flowUpdate;
+    }
 }
