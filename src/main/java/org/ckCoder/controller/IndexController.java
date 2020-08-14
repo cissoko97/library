@@ -106,6 +106,7 @@ public class IndexController implements Initializable {
         logoutBTN.setText(properties.getProperty("LOGOUT_MENU_BTN_INDEX"));
 
         book_btn.setOnAction(event -> {
+
             try {
                 loadFxmlFile("BOOK", "/view/book/book_principal_stage");
             } catch (IOException e) {

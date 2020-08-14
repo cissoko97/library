@@ -14,18 +14,11 @@ import org.ckCoder.service.DownloadService;
 import org.ckCoder.service.ExportZipService;
 import org.ckCoder.service.VersionService;
 import org.ckCoder.utils.*;
-import org.ckCoder.utils.ActionTool;
-import org.ckCoder.utils.InfoTool;
-import org.ckCoder.utils.NotificationType2;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Properties;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,6 +51,8 @@ public class MainApp extends Application {
     private static Stage window;
 
     public MainApp() throws IOException {
+
+//        SmbFileOutputStream out = new SmbFileOutputStream("smb://" + user + ":" + password + "@" + filePath
     }
 
     public static void main(String[] args) {
@@ -80,10 +75,10 @@ public class MainApp extends Application {
 
             Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
                     properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.CONFIRMATION).showAndWait();
-            if(optional.get() == ButtonType.OK) {
+            if (optional.get() == ButtonType.OK) {
 
                 window.setOnCloseRequest(exit -> {
-                    if(exportZipService != null && exportZipService.isRunning()) {
+                    if (exportZipService != null && exportZipService.isRunning()) {
                         ActionTool.showNotification(properties.getProperty("MESSAGE_NOTIFICATION_EXIT_TITLE"),
                                 properties.getProperty("MESSAGE_NOTIFICATION_EXIT_CONTENT"), Duration.seconds(5),
                                 NotificationType2.WARNING);
@@ -99,7 +94,6 @@ public class MainApp extends Application {
                     }
                 });
             }
-
 
 
         }
@@ -171,6 +165,20 @@ public class MainApp extends Application {
 
             }
         }, "Start Application Thread").start();
+    }
+
+    public static void reload() {
+        System.out.println("Restarting app!");
+        window.close();
+        Platform.runLater(() ->
+                {
+                    try {
+                        new MainApp().start(new Stage());
+                    } catch (IOException | SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
     }
 
     public static boolean deleteZipFolder() {

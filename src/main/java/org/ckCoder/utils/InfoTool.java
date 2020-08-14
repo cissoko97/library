@@ -28,7 +28,7 @@ public final class InfoTool {
 	public static final String TUTORIALS = "https://www.youtube.com/playlist?list=PL-xqaiRUr_iRKDkpFWPfSRFmJvHSr1VJI";
 	
 	/** The Constant images. */
-	public static final String IMAGES = "/image/";
+	public static final String IMAGES = "/img/";
 	
 	/** The Constant styLes. */
 	public static final String STYLES = "/style/";
