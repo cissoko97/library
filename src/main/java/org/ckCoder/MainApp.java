@@ -289,6 +289,7 @@ public class MainApp extends Application {
                     e.printStackTrace();
                 }
             });
+
         }, "restart thread").start();
     }
 
