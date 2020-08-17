@@ -17,15 +17,12 @@ import org.ckCoder.service.DownloadFromLocalServer;
 import org.ckCoder.service.ExportZipService;
 import org.ckCoder.service.VersionService;
 import org.ckCoder.utils.*;
-import org.ckCoder.utils.ActionTool;
-import org.ckCoder.utils.InfoTool;
-import org.ckCoder.utils.NotificationType2;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Paths;
-
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -47,18 +44,18 @@ public class MainApp extends Application {
 
     private VersionApp versionApp;
 
-    public static final String APPLICATION_NAME ="firstApp-";
-    private static final String PREFIXE_REMOTE ="smb://";
+    public static final String APPLICATION_NAME = "firstApp-";
+    private static final String PREFIXE_REMOTE = "smb://";
 
 
     //Create a change listener
-    ChangeListener<? super Number> listener = (observable , oldValue , newValue) -> {
+    ChangeListener<? super Number> listener = (observable, oldValue, newValue) -> {
         if (newValue.intValue() == 1) {
             exportUpdate();
         }
     };
     //Create a change listener
-    ChangeListener<? super Number> listener2 = (observable , oldValue , newValue) -> {
+    ChangeListener<? super Number> listener2 = (observable, oldValue, newValue) -> {
         if (newValue.intValue() == 1)
             packageUpdate();
     };
@@ -82,6 +79,7 @@ public class MainApp extends Application {
     private static Stage window;
     private static final DownloadModeController downloadMode = new DownloadModeController();
     private final Properties properties = SelectedLanguage.getInstace();
+
     public MainApp() throws IOException {
 
     }
@@ -102,7 +100,7 @@ public class MainApp extends Application {
         Properties properties = SelectedLanguage.getInstace();
 
         // check last version in the data base
-        versionApp =versionService.checkVersion();
+        versionApp = versionService.checkVersion();
 
         // declare a propertie who content a current version for this application
         Properties pr = new Properties();
@@ -166,7 +164,7 @@ public class MainApp extends Application {
             }
 
         } else {
-           // window.setResizable(true);
+            // window.setResizable(true);
             primaryScene.constructPrimaryStage(window);
         }
 
@@ -175,7 +173,7 @@ public class MainApp extends Application {
 
     private void prepareForUpdate() {
         window.setTitle(primaryScene.getEtatUpdateApp());
-        prefixNewJarFile = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME + versionApp + "-update";
+        prefixNewJarFile = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME + versionApp.getNumVersion() + "-update";
 
         System.out.println("foldersNamePrefix " + prefixNewJarFile);
         downloadMode.getFlowUpdate().getChildren().add(new Text(("foldersNamePrefix " + prefixNewJarFile + "\n")));
@@ -183,7 +181,7 @@ public class MainApp extends Application {
             downloadMode.getProgressLabel().setText(properties.getProperty("MESSAGE_ALERT_PERMISSION"));
 
 
-          // downloadUpdate("https://github.com/cissoko97/library/raw/master/" +APPLICATION_NAME + versionApp + "-SNAPSHOT"+".jar");
+            // downloadUpdate("https://github.com/cissoko97/library/raw/master/" +APPLICATION_NAME + versionApp + "-SNAPSHOT"+".jar");
 
             downloadUpdate(PREFIXE_REMOTE + versionApp.getUrl());
 
@@ -221,7 +219,9 @@ public class MainApp extends Application {
         return updateFolder.canRead() && updateFolder.canWrite();
     }
 
-    /** Try to download the Update */
+    /**
+     * Try to download the Update
+     */
     private void downloadUpdate(String downloadURL) {
 
         if (InfoTool.isReachableByPing("www.google.com")) {
@@ -239,7 +239,7 @@ public class MainApp extends Application {
                 downloadMode.getProgressLabel().textProperty().bind(downloadService.messageProperty());
 
 
-                downloadMode.getProgressLabel().textProperty().addListener((observable , oldValue , newValue) -> {
+                downloadMode.getProgressLabel().textProperty().addListener((observable, oldValue, newValue) -> {
 
                     //Give try again option to the user
                     /*if (newValue.toLowerCase().contains("failed")){
@@ -277,15 +277,17 @@ public class MainApp extends Application {
         loggerMessage("\nrestart application\n");
         downloadMode.getProgressLabel().setText("restart application");
         Thread.sleep(2500);
-        Platform.runLater(()-> {
-            try {
-                window.close();
-                Thread.sleep(2000);
-                new MainApp().start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+        new Thread(() -> {
+            Platform.runLater(() -> {
+                try {
+                    window.close();
+                    Thread.sleep(2000);
+                    new MainApp().start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }).start();
     }
 
     private void exportUpdate() {
@@ -329,13 +331,13 @@ public class MainApp extends Application {
 
         //Packaging
         downloadMode.getProgressBar().setProgress(-1);
-        downloadMode.getProgressLabel().setText(properties.getProperty("PROGRESS_LABEL_TEXT3") + " " +properties.getProperty("INDEX_TITLE_DIALOG") + "...");
+        downloadMode.getProgressLabel().setText(properties.getProperty("PROGRESS_LABEL_TEXT3") + " " + properties.getProperty("INDEX_TITLE_DIALOG") + "...");
 
         //Delete the ZIP Folder
         deleteZipFolder();
 
         downloadMode.getProgressLabel().setText("relaunch application");
-       // System.out.println("redémarrage de l'application");
+        // System.out.println("redémarrage de l'application");
         loggerMessage("relaunch application");
         //Start XR3Player
         try {
@@ -365,7 +367,7 @@ public class MainApp extends Application {
     }
 
     public static void loggerMessage(String message) {
-        Platform.runLater(()-> downloadMode.getFlowUpdate().getChildren().add(new Text(message + "\n")));
+        Platform.runLater(() -> downloadMode.getFlowUpdate().getChildren().add(new Text(message + "\n")));
     }
 
 }
