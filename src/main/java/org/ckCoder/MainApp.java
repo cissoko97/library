@@ -270,22 +270,27 @@ public class MainApp extends Application {
         }
     }
 
-    public static void restartApplication(String applicationName) throws InterruptedException {
+    public void restartApplication(String applicationName) throws InterruptedException {
 
         // Restart virual library
 
         loggerMessage("\nrestart application\n");
         downloadMode.getProgressLabel().setText("restart application");
         Thread.sleep(2500);
-        Platform.runLater(()-> {
-            try {
-                window.close();
-                Thread.sleep(2000);
-                new MainApp().start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+
+        new Thread(()->{
+            Platform.runLater(()-> {
+                try {
+                    window.close();
+                    deleteZipFolder();
+                    Thread.sleep(2000);
+                    primaryScene.constructPrimaryStage(window);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }, "restart thread").start();
+
     }
 
     private void exportUpdate() {
