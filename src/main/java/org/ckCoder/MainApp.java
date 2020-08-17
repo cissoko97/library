@@ -122,7 +122,7 @@ public class MainApp extends Application {
          */
         if (currentVersion < update) {
             Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
-                    properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.CONFIRMATION).showAndWait();
+                    properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.INFORMATION).showAndWait();
             if (optional.get() == ButtonType.OK) {
 
                 window.setOnCloseRequest(exit -> {
