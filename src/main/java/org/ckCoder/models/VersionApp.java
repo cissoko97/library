@@ -1,20 +1,31 @@
 package org.ckCoder.models;
 
+import java.time.LocalDateTime;
+
 public class VersionApp extends AbstractEntity {
-    private Double numVerson;
+    private Double numVersion;
     private String description;
     private String url;
+    private LocalDateTime deployAt;
 
     public VersionApp() {
 
     }
 
-    public Double getNumVerson() {
-        return numVerson;
+    public LocalDateTime getDeployAt() {
+        return deployAt;
     }
 
-    public void setNumVerson(Double numVerson) {
-        this.numVerson = numVerson;
+    public void setDeployAt(LocalDateTime deployAt) {
+        this.deployAt = deployAt;
+    }
+
+    public Double getNumVersion() {
+        return numVersion;
+    }
+
+    public void setNumVersion(Double numVersion) {
+        this.numVersion = numVersion;
     }
 
     public String getDescription() {

@@ -99,7 +99,7 @@ public class MainApp extends Application {
         // load icon
         window.getIcons().add(InfoTool.getImageFromResourcesFolder("/img/home_icone.jpeg"));
         Properties properties = SelectedLanguage.getInstace();
-        update =versionService.checkVersion();
+//        update =versionService.checkVersion();
 
         // declare a propertie who content a current version for this application
         Properties pr = new Properties();
