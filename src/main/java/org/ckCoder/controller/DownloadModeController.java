@@ -1,10 +1,12 @@
 package org.ckCoder.controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
@@ -20,6 +22,13 @@ import java.util.logging.Logger;
 public class DownloadModeController extends BorderPane {
 
     //-----------------------------------------------------
+
+    @FXML
+    private ScrollPane scrollUpdate;
+
+    @FXML
+    private TextFlow flowUpdate;
+
 
     @FXML
     private Rectangle rectangle;
@@ -38,8 +47,6 @@ public class DownloadModeController extends BorderPane {
 
     @FXML
     private Button downloadManually;
-    @FXML
-    private TextFlow flowUpdate;
 
     // -------------------------------------------------------------
 
@@ -71,6 +78,7 @@ public class DownloadModeController extends BorderPane {
      */
     @FXML
     private void initialize() {
+    scrollUpdate.vvalueProperty().bind(flowUpdate.heightProperty());
 
         //-- failedStackPane
 //        failedStackPane.setVisible(false);
@@ -111,4 +119,5 @@ public class DownloadModeController extends BorderPane {
     public TextFlow getFlowUpdate() {
         return flowUpdate;
     }
+
 }

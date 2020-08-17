@@ -45,16 +45,17 @@ public class MainApp extends Application {
      * Download update as a ZIP Folder , this is the prefix name of the ZIP
      * folder
      */
-    private static String foldersNamePrefix;
+    private static String prefixNewJarFile;
 
     private double update;
 
-    public static final String APPLICATION_NAME ="book_shore";
+    public static final String APPLICATION_NAME ="firstApp-";
 
     //Create a change listener
     ChangeListener<? super Number> listener = (observable , oldValue , newValue) -> {
-        if (newValue.intValue() == 1)
+        if (newValue.intValue() == 1) {
             exportUpdate();
+        }
     };
     //Create a change listener
     ChangeListener<? super Number> listener2 = (observable , oldValue , newValue) -> {
@@ -94,7 +95,6 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws IOException, SQLException {
         //prepare window
         window = primaryStage;
-        window.setResizable(false);
         window.centerOnScreen();
 
         // load icon
@@ -109,10 +109,18 @@ public class MainApp extends Application {
 
         //chec current version
         System.out.println(UtilForArray.isDouble(pr.getProperty("version")));
+
         if (UtilForArray.isDouble(pr.getProperty("version"))) {
             currentVersion = Double.parseDouble(pr.getProperty("version"));
-        } else
+        } else {
             currentVersion = 1.0;
+        }
+
+        /*
+         * compare current version witch last version
+         * if last version is more than current version,
+         * propose at user to update the application
+         */
         if (currentVersion < update) {
             Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
                     properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.CONFIRMATION).showAndWait();
@@ -134,22 +142,26 @@ public class MainApp extends Application {
                         System.exit(0);
                     }
                 });
+                // Scene
+                Scene scene = new Scene(downloadMode);
+                scene.getStylesheets().add(getClass().getResource(InfoTool.STYLES + InfoTool.APPLICATIONCSS).toExternalForm());
+                window.setScene(scene);
+
+                //reseize window
+                window.setResizable(false);
+                //Show
+                window.show();
+
+                //Start
+                prepareForUpdate();
+            } else {
+                primaryScene.constructPrimaryStage(primaryStage);
             }
 
 
-            // Scene
-            Scene scene = new Scene(downloadMode);
-            scene.getStylesheets().add(getClass().getResource(InfoTool.STYLES + InfoTool.APPLICATIONCSS).toExternalForm());
-            window.setScene(scene);
-
-            //Show
-            window.show();
-
-            //Start
-            prepareForUpdate();
-
         } else {
-            primaryScene.constructPrimaryStage(primaryStage);
+           // window.setResizable(true);
+            primaryScene.constructPrimaryStage(window);
         }
 
 
@@ -157,16 +169,16 @@ public class MainApp extends Application {
 
     private void prepareForUpdate() {
         window.setTitle(primaryScene.getEtatUpdateApp());
-        foldersNamePrefix = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME + "_Update_package"
-                + currentVersion;
+        prefixNewJarFile = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME +update+ "-update";
 
-        System.out.println("foldersNamePrefix " + foldersNamePrefix);
-        downloadMode.getFlowUpdate().getChildren().add(new Text(("foldersNamePrefix " + foldersNamePrefix + "\n")));
+        System.out.println("foldersNamePrefix " + prefixNewJarFile);
+        downloadMode.getFlowUpdate().getChildren().add(new Text(("foldersNamePrefix " + prefixNewJarFile + "\n")));
         if (checkPermissions()) {
             downloadMode.getProgressLabel().setText(properties.getProperty("MESSAGE_ALERT_PERMISSION"));
             //downloadUpdate("https://github.com/goxr3plus/XR3Player/releases/download/V3." + APPLICATION_NAME + "/XR3Player.Update." + update + ".zip");
             downloadMode.getFlowUpdate().getChildren().add(new Text("\nDebbut du téléchargement\n"));
-            downloadUpdate("https://github.com/cissoko97/library/raw/master/firstApp-1.0-SNAPSHOT.jar");
+            //downloadUpdate("https://github.com/cissoko97/library/raw/master/firstApp-1.0-SNAPSHOT.jar");
+           downloadUpdate("https://github.com/cissoko97/library/raw/master/" +APPLICATION_NAME +update+ "-SNAPSHOT"+".jar");
 
         } else {
 
@@ -219,11 +231,6 @@ public class MainApp extends Application {
                 downloadMode.getProgressBar().progressProperty().bind(downloadService.progressProperty());
                 downloadMode.getProgressLabel().textProperty().bind(downloadService.messageProperty());
 
-                /*System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
-                        downloadMode.getProgressBar().getProgress());
-
-                downloadMode.getFlowUpdate().getChildren().add(new Text("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
-                        downloadMode.getProgressBar().getProgress()));*/
 
                 downloadMode.getProgressLabel().textProperty().addListener((observable , oldValue , newValue) -> {
 
@@ -236,11 +243,9 @@ public class MainApp extends Application {
                         + properties.getProperty("MESSAGE_ETAT_UPDATE_APP") + " -> " + currentVersion);
 
                 //Start
-               /* System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
-                        downloadMode.getProgressBar().getProgress());*/
-                downloadMode.getFlowUpdate().getChildren().add(new Text(("\n debut téléchargement " + downloadMode.getProgressLabel().getText()) + " : " +
-                        downloadMode.getProgressBar().getProgress() + "\n"));
-                downloadService.startDownload(new URL(downloadURL), Paths.get(foldersNamePrefix + ".zip"));
+
+                downloadMode.getFlowUpdate().getChildren().add(new Text("\n debut téléchargement \n"));
+                downloadService.startDownload(new URL(downloadURL), Paths.get(prefixNewJarFile + ".jar"));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
@@ -258,72 +263,22 @@ public class MainApp extends Application {
         }
     }
 
-    public static void restartApplication(String applicationName) {
+    public static void restartApplication(String applicationName) throws InterruptedException {
 
         // Restart virual library
-        new Thread(() -> {
-            String path = InfoTool.getBasePathForClass(MainApp.class);
-            String[] applicationPath = {new File(path + applicationName + ".jar").getAbsolutePath()};
 
-            //Show message that application is restarting
-            Platform.runLater(() -> {
-                try {
-                    ActionTool.showNotification(SelectedLanguage.getInstace().getProperty("MESSAGE_ETAT_RESTART_APP")+
-                                    " " + applicationName, SelectedLanguage.getInstace().getProperty("MESSAGE_NOTIFICATION_CONTENT_APP_PATH")
-                            + applicationPath[0] + "]\n\t" + SelectedLanguage.getInstace().getProperty("MESSAGE_NOTIFIACTION_CONTENT_DURATION"),
-                            Duration.seconds(25),
-                            NotificationType2.INFORMATION);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-
+        loggerMessage("\nrestart application\n");
+        downloadMode.getProgressLabel().setText("restart application");
+        Thread.sleep(2500);
+        Platform.runLater(()-> {
             try {
-
-                //Delete the ZIP Folder
-                deleteZipFolder();
-
-                //------------Wait until Application is created
-                File applicationFile = new File(applicationPath[0]);
-                while (!applicationFile.exists()) {
-                    Thread.sleep(50);
-                    downloadMode.getFlowUpdate().getChildren().add(new Text("Waiting " + applicationName + " Jar to be created..."));
-                    downloadMode.getFlowUpdate().getChildren().add(new Text(applicationName + " Path is : " + applicationPath[0]));
-                }
-
-                //Create a process builder
-                ProcessBuilder builder = new ProcessBuilder("java", "-jar", applicationPath[0]);
-                builder.redirectErrorStream(true);
-                Process process = builder.start();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-                // Wait n seconds
-                PauseTransition pause = new PauseTransition(Duration.seconds(10));
-                pause.setOnFinished(f -> Platform.runLater(() -> ActionTool.showNotification("Starting " + applicationName + " failed",
-                        "\nApplication Path: [ " + applicationPath[0] + " ]\n\tTry to do it manually...", Duration.seconds(10), NotificationType2.ERROR)));
-                pause.play();
-
-                // Continuously Read Output to check if the main application started
-                String line;
-                while (process.isAlive())
-                    while ((line = bufferedReader.readLine()) != null) {
-                        if (line.isEmpty())
-                            break;
-                           /* //This line is being printed when XR3Player Starts
-                            //So the AutoUpdater knows that it must exit
-                        else if (line.contains("XR3Player ready to rock!"))
-                            System.exit(0);*/
-                    }
-
-            } catch (IOException | InterruptedException ex) {
-                Logger.getLogger(MainApp.class.getName()).log(Level.INFO, null, ex);
-
-                // Show failed message
-                Platform.runLater(() -> Platform.runLater(() -> ActionTool.showNotification("Starting " + applicationName + " failed",
-                        "\nApplication Path: [ " + applicationPath[0] + " ]\n\tTry to do it manually...", Duration.seconds(10), NotificationType2.ERROR)));
-
+                window.close();
+                Thread.sleep(2000);
+                new MainApp().start(new Stage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }, "Start Application Thread").start();
+        });
     }
 
     private void exportUpdate() {
@@ -341,13 +296,15 @@ public class MainApp extends Application {
 
         //Start it
 
-        System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
+        /*System.out.println("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
                 downloadMode.getProgressBar().getProgress());
         downloadMode.getFlowUpdate().getChildren().add(new Text("téléchargement " + downloadMode.getProgressLabel().getText()+ " : " +
-                downloadMode.getProgressBar().getProgress()));
+                downloadMode.getProgressBar().getProgress()));*/
 
-        exportZipService.exportZip(foldersNamePrefix + ".zip", updateFolder.getAbsolutePath());
+        exportZipService.exportZip(prefixNewJarFile + ".jar", updateFolder.getAbsolutePath());
 
+        System.out.println("name file download : " + prefixNewJarFile);
+        System.out.println("update path directory : " + updateFolder.getAbsolutePath());
     }
 
     /**
@@ -369,15 +326,25 @@ public class MainApp extends Application {
 
         //Delete the ZIP Folder
         deleteZipFolder();
-        System.out.println("redémarrage de l'application");
-        downloadMode.getFlowUpdate().getChildren().add(new Text("redémarrage de l'application"));
+
+        downloadMode.getProgressLabel().setText("relaunch application");
+       // System.out.println("redémarrage de l'application");
+        loggerMessage("relaunch application");
         //Start XR3Player
-        restartApplication(APPLICATION_NAME);
+        try {
+            restartApplication(APPLICATION_NAME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
     public static boolean deleteZipFolder() {
-        return new File(foldersNamePrefix + ".zip").delete();
+        return new File(prefixNewJarFile).delete();
+    }
+
+    public static void loggerMessage(String message) {
+        Platform.runLater(()-> downloadMode.getFlowUpdate().getChildren().add(new Text(message + "\n")));
     }
 
 }

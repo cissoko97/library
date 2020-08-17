@@ -6,6 +6,7 @@ package org.ckCoder.service;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.util.Duration;
+import org.ckCoder.MainApp;
 import org.ckCoder.utils.ActionTool;
 import org.ckCoder.utils.NotificationType;
 import org.ckCoder.utils.NotificationType2;
@@ -115,6 +116,8 @@ public class ExportZipService extends Service<Boolean> {
 					
 					// create output directory is not exists
 					File folder = new File(destinationFolder);
+					System.out.println(zipFile);
+					System.out.println(destinationFolder);
 					if (!folder.exists())
 						folder.mkdir();
 					
@@ -124,30 +127,39 @@ public class ExportZipService extends Service<Boolean> {
 					// Count entries
 					ZipFile zip = new ZipFile(zipFile);
 					double counter = 0 , total = zip.size();
-					
+					MainApp.loggerMessage("count file : " + counter+ " total size : " + total);
 					//Start
+					MainApp.loggerMessage("transFert de fichier");
 					for (byte[] buffer = new byte[1024]; ze != null;) {
-						
+
+
 						String fileName = ze.getName();
+						System.out.print("unzip file : " + ze.getName());
+
 						File newFile = new File(destinationFolder + File.separator + fileName);
+						if(!newFile.exists())
+							newFile.getParentFile().mkdir();
+						System.out.println("\t" + newFile.exists());
 						
 						// Refresh the dataLabel text
 						updateMessage("Exporting: [ " + newFile.getName() + " ]");
 						
 						// create all non exists folders else you will hit FileNotFoundException for compressed folder
-						new File(newFile.getParent()).mkdirs();
-						
+						//new File(newFile.getParent());
+
 						//Create File OutputStream
 						try (FileOutputStream fos = new FileOutputStream(newFile)) {
 							
 							// Copy byte by byte
+							System.out.println("copy file => " + newFile.getAbsolutePath());
 							int len;
 							while ( ( len = zis.read(buffer) ) > 0)
 								fos.write(buffer, 0, len);
 							
 						} catch (IOException ex) {
 							exception = ex.getMessage();
-							logger.log(Level.WARNING, "", ex);
+
+							//logger.log(Level.WARNING, "warning 1", ex);
 						}
 						
 						//Get next entry
@@ -163,7 +175,8 @@ public class ExportZipService extends Service<Boolean> {
 					
 				} catch (IOException ex) {
 					exception = ex.getMessage();
-					logger.log(Level.WARNING, "", ex);
+					MainApp.loggerMessage(ex.getMessage());
+					logger.log(Level.WARNING, "warning 2", ex);
 					return false;
 				}
 				

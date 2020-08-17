@@ -143,6 +143,14 @@ public class BookControler implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         boolean isAdmin = false;
+
+        /*
+         *remove addToCard btn for testing
+         */
+        btn_controlController.getGridPaneRoot().getChildren()
+                .remove(btn_controlController.getAddCaddyBtn());
+
+
         for (Profil p : user.getProfils()) {
             if (p.getLabel().toLowerCase().equals("admin")) {
                 isAdmin = true;
@@ -198,7 +206,7 @@ public class BookControler implements Initializable {
         });
 
         btn_controlController.getAddCaddyBtn().setOnAction(event -> {
-            this.addBooktoCart(this.book);
+          this.addBooktoCart(this.book);
 
         });
     }
