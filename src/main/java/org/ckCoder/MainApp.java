@@ -1,6 +1,5 @@
 package org.ckCoder;
 
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -13,7 +12,8 @@ import javafx.util.Duration;
 import org.apache.log4j.PropertyConfigurator;
 import org.ckCoder.controller.DownloadModeController;
 import org.ckCoder.controller.PrimaryScene;
-import org.ckCoder.service.DownloadService;
+import org.ckCoder.models.VersionApp;
+import org.ckCoder.service.DownloadFromLocalServer;
 import org.ckCoder.service.ExportZipService;
 import org.ckCoder.service.VersionService;
 import org.ckCoder.utils.*;
@@ -27,7 +27,6 @@ import java.net.URL;
 import java.nio.file.Paths;
 
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.Properties;
 
 public class MainApp extends Application {
@@ -46,9 +45,11 @@ public class MainApp extends Application {
      */
     private static String prefixNewJarFile;
 
-    private double update;
+    private VersionApp versionApp;
 
     public static final String APPLICATION_NAME ="firstApp-";
+    private static final String PREFIXE_REMOTE ="smb://";
+
 
     //Create a change listener
     ChangeListener<? super Number> listener = (observable , oldValue , newValue) -> {
@@ -70,9 +71,9 @@ public class MainApp extends Application {
     private static double currentVersion;
     //================Services================
 
-    DownloadService downloadService;
+    //DownloadService downloadService;
     ExportZipService exportZipService;
-
+    DownloadFromLocalServer downloadService;
     //=============================================
 
     private final VersionService versionService = new VersionService();
@@ -99,15 +100,16 @@ public class MainApp extends Application {
         // load icon
         window.getIcons().add(InfoTool.getImageFromResourcesFolder("/img/home_icone.jpeg"));
         Properties properties = SelectedLanguage.getInstace();
-        update =versionService.checkVersion();
+
+        // check last version in the data base
+        versionApp =versionService.checkVersion();
 
         // declare a propertie who content a current version for this application
         Properties pr = new Properties();
         InputStream stream = getClass().getResourceAsStream("/properties/config.properties");
         pr.load(stream);
 
-        //chec current version
-        System.out.println(UtilForArray.isDouble(pr.getProperty("version")));
+        //check current version
 
         if (UtilForArray.isDouble(pr.getProperty("version"))) {
             currentVersion = Double.parseDouble(pr.getProperty("version"));
@@ -120,10 +122,14 @@ public class MainApp extends Application {
          * if last version is more than current version,
          * propose at user to update the application
          */
-        if (currentVersion < update) {
-            Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
-                    properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.INFORMATION).showAndWait();
-            if (optional.get() == ButtonType.OK) {
+        if (currentVersion < versionApp.getNumVerson()) {
+            Alert alert = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
+                    properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.INFORMATION);
+
+            alert.showAndWait();
+
+
+            if (alert.getResult() == ButtonType.OK) {
 
                 window.setOnCloseRequest(exit -> {
                     if (exportZipService != null && exportZipService.isRunning()) {
@@ -154,7 +160,9 @@ public class MainApp extends Application {
                 //Start
                 prepareForUpdate();
             } else {
-                primaryScene.constructPrimaryStage(primaryStage);
+
+                System.exit(0);
+                //primaryScene.constructPrimaryStage(primaryStage);
             }
 
         } else {
@@ -167,7 +175,7 @@ public class MainApp extends Application {
 
     private void prepareForUpdate() {
         window.setTitle(primaryScene.getEtatUpdateApp());
-        prefixNewJarFile = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME +update+ "-update";
+        prefixNewJarFile = updateFolder.getAbsolutePath() + File.separator + APPLICATION_NAME + versionApp + "-update";
 
         System.out.println("foldersNamePrefix " + prefixNewJarFile);
         downloadMode.getFlowUpdate().getChildren().add(new Text(("foldersNamePrefix " + prefixNewJarFile + "\n")));
@@ -175,8 +183,10 @@ public class MainApp extends Application {
             downloadMode.getProgressLabel().setText(properties.getProperty("MESSAGE_ALERT_PERMISSION"));
             //downloadUpdate("https://github.com/goxr3plus/XR3Player/releases/download/V3." + APPLICATION_NAME + "/XR3Player.Update." + update + ".zip");
             downloadMode.getFlowUpdate().getChildren().add(new Text("\nDebbut du téléchargement\n"));
-            //downloadUpdate("https://github.com/cissoko97/library/raw/master/firstApp-1.0-SNAPSHOT.jar");
-           downloadUpdate("https://github.com/cissoko97/library/raw/master/" +APPLICATION_NAME +update+ "-SNAPSHOT"+".jar");
+
+          // downloadUpdate("https://github.com/cissoko97/library/raw/master/" +APPLICATION_NAME + versionApp + "-SNAPSHOT"+".jar");
+
+            downloadUpdate(PREFIXE_REMOTE + versionApp.getUrl());
 
         } else {
 
@@ -223,7 +233,7 @@ public class MainApp extends Application {
                 deleteZipFolder();
 
                 //Create the downloadService
-                downloadService = new DownloadService();
+                downloadService = new DownloadFromLocalServer();
 
                 //Add Bindings
                 downloadMode.getProgressBar().progressProperty().bind(downloadService.progressProperty());
@@ -242,7 +252,8 @@ public class MainApp extends Application {
 
                 //Start
 
-                downloadMode.getFlowUpdate().getChildren().add(new Text("\n debut téléchargement \n"));
+                downloadMode.getFlowUpdate().getChildren().add(new Text("\n begin download \n"));
+
                 downloadService.startDownload(new URL(downloadURL), Paths.get(prefixNewJarFile + ".jar"));
             } catch (MalformedURLException e) {
                 e.printStackTrace();

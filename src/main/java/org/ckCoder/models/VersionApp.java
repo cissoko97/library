@@ -1,7 +1,7 @@
 package org.ckCoder.models;
 
 public class VersionApp extends AbstractEntity {
-    private Double numVerson;
+    private Double numVersion;
     private String description;
     private String url;
 
@@ -10,11 +10,11 @@ public class VersionApp extends AbstractEntity {
     }
 
     public Double getNumVerson() {
-        return numVerson;
+        return numVersion;
     }
 
     public void setNumVerson(Double numVerson) {
-        this.numVerson = numVerson;
+        this.numVersion = numVerson;
     }
 
     public String getDescription() {

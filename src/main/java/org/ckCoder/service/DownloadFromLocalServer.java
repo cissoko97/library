@@ -4,11 +4,16 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbFile;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.ckCoder.MainApp;
 import org.ckCoder.utils.InfoTool;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
@@ -16,27 +21,25 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class DownloadService extends Service<Boolean> {
-    /**
-     * The logger of the class
-     */
-    private final Logger logger = Logger.getLogger(DownloadService.class.getName());
-
-    // -----
-    private long totalBytes;
-    private boolean succeeded;
-    private volatile boolean stopThread;
-
-
+public class DownloadFromLocalServer extends Service<Boolean> {
+    private final Logger logger = Logger.getLogger(DownloadFromLocalServer.class);
+    private static final String DOMAINE = "domaine";
+    private static final String USERNAME = "update";
+    private static final String PASSWORD = "Start001";
     private volatile FileChannel zip;
+    private volatile boolean stopThread;
+    private final NtlmPasswordAuthentication authentication = new NtlmPasswordAuthentication(DOMAINE, USERNAME, PASSWORD);
+
+    private SmbFile smbFile;
+    private long totalBytes;
     private final ObjectProperty<URL> remoteResourceLocation = new SimpleObjectProperty<>();
     private final ObjectProperty<Path> pathToLocalResource = new SimpleObjectProperty<>();
+    private boolean succeeded;
 
     private Thread copyThread;
 
-    public DownloadService() {
+    public DownloadFromLocalServer() {
         setOnSucceeded(s -> {
             System.out.println("Succeeded with value: " + super.getValue() + " , Copy Thread is Alive? " + copyThread.isAlive());
             done();
@@ -52,9 +55,7 @@ public class DownloadService extends Service<Boolean> {
             done();
         });
     }
-    /**
-     * The Service is done
-     */
+
     private boolean done() {
 
         boolean fileDeleted = false;
@@ -73,24 +74,23 @@ public class DownloadService extends Service<Boolean> {
             protected Boolean call() throws Exception {
                 succeeded = Boolean.TRUE;
 
+                //creation new file for new jar
                 File destinationFile = new File(pathToLocalResource.get().toString());
-
                 super.updateMessage("Connecting with server");
                 String failMessage;
 
                 try {
                     // Open the Connection and get totalBytes
-                    URLConnection connection = remoteResourceLocation.get().openConnection();
-                    totalBytes = Long.parseLong(connection.getHeaderField("content-Length"));
+                    totalBytes = Long.parseLong(smbFile.getHeaderField("content-Length"));
 
                     copyThread = new Thread(() -> {
                         try {
                             zip = FileChannel.open(pathToLocalResource.get(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 
-                            zip.transferFrom(Channels.newChannel(connection.getInputStream()), 0, Long.MAX_VALUE);
+                            zip.transferFrom(Channels.newChannel(smbFile.getInputStream()), 0, Long.MAX_VALUE);
                         } catch (Exception ex) {
                             stopThread = true;
-                            logger.log(Level.WARNING, "DownloadService failed", ex);
+                            MainApp.loggerMessage("Download failed");
                         } finally {
                             try {
                                 zip.close();
@@ -137,7 +137,7 @@ public class DownloadService extends Service<Boolean> {
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException ex) {
-                            logger.log(Level.WARNING, "", ex);
+                            logger.info(ex);
                         }
                     }
 
@@ -158,46 +158,21 @@ public class DownloadService extends Service<Boolean> {
                     succeeded = false;
                     // Stop the External Thread which is updating the %100 progress
                     stopThread = true;
-                    logger.log(Level.WARNING, "DownloadService failed", ex);
+                    logger.log(Priority.ERROR, "DownloadService failed", ex);
                 }
+
                 return succeeded;
             }
         };
     }
 
-/*
-    *//**
-     * Start the Download Service [[SuppressWarningsSpartan]]
-     *//*
-    public void startDownload(URL remoteResourceLocation , Path pathToLocalResource) {
-        System.out.println(remoteResourceLocation.toExternalForm());
-        System.out.println(pathToLocalResource.toString());
-    }
-*/
-
-    //----------------------@Overrided methods--------------------------------------
-
-    @Override
-    protected void succeeded() {
-        super.succeeded();
-    }
-
-    @Override
-    protected void cancelled() {
-        super.cancelled();
-    }
-
-    @Override
-    protected void failed() {
-        super.failed();
-    }
-
-    public void startDownload(URL remoteResourceLocation, Path pathToLocalResource) {
+    public void startDownload(URL remoteResourceLocation, Path pathToLocalResource) throws MalformedURLException {
+        smbFile = new SmbFile(remoteResourceLocation.getPath(), authentication);
         if (!isRunning() && pathToLocalResource != null && remoteResourceLocation != null) {
 
             //Set
-            this.setRemoteResourceLocation(remoteResourceLocation);
-            this.setPathToLocalResource(pathToLocalResource);
+            this.remoteResourceLocation.set(remoteResourceLocation);
+            this.pathToLocalResource.set(pathToLocalResource);
 
             // setRemoteResourceLocation(new URL(java.net.URLDecoder.decode(remoteResourceLocation, "UTF-8")))
 
@@ -207,24 +182,6 @@ public class DownloadService extends Service<Boolean> {
             //Restart
             restart();
         } else
-            logger.log(Level.INFO, "Please specify [Remote Resource Location] and [ Path to Local Resource ]");
-    }
-
-    /**
-     * Set the remote resource location
-     *
-     * @param remoteResourceLocation
-     */
-    public final void setRemoteResourceLocation(URL remoteResourceLocation) {
-        this.remoteResourceLocation.set(remoteResourceLocation);
-    }
-
-    /**
-     * Set the path to the local resource
-     *
-     * @param pathToLocalResource
-     */
-    public final void setPathToLocalResource(Path pathToLocalResource) {
-        this.pathToLocalResource.set(pathToLocalResource);
+            logger.warn("Please specify [Remote Resource Location] and [ Path to Local Resource ]");
     }
 }

@@ -89,8 +89,7 @@ public class Verification {
 
     public static Alert alertMessage(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
-        alert.setWidth(500);
-        alert.setHeight(350);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setContentText(message);
         alert.setTitle(title);
         return alert;
