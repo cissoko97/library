@@ -1,8 +1,10 @@
 package org.ckCoder.utils;
 
+import org.apache.commons.io.IOUtils;
 import org.ckCoder.models.LanguageEmun;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,7 +26,7 @@ public class SelectedLanguage {
     }
 
     public static void writeToFile(LanguageEmun languageEmun) throws IOException {
-        File file = new File("src/main/java/org/ckCoder/file/currentlangue");
+        File file = new File(SelectedLanguage.class.getResource("/config/currentlangue").getFile());
         FileWriter fileWriter = new FileWriter(file);
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.print(languageEmun.name());
@@ -32,8 +34,8 @@ public class SelectedLanguage {
     }
 
     private static String readtoFile() throws IOException {
-        Path path = Paths.get("src/main/java/org/ckCoder/file/currentlangue");
-        return Files.readAllLines(path).get(0);
+        InputStream inputStream = SelectedLanguage.class.getResourceAsStream("/config/currentlangue");
+        return IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
     }
 
 }
