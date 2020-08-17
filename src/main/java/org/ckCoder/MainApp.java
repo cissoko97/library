@@ -181,8 +181,7 @@ public class MainApp extends Application {
         downloadMode.getFlowUpdate().getChildren().add(new Text(("foldersNamePrefix " + prefixNewJarFile + "\n")));
         if (checkPermissions()) {
             downloadMode.getProgressLabel().setText(properties.getProperty("MESSAGE_ALERT_PERMISSION"));
-            //downloadUpdate("https://github.com/goxr3plus/XR3Player/releases/download/V3." + APPLICATION_NAME + "/XR3Player.Update." + update + ".zip");
-            downloadMode.getFlowUpdate().getChildren().add(new Text("\nDebbut du téléchargement\n"));
+
 
           // downloadUpdate("https://github.com/cissoko97/library/raw/master/" +APPLICATION_NAME + versionApp + "-SNAPSHOT"+".jar");
 
@@ -252,9 +251,8 @@ public class MainApp extends Application {
 
                 //Start
 
-                downloadMode.getFlowUpdate().getChildren().add(new Text("\n begin download \n"));
 
-                downloadService.startDownload(new URL(downloadURL), Paths.get(prefixNewJarFile + ".jar"));
+                downloadService.startDownload(downloadURL, Paths.get(prefixNewJarFile + ".jar"));
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

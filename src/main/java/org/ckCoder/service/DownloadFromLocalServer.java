@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -33,7 +34,7 @@ public class DownloadFromLocalServer extends Service<Boolean> {
 
     private SmbFile smbFile;
     private long totalBytes;
-    private final ObjectProperty<URL> remoteResourceLocation = new SimpleObjectProperty<>();
+    private final ObjectProperty<String> remoteResourceLocation = new SimpleObjectProperty<>();
     private final ObjectProperty<Path> pathToLocalResource = new SimpleObjectProperty<>();
     private boolean succeeded;
 
@@ -77,11 +78,12 @@ public class DownloadFromLocalServer extends Service<Boolean> {
                 //creation new file for new jar
                 File destinationFile = new File(pathToLocalResource.get().toString());
                 super.updateMessage("Connecting with server");
+                MainApp.loggerMessage("start download");
                 String failMessage;
 
                 try {
                     // Open the Connection and get totalBytes
-                    totalBytes = Long.parseLong(smbFile.getHeaderField("content-Length"));
+                    totalBytes = smbFile.length();
 
                     copyThread = new Thread(() -> {
                         try {
@@ -166,8 +168,15 @@ public class DownloadFromLocalServer extends Service<Boolean> {
         };
     }
 
-    public void startDownload(URL remoteResourceLocation, Path pathToLocalResource) throws MalformedURLException {
-        smbFile = new SmbFile(remoteResourceLocation.getPath(), authentication);
+    public void startDownload(String remoteResourceLocation, Path pathToLocalResource) throws MalformedURLException {
+        System.out.println("url remote : " + remoteResourceLocation);
+        smbFile = new SmbFile(remoteResourceLocation, authentication);
+
+        try {
+            System.out.println("le fichier peut être lu ? " + smbFile.canRead());
+        } catch (SmbException e) {
+            e.printStackTrace();
+        }
         if (!isRunning() && pathToLocalResource != null && remoteResourceLocation != null) {
 
             //Set

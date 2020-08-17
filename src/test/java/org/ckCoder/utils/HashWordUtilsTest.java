@@ -40,6 +40,9 @@ class HashWordUtilsTest {
             File file = new File("/home/cissoko/test.txt");
 
             FileUtils.copyInputStreamToFile(smbFile.getInputStream(), file);
+
+//            System.out.println(smbFile.list());
+
         } catch (Exception ex) {
             System.err.println("Dans la methode catch");
             System.err.println(ex);
