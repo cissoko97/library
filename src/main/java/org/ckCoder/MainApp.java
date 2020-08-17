@@ -25,11 +25,10 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MainApp extends Application {
 
@@ -124,10 +123,10 @@ public class MainApp extends Application {
         if (currentVersion < update) {
             Optional<ButtonType> optional = Verification.alertMessage(properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_TITLE"),
                     properties.getProperty("MESSAGE_DIALOG_UPDATE_APP_CONTENT"), Alert.AlertType.CONFIRMATION).showAndWait();
-            if(optional.get() == ButtonType.OK) {
+            if (optional.get() == ButtonType.OK) {
 
                 window.setOnCloseRequest(exit -> {
-                    if(exportZipService != null && exportZipService.isRunning()) {
+                    if (exportZipService != null && exportZipService.isRunning()) {
                         ActionTool.showNotification(properties.getProperty("MESSAGE_NOTIFICATION_EXIT_TITLE"),
                                 properties.getProperty("MESSAGE_NOTIFICATION_EXIT_CONTENT"), Duration.seconds(5),
                                 NotificationType2.WARNING);
@@ -157,7 +156,6 @@ public class MainApp extends Application {
             } else {
                 primaryScene.constructPrimaryStage(primaryStage);
             }
-
 
         } else {
            // window.setResizable(true);
@@ -337,6 +335,20 @@ public class MainApp extends Application {
             e.printStackTrace();
         }
 
+    }
+
+    public static void reload() {
+        System.out.println("Restarting app!");
+        window.close();
+        Platform.runLater(() ->
+                {
+                    try {
+                        new MainApp().start(new Stage());
+                    } catch (IOException | SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
     }
 
     public static boolean deleteZipFolder() {
