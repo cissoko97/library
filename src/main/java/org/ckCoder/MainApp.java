@@ -18,9 +18,7 @@ import org.ckCoder.service.ExportZipService;
 import org.ckCoder.service.VersionService;
 import org.ckCoder.utils.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -51,13 +49,15 @@ public class MainApp extends Application {
     //Create a change listener
     ChangeListener<? super Number> listener = (observable, oldValue, newValue) -> {
         if (newValue.intValue() == 1) {
-            exportUpdate();
+          //  exportUpdate();
         }
     };
     //Create a change listener
     ChangeListener<? super Number> listener2 = (observable, oldValue, newValue) -> {
-        if (newValue.intValue() == 1)
-            packageUpdate();
+        if (newValue.intValue() == 1) {
+
+           // packageUpdate();
+        }
     };
 
 
@@ -128,24 +128,7 @@ public class MainApp extends Application {
 
 
             if (alert.getResult() == ButtonType.OK) {
-
-                window.setOnCloseRequest(exit -> {
-                    if (exportZipService != null && exportZipService.isRunning()) {
-                        ActionTool.showNotification(properties.getProperty("MESSAGE_NOTIFICATION_EXIT_TITLE"),
-                                properties.getProperty("MESSAGE_NOTIFICATION_EXIT_CONTENT"), Duration.seconds(5),
-                                NotificationType2.WARNING);
-                        exit.consume();
-                        return;
-                    }
-
-                    if (!ActionTool.doQuestion(properties.getProperty("MESSAGE_NOTIFICATION_EXIT_CONTENT"), window)) {
-                        exit.consume();
-                    } else {
-                        deleteZipFolder();
-                        System.exit(0);
-                    }
-                });
-                // Scene
+               /* // Scene
                 Scene scene = new Scene(downloadMode);
                 scene.getStylesheets().add(getClass().getResource(InfoTool.STYLES + InfoTool.APPLICATIONCSS).toExternalForm());
                 window.setScene(scene);
@@ -156,7 +139,12 @@ public class MainApp extends Application {
                 window.show();
 
                 //Start
-                prepareForUpdate();
+                // prepareForUpdate();*/
+
+
+
+
+                openUpdateApp();
             } else {
 
                 System.exit(0);
@@ -169,6 +157,51 @@ public class MainApp extends Application {
         }
 
 
+    }
+
+
+    private void openUpdateApp() {
+        System.out.println(InfoTool.getBasePathForClass(MainApp.class));
+
+
+        String pathOfUpdateApp = InfoTool.getBasePathForClass(MainApp.class) + "updateapp" + File.separator;
+        String updateApp = pathOfUpdateApp + "auto-update.jar";
+
+
+        new Thread(()-> {
+            //create a processing builder
+            System.out.println("base path : " + updateFolder.getAbsolutePath());
+            System.out.println("remote url : " + versionApp.getUrl());
+            ProcessBuilder builder = new ProcessBuilder("java", "-jar", updateApp, updateFolder.getAbsolutePath(), versionApp.getUrl());
+
+            builder.redirectErrorStream(true);
+
+            try {
+                Process process = builder.start();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line;
+                while ( ( line = bufferedReader.readLine() ) != null) {
+                    if (line.isEmpty()) {
+                        break;
+                    }
+                    //This line is being printed when XR3Player Starts
+                    //So the AutoUpdater knows that it must exit
+                    /*else if (line.contains("XR3Player ready to rock!"))
+                        System.exit(0);*/
+
+                    else {
+                        System.out.println("info runing " + line);
+
+                    }
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }, "restart.app").start();
     }
 
     private void prepareForUpdate() {
@@ -198,6 +231,7 @@ public class MainApp extends Application {
                     Duration.minutes(1), NotificationType2.ERROR);
         }
     }
+
 
     public boolean checkPermissions() {
 
@@ -351,19 +385,6 @@ public class MainApp extends Application {
 
     }
 
-    public static void reload() {
-        System.out.println("Restarting app!");
-        window.close();
-        Platform.runLater(() ->
-                {
-                    try {
-                        new MainApp().start(new Stage());
-                    } catch (IOException | SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-    }
 
     public static boolean deleteZipFolder() {
         return new File(prefixNewJarFile).delete();

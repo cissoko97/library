@@ -163,7 +163,7 @@ public class BookControler implements Initializable {
                             btn_controlController.getLockUser_btn());
         }
 
-        btn_controlController.getLoad_btn().setDisable(true);
+        //btn_controlController.getLoad_btn().setDisable(true);
         btn_controlController.getUpdate_btn3().setDisable(true);
         btn_controlController.gridPaneRoot.getChildren().remove(btn_controlController.getDelete_btn());
         try {
