@@ -29,6 +29,11 @@ public class MainApp extends Application {
      * folder
      */
 
+    /**
+     * const for name dierectorie
+     */
+    private static final String NAME_APP_AUTOUPDATE="auto-update.exe";
+    private static final String NAME_FOLDER_AUTOUPDATE="updateapp";
     private VersionApp versionApp;
 
 
@@ -106,8 +111,8 @@ public class MainApp extends Application {
         System.out.println(InfoTool.getBasePathForClass(MainApp.class));
 
 
-        String pathOfUpdateApp = InfoTool.getBasePathForClass(MainApp.class) + "updateapp" + File.separator;
-        String updateApp = pathOfUpdateApp + "auto-update.jar";
+        String pathOfUpdateApp = InfoTool.getBasePathForClass(MainApp.class) + NAME_FOLDER_AUTOUPDATE + File.separator;
+        String updateApp = pathOfUpdateApp + NAME_APP_AUTOUPDATE;
 
         File updateFile = new File(updateApp);
 
@@ -124,8 +129,9 @@ public class MainApp extends Application {
             //create a processing builder
             System.out.println("base path : " + updateFolder.getAbsolutePath());
             System.out.println("remote url : " + versionApp.getUrl());
-            ProcessBuilder builder = new ProcessBuilder("java", "-jar", updateApp, updateFolder.getAbsolutePath(), versionApp.getUrl());
+            //ProcessBuilder builder = new ProcessBuilder("java", "-jar", updateApp, updateFolder.getAbsolutePath(), versionApp.getUrl());
 
+            ProcessBuilder builder = new ProcessBuilder("start", "auto-update", updateApp, updateFolder.getAbsolutePath(), versionApp.getUrl());
             builder.redirectErrorStream(true);
 
             try {
