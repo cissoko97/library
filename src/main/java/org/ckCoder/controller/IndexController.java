@@ -164,7 +164,7 @@ public class IndexController implements Initializable {
 
     private void initComboxSelect() {
         prefenre_combobox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equalsIgnoreCase("caddy") || newValue.equalsIgnoreCase("panier")) {
+            if (newValue.equalsIgnoreCase("basket") || newValue.equalsIgnoreCase("panier")) {
                 try {
                     Stage stage = new Stage();
                     Scene scene;

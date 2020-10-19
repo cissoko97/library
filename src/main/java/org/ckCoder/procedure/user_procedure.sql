@@ -11,7 +11,7 @@ create procedure save_user(IN p_name varchar(255),
                            IN p_password varchar(255))
 begin
 
-    declare errno INt;
+    declare errno INT;
     declare msg TEXT;
     Declare new_id INT;
 

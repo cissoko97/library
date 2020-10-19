@@ -1,8 +1,8 @@
 package org.ckCoder.service;
 
 import org.ckCoder.database.Connexion;
-import org.ckCoder.models.Book;
 import org.ckCoder.models.Command;
+import org.ckCoder.models.jasper.InvoiceClient;
 import org.ckCoder.models.Line;
 import org.ckCoder.service.contract.IService;
 import org.ckCoder.utils.hygratation.CommandHydratation;
@@ -132,5 +132,31 @@ public class OrderService implements IService<Command, Long> {
         CallableStatement stm = Connexion.getConnection().prepareCall("call change_status_command(?)");
         stm.setLong(1, id_order);
         return stm.execute();
+    }
+
+    public List<InvoiceClient> getInvoiceClient() {
+        List<InvoiceClient> invoiceClientList = new ArrayList<>();
+        try {
+            CallableStatement stm = Connexion.getConnection().prepareCall("call invoice_clt()");
+            if(stm.execute()){
+                ResultSet res = stm.getResultSet();
+
+                while (res.next()) {
+                    InvoiceClient invoiceClient = new InvoiceClient();
+
+                    invoiceClient.setBook_price(res.getDouble("book_price"));
+                    invoiceClient.setCmd_create(res.getString("cmd_create"));
+                    invoiceClient.setUser_name(res.getString("user_name"));
+                    invoiceClient.setBook_title(res.getString("book_title"));
+                    invoiceClient.setPerson_createdAt(res.getString("person_createdAt"));
+
+                    invoiceClientList.add(invoiceClient);
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return invoiceClientList;
     }
 }

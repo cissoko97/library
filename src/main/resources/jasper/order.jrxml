@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acte_sous_repport_forderPatient" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2c44e8a9-558b-4eab-94d0-9a7f6cfae433">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="title" class="java.lang.String"/>
+	<field name="price" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="10" width="268" height="30" uuid="17984624-5c0e-40d4-8e25-706ba0ebb16d"/>
+				<textElement>
+					<font size="14" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Actes
+
+]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="278" height="30" uuid="8e56d1bc-a131-4722-9daa-1a99bd7fcfba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dfa0fb11-9788-4b9c-a13c-4cd33e8534f8"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<topPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<leftPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<bottomPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<rightPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="0" width="277" height="30" uuid="42ce0dbf-7b8e-4a3e-9d08-9b5d22298642">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5d28c73f-a66e-4b58-809f-348c81cccd19"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<topPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<leftPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<bottomPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<rightPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[quantite]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="278" height="30" uuid="0132f738-0aa8-4c7b-aabf-8fb7f88ba390">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dfa0fb11-9788-4b9c-a13c-4cd33e8534f8"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<topPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<leftPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<bottomPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<rightPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="0" width="277" height="30" uuid="b24fdf76-6ba4-4815-b19a-ff23b7eadaf7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5d28c73f-a66e-4b58-809f-348c81cccd19"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<topPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<leftPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<bottomPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+					<rightPen lineWidth="0.75" lineStyle="Dashed" lineColor="#333131"/>
+				</box>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

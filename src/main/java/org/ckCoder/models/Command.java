@@ -9,6 +9,9 @@ public class Command extends AbstractEntity {
     private Boolean accepted;
     private Set<Line> lines;
 
+    //no utile
+    private String createdDate;
+
     public Command() {
         accepted = false;
     }
@@ -43,5 +46,13 @@ public class Command extends AbstractEntity {
 
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 }

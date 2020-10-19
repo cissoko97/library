@@ -147,8 +147,8 @@ public class BookControler implements Initializable {
         /*
          *remove addToCard btn for testing
          */
-        btn_controlController.getGridPaneRoot().getChildren()
-                .remove(btn_controlController.getAddCaddyBtn());
+        /*btn_controlController.getGridPaneRoot().getChildren()
+                .remove(btn_controlController.getAddCaddyBtn());*/
 
 
         for (Profil p : user.getProfils()) {

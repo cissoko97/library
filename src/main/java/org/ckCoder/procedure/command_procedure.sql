@@ -109,4 +109,23 @@ create procedure change_status_command(IN p_id_order bigint)
 begin
     update command set accepted = true where id = p_id_order;
 end |
+
+
+drop procedure if exists invoice_clt;
+
+create procedure invoice_clt()
+begin
+    select cmd.created_at as cmd_create,
+           cmd.total_price as cmd_totalprice,
+           concat(p.name, ' ', p.surname) as user_name,
+           p.created_at as person_createdAt,
+           b.price as book_price,
+           b.title as book_title
+           from command cmd left join
+               line ln on cmd.id = ln.command_id left join
+               users usr on cmd.user_id = usr.id left join
+               book b on ln.book_id = b.id left join
+               person p on usr.person_id = p.id;
+
+end |
 delimiter ;

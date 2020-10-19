@@ -66,6 +66,34 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.alexnederlof</groupId>
+                <artifactId>jasperreports-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>jasper</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- These are the default configurations: -->
+                    <compiler>net.sf.jasperreports.engine.design.JRJdtCompiler</compiler>
+                    <sourceDirectory>src/main/resources/jasper</sourceDirectory>
+                    <!--<outputDirectory>${project.build.directory}/jasper</outputDirectory>-->
+                    <outputDirectory>src/main/resources/jasper/compile</outputDirectory>
+                    <outputFileExt>.jasper</outputFileExt>
+                    <xmlValidation>true</xmlValidation>
+                    <verbose>false</verbose>
+                    <numberOfThreads>4</numberOfThreads>
+                    <!--<failOnMissingSourceDirectory>true</failOnMissingSourceDirectory>
+                    <sourceScanner>org.codehaus.plexus.compiler.util.scan.StaleSourceScanner</sourceScanner>-->
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -120,12 +148,28 @@
             <version>8.40.14</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.14</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/jcifs/jcifs -->
         <dependency>
             <groupId>jcifs</groupId>
             <artifactId>jcifs</artifactId>
             <version>1.3.17</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/jasperreports/jasperreports -->
+        <!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.15.0</version>
         </dependency>
     </dependencies>
 </project>

@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -34,13 +35,20 @@
          <children>
             <HBox prefHeight="36.0" prefWidth="812.0" spacing="12.0">
                <children>
-                  <TextField fx:id="searchTextField" prefHeight="26.0" prefWidth="387.0" promptText="recherche">
+                  <TextField fx:id="searchTextField" prefHeight="26.0" prefWidth="331.0" promptText="recherche">
                      <HBox.margin>
-                        <Insets right="90.0" />
+                        <Insets />
                      </HBox.margin>
                   </TextField>
+                  <Region prefHeight="26.0" prefWidth="141.0" HBox.hgrow="ALWAYS" />
                   <Text fx:id="size_label" strokeType="OUTSIDE" strokeWidth="0.0" text="size" />
                   <ComboBox fx:id="resiCombobox" prefHeight="26.0" prefWidth="191.0" />
+                  <Region prefHeight="26.0" prefWidth="118.0" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="btn_imprimer" mnemonicParsing="false" prefHeight="26.0" prefWidth="115.0" text="imprimer">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
                <padding>
                   <Insets bottom="5.0" top="5.0" />
